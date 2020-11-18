@@ -1,4 +1,6 @@
 class MerchantsController < ApplicationController
+  skip_before_action :require_login, except: [:dashboard, :edit, :update]
+
   def index
     @merchants = Merchant.all
   end
@@ -9,7 +11,7 @@ class MerchantsController < ApplicationController
       flash[:error] = "Sorry, merchant not found -- Check out our current merchants below!"
       redirect_back fallback_location: merchants_path
     else
-      @orderitems = @merchant.orderitems
+      @products = @merchant.products
     end
   end
 
@@ -36,7 +38,6 @@ class MerchantsController < ApplicationController
   end
 
   def destroy
-    # require login
     session[:user_id] = nil
     flash[:success] = "Successfully logged out!"
     redirect_to root_path
@@ -44,16 +45,34 @@ class MerchantsController < ApplicationController
 
 
   def edit
-    # require login
+
   end
 
   def update
-    # require login
-    # can only update own username
+    if @current_user.update(merchant_params)
+      flash[:success] = "Successfully updated merchant info!"
+      redirect_to dashboard_path
+      return
+    else
+      flash.now[:error] = "A problem occurred: Could not update merchant info."
+      render :edit, status: :bad_request
+      return
+    end
   end
 
   def dashboard
-    # require login
-    # needs to verify user id = session id
+    @current_user = Merchant.find_by(id: session[:user_id])
+    unless @current_user
+      flash[:error] = "You must be logged in to see this page."
+      redirect_to root_path
+      return
+    end
   end
+
+  private
+
+  def merchant_params
+    return params.require(:merchant).permit(:username, :email)
+  end
+
 end
