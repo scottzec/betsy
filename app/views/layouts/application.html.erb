@@ -10,6 +10,12 @@
   </head>
 
   <body>
+
+    <section class="flash">
+      <% flash.each do |name, message| %>
+        <div class="alert-<%=name%>"><%= message %></div>
+      <% end %>
+    </section>
     <%= yield %>
   </body>
 </html>
