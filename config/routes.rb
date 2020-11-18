@@ -7,4 +7,9 @@ Rails.application.routes.draw do
   end
   resources :orders
 
+  # OAuth routes for merchant authentication
+  get "/auth/github", as: "github_login"
+  get "/auth/:provider/callback", to: "merchants#create"
+  # route for merchant dashbaord
+  get "/dashboard", as: "merchants#dashboard"
 end
