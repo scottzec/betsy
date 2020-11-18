@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   # OAuth routes for merchant authentication
   get "/auth/github", as: "github_login"
   get "/auth/:provider/callback", to: "merchants#create"
+  delete "/logout", to: "users#destroy", as: "logout"
   # route for merchant dashbaord
-  get "/dashboard", as: "merchants#dashboard"
+  get "/dashboard", to: "merchants#dashboard", as: "dashboard"
 end

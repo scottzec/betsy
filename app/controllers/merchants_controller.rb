@@ -9,7 +9,7 @@ class MerchantsController < ApplicationController
       @merchant = Merchant.build_from_github(auth_hash)
 
       if @merchant.save
-        flash[:success] = "Welcome, #{@merchant.username}! Check out your dashboard to edit your username and email."
+        flash[:success] = "Welcome, #{@merchant.username}! Check out your dashboard below to edit your username and email."
       else
         flash[:error] = "Could not create new merchant: #{@merchant.errors.messages}"
         return redirect_to root_path
@@ -17,6 +17,12 @@ class MerchantsController < ApplicationController
     end
 
     session[:user_id] = @merchant.id
+    redirect_to dashboard_path
+  end
+
+  def destroy
+    session[:user_id] = nil
+    flash[:success] = "Successfully logged out!"
     redirect_to root_path
   end
 end
