@@ -36,8 +36,24 @@ class MerchantsController < ApplicationController
   end
 
   def destroy
+    # require login
     session[:user_id] = nil
     flash[:success] = "Successfully logged out!"
     redirect_to root_path
+  end
+
+
+  def edit
+    # require login
+  end
+
+  def update
+    # require login
+    # can only update own username
+  end
+
+  def dashboard
+    # require login
+    # needs to verify user id = session id
   end
 end
