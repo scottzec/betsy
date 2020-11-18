@@ -1,0 +1,4 @@
+name,description,price,photo_url,stock,merchant_id
+succulent,cute cactus,5.55,nil,6,1
+cactus,mean succulent,12.30,nil,9,2
+flower,not at all a cactus,3.45,nil,4,2
