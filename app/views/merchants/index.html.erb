@@ -1,1 +1,9 @@
-<h1> index </h1>
+<main>
+  <ul>
+    <% @merchants.each do |merchant| %>
+      <li>
+        <%= link_to "#{merchant.username}", merchant_path(merchant.id), method: :get %>
+      </li>
+    <% end %>
+  </ul>
+</main>

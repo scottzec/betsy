@@ -1,5 +1,6 @@
 class MerchantsController < ApplicationController
-  skip_before_action :require_login, except: [:dashboard, :edit, :update]
+  # UNCOMMENT FOR OAUTH
+  # skip_before_action :require_login, except: [:dashboard, :edit, :update]
 
   def index
     @merchants = Merchant.all
@@ -9,47 +10,87 @@ class MerchantsController < ApplicationController
     @merchant = Merchant.find_by(id: params[:id])
     if @merchant.nil?
       flash[:error] = "Sorry, merchant not found -- Check out our current merchants below!"
-      redirect_back fallback_location: merchants_path
+      redirect_to merchants_path
     else
       @products = @merchant.products
     end
   end
 
-  # the new function is now handled by GitHub via OAuth. We will only need a create.
-  def create
-    auth_hash = request.env["omniauth.auth"]
-    @merchant = Merchant.find_by(uid: auth_hash[:uid], provider: "github")
-    if @merchant
-      # User was found in the database
-      flash[:success] = "Logged in as returning user #{@merchant.username}"
-    else
-      @merchant = Merchant.build_from_github(auth_hash)
+  # REPLACE BELOW WITH SOME WORKING VERSION OF THE COMMENTED OUT CODE
+  # need to add migration before OAuth can be used
+  def login_form
+    @current_merchant = Merchant.new
+  end
 
-      if @merchant.save
-        flash[:success] = "Welcome, #{@merchant.username}! Check out your dashboard below to edit your username and email."
+  def login
+    username = params[:merchant][:username]
+    email = params[:merchant][:email]
+    @current_merchant = Merchant.find_by(username: username)
+
+    # since we're entering two fields, we need to check both
+    # once we add validations, this needs to be refactored to account for that
+    if @current_merchant && email = @current_merchant.email
+      session[:user_id] = @current_merchant.id
+      flash[:success] = "Successfully logged in as existing user #{username}"
+    else
+      @current_merchant = Merchant.create(username: username, email: email)
+
+      if @current_merchant.valid?
+        session[:user_id] = @current_merchant.id
+        flash[:success] = "Successfully created new merchant #{username} with ID #{@current_merchant.id}"
       else
-        flash[:error] = "Could not create new merchant: #{@merchant.errors.messages}"
-        return redirect_to root_path
+        flash.now[:error] = "A problem occurred: Could not log in. Check that you entered the correct credentials."
+        render :login_form, status: :bad_request
+        return
       end
     end
 
-    session[:user_id] = @merchant.id
     redirect_to dashboard_path
+    return
   end
+  # REPLACE ABOVE WITH SOME WORKING VERSION OF THE COMMENTED OUT CODE
+  # # the new function is now handled by GitHub via OAuth. We will only need a create.
+  # def create
+  #   auth_hash = request.env["omniauth.auth"]
+  #   @merchant = Merchant.find_by(uid: auth_hash[:uid], provider: "github")
+  #   if @merchant
+  #     # User was found in the database
+  #     flash[:success] = "Logged in as returning user #{@merchant.username}"
+  #   else
+  #     @merchant = Merchant.build_from_github(auth_hash)
+  #
+  #     if @merchant.save
+  #       flash[:success] = "Welcome, #{@merchant.username}! Check out your dashboard below to edit your username and email."
+  #     else
+  #       flash[:error] = "Could not create new merchant: #{@merchant.errors.messages}"
+  #       return redirect_to root_path
+  #     end
+  #   end
+  #
+  #   session[:user_id] = @merchant.id
+  #   redirect_to dashboard_path
+  # end
 
   def destroy
     session[:user_id] = nil
     flash[:success] = "Successfully logged out!"
-    redirect_to root_path
+    # redirect_to root_path <-- will replace this after merging ProductsController
+    redirect_to merchants_path
   end
 
 
   def edit
-
+    @current_merchant = Merchant.find_by(id: session[:user_id])
+    if @current_merchant.nil?
+      flash.now[:error] = "You must be logged in to edit your info."
+      # redirect_back fallback_location: root_path <-- will replace this after merging ProductsController
+      redirect_to merchants_path
+    end
   end
 
   def update
-    if @current_user.update(merchant_params)
+    @current_merchant = Merchant.find_by(id: session[:user_id])
+    if @current_merchant.update(merchant_params)
       flash[:success] = "Successfully updated merchant info!"
       redirect_to dashboard_path
       return
@@ -60,11 +101,13 @@ class MerchantsController < ApplicationController
     end
   end
 
+  # equivalent to current_user in ada books
   def dashboard
-    @current_user = Merchant.find_by(id: session[:user_id])
-    unless @current_user
+    @current_merchant = Merchant.find_by(id: session[:user_id])
+    unless @current_merchant
       flash[:error] = "You must be logged in to see this page."
-      redirect_to root_path
+      # redirect_to root_path <-- will replace this after merging ProductsController
+      redirect_to merchants_path
       return
     end
   end

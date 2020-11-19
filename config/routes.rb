@@ -8,9 +8,13 @@ Rails.application.routes.draw do
   resources :orders
 
   # OAuth routes for merchant authentication
-  get "/auth/github", as: "github_login"
-  get "/auth/:provider/callback", to: "merchants#create"
-  delete "/logout", to: "users#destroy", as: "logout"
+  # get "/auth/github", as: "github_login"
+  # get "/auth/:provider/callback", to: "merchants#create"
+  # REPLACE WITH OAUTH ROUTES
+  get "/login", to: "merchants#login_form", as: "login"
+  post "/login", to: "merchants#login"
+  # keep this for OAuth
+  delete "/logout", to: "merchants#destroy", as: "logout"
   # route for merchant dashbaord
   get "/dashboard", to: "merchants#dashboard", as: "dashboard"
 end
