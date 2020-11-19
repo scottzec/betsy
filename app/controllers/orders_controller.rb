@@ -1,11 +1,4 @@
 class OrdersController < ApplicationController
-  # Purchasing an order makes the following changes:
-  # Reduces the number of inventory for each product
-  # Changes the order state from "pending" to "paid"
-  # Clears the current cart
-
-  # add controller filters, write tests, finish up methods
-  # Which custom methods do we need? a checkout method where we either let the user sign in or checkout as guest?
   def cart
     @order = Order.find_by(id: session[:order_id])
 
@@ -18,24 +11,6 @@ class OrdersController < ApplicationController
     @orders = Order.all
   end
 
-  def new
-    @order = Order.new
-  end
-
-  # def create
-  #   @order = Order.new(order_params)
-  #
-  #   if @order.save
-  #     flash[:success] = "Shopping cart/order created?"
-  #     redirect_to root_path
-  #     return
-  #   else
-  #     flash.now[:error] = "A problem occurred. Shopping cart/order not created?"
-  #     render :new, status: :bad_request
-  #     return
-  #   end
-  # end
-
   def show
     @order = Order.find_by(id: params[:id])
 
@@ -44,6 +19,7 @@ class OrdersController < ApplicationController
       redirect_to root_path
       return
     else
+      #if session[:merchant_id] # not sure how to say view orders from a particular merchant
       redirect_to order_path(@order.id)
     end
   end
@@ -60,10 +36,18 @@ class OrdersController < ApplicationController
   def update
     @order = Order.find_by(id: session[:order_id])
 
+    # Purchasing an order makes the following changes:
+    # Reduces the number of inventory for each product
+    # Changes the order state from "pending" to "paid"
+    # Clears the current cart
     if @order.update(order_params)
       flash[:success] = "Your order has been confirmed."
       session[:order_id] = nil
       @order.status = "paid"
+      @items = @order.orderitems
+      @items.each do |item|
+        Product.find(item.product).stock -= item.quantity
+      end
       return
     else
       flash[:error] = "A problem occurred. We couldn't complete your order."
