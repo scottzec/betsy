@@ -1,4 +1,5 @@
 <% @products.each do |product| %>
+  <div class="container"></div>
   <% if product.stock >= 0  %>
     <!-- for product image -->
     <% if product.photo_url == "nil" || product.photo_url.nil? %>
@@ -23,4 +24,5 @@
     <% end %>
 
   <%end %>
+  </div>
 <% end %>

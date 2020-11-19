@@ -1,7 +1,6 @@
 <main>
   <h1> Merchant: <%=@merchant.username %></h1>
   <h2> Products</h2>
-  <div class="container"></div>
     <% if @products.empty? %>
 
     <p>this merchant doesn't have any products yet. come back again later.</p>
@@ -11,6 +10,7 @@
     <% end %>
 
     <% @products.each do |product| %>
+    <div class="container"></div>
       <% if product.stock >= 0  %>
         <!-- for product image -->
         <% if product.photo_url == "nil" || product.photo_url.nil? %>
@@ -35,6 +35,7 @@
       <% end %>
 
       <%end %>
+      </div>
     <% end %>
-  </div>
+
 </main>

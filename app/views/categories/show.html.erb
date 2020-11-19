@@ -1,9 +1,4 @@
 <main>
 <h1> "<%=@cat.name%>" products</h1>
-
-
-  <div class="container">
-
-  </div>
-
+  <%= render partial: "merchants/products", locals: { products: @products } %>
 </main>
