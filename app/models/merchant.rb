@@ -2,6 +2,8 @@ class Merchant < ApplicationRecord
   has_many :products
   has_many :orderitems, through: :products
 
+  validates :username, uniqueness: true
+  
   def self.build_from_github(auth_hash)
     merchant = Merchant.new
     merchant.uid = auth_hash[:uid]
