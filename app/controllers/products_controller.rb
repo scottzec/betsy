@@ -12,14 +12,22 @@ class ProductsController < ApplicationController
   end
 
   def create
-    @product = Product.new(product_params)
+    @current_merchant = Merchant.find_by(id: session[:user_id])
+    if @current_merchant.nil?
+      flash[:warning] = "You need to be logged in to list a product"
+      head :not_found
+      return
+    end
+    # creates a product with product params that belongs to the current_merchant
+    @product = @current_merchant.products.new(product_params)
+
     if @product.save # returns true if db insert succeeds
       # Add @product.category to flash messages once category is set up
       flash[:success] = "Your #{@product.name} has been added successfully to the catalog"
       redirect_to product_path(@product.id)
       return
     else
-      flash.now[:error] = "Something's gone awry. Your listing hasn't been created"
+      flash.now[:warning] = "Something's gone awry. Your listing hasn't been created"
       render :new, status: :bad_request
       return
     end
