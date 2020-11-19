@@ -13,6 +13,9 @@ Rails.application.routes.draw do
 
   resources :orders   # , only: [:show, :edit, :update]
 
+  # for categories
+  resources :categories, only: [:index, :show, :new, :create]
+
   # OAuth routes for merchant authentication
   # get "/auth/github", as: "github_login"
   # get "/auth/:provider/callback", to: "merchants#create"
