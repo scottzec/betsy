@@ -21,7 +21,7 @@ class CategoriesController < ApplicationController
     @current_merchant = Merchant.find_by(id: session[:user_id])
     if @current_merchant.nil?
       flash[:error] = "a problem occurred: you must log in to do that"
-      redirect_back fallback_location: root_path
+      redirect_to categories_path
     else
       @cat = Category.new
     end

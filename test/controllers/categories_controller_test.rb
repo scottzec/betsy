@@ -48,12 +48,39 @@ describe CategoriesController do
   end
 
   describe "session functions" do
+    before do
+      @merchant1 = Merchant.create(username: "m1", email: "m1@email.com")
+    end
     # the following functions require login
     describe "new" do
       # needs OAuth
+      it "prevents non signed in users from visiting the page to make a new category" do
+        get new_category_path
+
+        must_redirect_to categories_path
+      end
+      it "allows signed in users to visit the page to make a new category" do
+        @login_data = {merchant: {username: @merchant1.username, email:@merchant1.email} }
+        post login_path(@login_data) # REFACTOR
+
+        get new_category_path
+
+        must_respond_with :success
+      end
     end
     describe "create" do
+      before do
+        @login_data = {merchant: {username: @merchant1.username, email:@merchant1.email} }
+        post login_path(@login_data) # REFACTOR
+      end
       # needs OAuth
+      it "creates a new valid category" do
+        
+      end
+      # add after validations
+      # it "returns a bad request and renders the new page if category is blank" do
+      #
+      # end
     end
   end
 end
