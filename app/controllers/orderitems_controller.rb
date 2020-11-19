@@ -109,6 +109,7 @@ class OrderitemsController < ApplicationController
   end
 
   def index
+    @order = Order.find_by(id: 1)
     @orderitem = Orderitem.all
   end
 
@@ -116,7 +117,7 @@ class OrderitemsController < ApplicationController
     @orderitem = Orderitem.find_by(id: params[:id])
 
     if @orderitem.nil?
-      redirect_to product_path, status: :temporary_redirect
+      redirect_to root_path, status: :temporary_redirect
       return
     end
   end

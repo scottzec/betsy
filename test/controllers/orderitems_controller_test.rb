@@ -6,7 +6,7 @@ describe OrderitemsController do
   # end
   #
   let (:product) {
-    Product.create(name: "orchid",
+    Product.create!(name: "orchid",
                    description: "pretty fragile flower",
                    price: 21.00,
                    photo_url: nil,
@@ -15,7 +15,7 @@ describe OrderitemsController do
   }
 
   let (:order) {
-    Order.create(status: paid,
+    Order.create!(status: "paid",
                  name: "Buy Buyerson",
                  email: "buy@buy.com",
                  address: "1234 buy st. s., Buy, OR",
@@ -25,25 +25,28 @@ describe OrderitemsController do
   }
 
   let (:orderitem) {
-    Orderitem.create(quantity: 4,
+    Orderitem.create!(quantity: 4,
                      product_id: product.id,
                      order_id: order.id)
   }
-end
 
-describe "show" do
-  # Your tests go here
-  it "responds with success when showing an existing valid trip" do
-    get trip_path(trip.id)
+  describe "show" do
+    # Your tests go here
+    it "responds with success when showing an existing valid trip" do
+      get orderitem_path(orderitem.id)
 
-    must_respond_with :success
+      must_respond_with :success
+    end
+
+    it "responds with redirect with an invalid trip id" do
+      get orderitem_path(-1)
+
+      must_respond_with :redirect
+      must_redirect_to root_path
+    end
+
   end
 
-  it "responds with redirect with an invalid trip id" do
-    get trip_path(-1)
-
-    must_respond_with :redirect
-    must_redirect_to root_path
-  end
 
 end
+

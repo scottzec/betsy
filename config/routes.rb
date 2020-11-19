@@ -6,7 +6,10 @@ Rails.application.routes.draw do
     resources :reviews
     resources :orderitems
   end
-  resources :orders
+  resources :orders do
+    resources :orderitems
+  end
+  resources :orderitems
 
   # OAuth routes for merchant authentication
   # get "/auth/github", as: "github_login"
