@@ -21,7 +21,7 @@
         <%= link_to content_tag(:h3, "#{product.name}"), product_path(product.id), method: :get %>
         <span><%="%.2f" % product.price%></span>
 
-        <p>Quantity in Stock:
+        <p>in stock:
           <!-- check if out of stock -->
           <% if product.stock == 0 %>
             SOLD OUT!

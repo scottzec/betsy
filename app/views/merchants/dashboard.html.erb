@@ -1,7 +1,52 @@
-<h1> welcome, <%=@current_merchant.username %></h1>
+<main>
 
-<nav>
-  <%= link_to content_tag(:li, "edit your info"), edit_merchant_path(@current_merchant.id), method: :get %>
-  <%= link_to content_tag(:li, "look at your store"), merchant_path(@current_merchant.id), method: :get %>
-</nav>
-<!-- some table here using the all orders method, link to ind. order as well -->
+  <h1> welcome, <%=@current_merchant.username %></h1>
+
+  <nav>
+    <%= link_to content_tag(:li, "edit your info"), edit_merchant_path(@current_merchant.id), method: :get %>
+    <%= link_to content_tag(:li, "look at your store"), merchant_path(@current_merchant.id), method: :get %>
+  </nav>
+  <h2> my order fulfillments</h2>
+  <!-- some table here using the all orders method, link to ind. order as well -->
+  <h2> my products</h2>
+  <table class="table">
+    <thead>
+    <tr>
+      <th width=80>product name</th>
+      <th>price</th>
+      <th>in stock</th>
+      <th width=100>description</th>
+      <th width=100>view</th>
+      <th width=100>edit</th>
+      <th width=100>delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @current_merchant.products.each do |product| %>
+      <tr>
+        <td>
+          <% if product.photo_url == "nil" || product.photo_url.nil? %>
+            <%= link_to image_tag("defaultimage.jpg"), product_path(product.id), method: :get%>
+          <% else %>
+            <%= link_to image_tag("#{product.photo_url}"), product_path(product.id), method: :get%>
+          <% end %>
+          <%= product.name %>
+        </td>
+        <td><%= product.price %></td>
+        <td>
+          <% if product.stock >= 0  %>
+            <%= product.stock %>
+          <% else %>
+            RETIRED
+          <% end %>
+        </td>
+        <td><%= product.description %></td>
+        <td><%= link_to "view", product_path(product.id), method: :post, class: "btn btn-primary"%></td>
+        <td><%= link_to "edit", edit_product_path(product.id), method: :post, class: "btn btn-primary"%></td>
+        <td><%= link_to "delete", product_path(product.id), method: :delete, class: "btn btn-primary"%></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</main>
+

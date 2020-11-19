@@ -2,7 +2,7 @@
 <h1>our amazing merchants</h1>
   <ul>
     <% @merchants.each do |merchant| %>
-        <%= link_to content_tag(:li,"#{merchant.username}" ), merchant_path(merchant.id), method: :get %>
+        <%= link_to content_tag(:li,"#{merchant.username}"), merchant_path(merchant.id), method: :get %>
     <% end %>
   </ul>
 </main>
