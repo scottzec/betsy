@@ -8,7 +8,21 @@
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
-
+  <header>
+    <% flash.each do |name, message| %>
+      <%if name != 'error_messages' %>
+        <div class='<%= name == 'success' ? "alert alert-#{name}" : "alert alert-warning" %>'>
+          <span><%= message %></span>
+        </div>
+      <% end %>
+    <% end %>
+    <% if session[:user_id] %>
+      <%= link_to "Log out", logout_path, method: "delete" %>
+    <% else %>
+      <!-- FOR OAUTH < % = # link_to "Login with Github", github_login_path % > -->
+      <%= link_to "Login", login_path %>
+    <% end %>
+  </header>
   <body>
     <%= yield %>
   </body>
