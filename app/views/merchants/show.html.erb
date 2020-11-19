@@ -1,0 +1,24 @@
+<main>
+  <h1> Merchant: <%=@merchant.username %></h1>
+  <h2> Products</h2>
+  <div class="container"></div>
+    <% @products.each do |product| %>
+      <% if product.stock >= 0  %>
+        <% if product.photo_url == "nil" %>
+          <%= link_to image_tag("defaultimage.jpg"), product_path(product.id), method: :get%>
+        <% else %>
+          <%= link_to image_tag("#{product.photo_url}"), product_path(product.id), method: :get%>
+        <% end %>
+        <%= link_to content_tag(:h3, "#{product.name}"), product_path(product.id), method: :get %>
+        <span><%=product.price%></span>
+
+        <p>Quantity in Stock:
+          <% if product.stock == 0 %>
+            SOLD OUT!
+          <% else %>
+            <%= product.stock %>
+          <% end %></p>
+      <%end %>
+    <% end %>
+  </div>
+</main>
