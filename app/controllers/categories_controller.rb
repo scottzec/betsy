@@ -1,4 +1,6 @@
 class CategoriesController < ApplicationController
+  # UNCOMMENT FOR OAUTH
+  # skip_before_action :require_login, except: [:index, :show]
   def index
     @cats = Category.all
   end
@@ -13,7 +15,9 @@ class CategoriesController < ApplicationController
     end
   end
 
+  # CANNOT TEST UNTIL OAUTH
   def new
+    # redundant after OAuth
     @current_merchant = Merchant.find_by(id: session[:user_id])
     if @current_merchant.nil?
       flash[:error] = "a problem occurred: you must log in to do that"
@@ -23,6 +27,7 @@ class CategoriesController < ApplicationController
     end
   end
 
+  # CANNOT TEST UNTIL OAUTH
   def create
     @cat = Category.new(cat_params)
     if @cat.save
@@ -34,6 +39,8 @@ class CategoriesController < ApplicationController
     return
   end
 
+  private
+  
   def cat_params
     return params.require(:category).permit(:name)
   end

@@ -80,6 +80,7 @@ class MerchantsController < ApplicationController
 
 
   def edit
+    # redundant after OAuth
     @current_merchant = Merchant.find_by(id: session[:user_id])
     if @current_merchant.nil?
       flash.now[:warning] = "You must be logged in to edit your info."
@@ -89,6 +90,7 @@ class MerchantsController < ApplicationController
   end
 
   def update
+    # redundant after OAuth
     @current_merchant = Merchant.find_by(id: session[:user_id])
     if @current_merchant.update(merchant_params)
       flash[:success] = "Successfully updated merchant info!"
@@ -103,6 +105,7 @@ class MerchantsController < ApplicationController
 
   # equivalent to current_user in ada books
   def dashboard
+    # redundant after OAuth
     @current_merchant = Merchant.find_by(id: session[:user_id])
     unless @current_merchant
       flash[:warning] = "You must be logged in to see this page."
