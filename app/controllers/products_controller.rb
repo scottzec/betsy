@@ -56,7 +56,7 @@ class ProductsController < ApplicationController
 
     end
   end
-  
+
   def destroy
     # Do we want a delete? It doesn't mention delete
     # Only: Retire a product from being sold, which hides it from browsing
