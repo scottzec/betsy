@@ -56,9 +56,18 @@ class ProductsController < ApplicationController
   end
 
   def destroy
-    # Do we want a delete? It doesn't mention delete
-    # Only: Retire a product from being sold, which hides it from browsing
-    # I noted a custom method for this. Not sure about delete
+    if @product.nil?
+      head :not_found
+      return
+    end
+
+    @product= Product.find_by_id(params[:id])
+    @product.destroy
+    flash[:success] = "Your product listing #{@product.name} has now been deleted"
+    redirect_to products_path
+    return
+  end
+
   end
 
   private
