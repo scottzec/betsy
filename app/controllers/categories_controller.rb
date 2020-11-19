@@ -8,7 +8,7 @@ class CategoriesController < ApplicationController
   def show
     @cat = Category.find_by(id: params[:id])
     if @cat.nil?
-      flash[:warning] = "categories not found -- browse our current categories or sign in to create a new one!"
+      flash[:warning] = "category not found -- browse our current categories or sign in to create a new one!"
       redirect_to categories_path
     else
       @products = @cat.products
@@ -40,7 +40,7 @@ class CategoriesController < ApplicationController
   end
 
   private
-  
+
   def cat_params
     return params.require(:category).permit(:name)
   end
