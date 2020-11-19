@@ -1,2 +1,10 @@
 
 <%= link_to content_tag(:h3, "leave a review"), new_product_review_path(@product.id), method: :get %>
+
+<h3>reviews</h3>
+<% @product.reviews.each do |review| %>
+  <div class="container">
+    <h4><%= "♣"*review.rating + "♧"*(5-review.rating) %></h4>
+    <p><%=review.review %></p>
+  </div>
+<% end %>

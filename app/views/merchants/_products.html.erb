@@ -8,7 +8,7 @@
       <%= link_to image_tag("#{product.photo_url}"), product_path(product.id), method: :get%>
     <% end %>
     <%= link_to content_tag(:h3, "#{product.name}"), product_path(product.id), method: :get %>
-    <span><%="%.2f" % product.price%></span>
+    <span><%="$%.2f" % product.price%></span>
 
     <p>in stock:
       <!-- check if out of stock -->

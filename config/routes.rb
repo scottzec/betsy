@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   end
 
   resources :products do
-      resources :reviews
+      resources :reviews, only: [:new, :create]
       resources :orderitem
   end
 

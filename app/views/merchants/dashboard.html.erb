@@ -35,7 +35,7 @@
           <% end %>
           <%= product.name %>
         </td>
-        <td><%= product.price %></td>
+        <td><%= "$%.2f" % product.price %></td>
         <td>
           <% if product.stock >= 0  %>
             <%= product.stock %>
