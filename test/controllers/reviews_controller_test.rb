@@ -4,7 +4,7 @@ describe ReviewsController do
   before do
     @merchant1 = Merchant.create(username: "m1", email: "m1@email.com")
     @merchant2 = Merchant.create(username: "m2", email: "m2@email.com")
-    @product = Product.create(name: "review me", description: "an item", price: 1.00, photo_url:"/images/defaultimage.png", stock: 5, merchant_id: @merchant1.id)
+    @product = Product.create(name: "review me", description: "an item", price: 1.00, photo_url:"/images/defaultimage.jpg", stock: 5, merchant_id: @merchant1.id)
   end
   describe "new" do
     it "allows a non signed-in user that is not the merchant selling the product to go to the form leave a review" do

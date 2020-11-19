@@ -75,11 +75,24 @@ describe CategoriesController do
       end
       # needs OAuth
       it "creates a new valid category" do
-        
+        @cat = {category: {name: "test"} }
+
+        expect{
+          post categories_path, params: @cat
+        }.must_change "Category.count", 1
+
+        must_redirect_to dashboard_path
+
       end
       # add after validations
       # it "returns a bad request and renders the new page if category is blank" do
+      #   @cat = {category: {name: "test"} }
       #
+      #   expect{
+      #     post categories_path, params: @cat
+      #   }.wont_change "Category.count"
+      #
+      #   must_respond_with :bad_request
       # end
     end
   end
