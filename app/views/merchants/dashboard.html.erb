@@ -5,6 +5,8 @@
   <nav>
     <%= link_to content_tag(:li, "edit your info"), edit_merchant_path(@current_merchant.id), method: :get %>
     <%= link_to content_tag(:li, "look at your store"), merchant_path(@current_merchant.id), method: :get %>
+    <%= link_to content_tag(:li, "add a product"), new_merchant_product_path(merchant_id:@current_merchant.id), method: :get %>
+    <%= link_to content_tag(:li, "add a category"), new_category_path, method: :get %>
   </nav>
   <h2> my order fulfillments</h2>
   <!-- some table here using the all orders method, link to ind. order as well -->
@@ -19,6 +21,7 @@
       <th width=100>view</th>
       <th width=100>edit</th>
       <th width=100>delete</th>
+      <!-- <th width=100>retire/un-retire</th> -->
     </tr>
     </thead>
     <tbody>
@@ -44,6 +47,7 @@
         <td><%= link_to "view", product_path(product.id), method: :post, class: "btn btn-primary"%></td>
         <td><%= link_to "edit", edit_product_path(product.id), method: :post, class: "btn btn-primary"%></td>
         <td><%= link_to "delete", product_path(product.id), method: :delete, class: "btn btn-primary"%></td>
+        <!-- link_to retire/unretire -->
       </tr>
     <% end %>
     </tbody>
