@@ -9,7 +9,7 @@ class MerchantsController < ApplicationController
   def show
     @merchant = Merchant.find_by(id: params[:id])
     if @merchant.nil?
-      flash[:error] = "Sorry, merchant not found -- Check out our current merchants below!"
+      flash[:warning] = "Sorry, merchant not found -- Check out our current merchants below!"
       redirect_to merchants_path
     else
       @products = @merchant.products
@@ -39,7 +39,7 @@ class MerchantsController < ApplicationController
         session[:user_id] = @current_merchant.id
         flash[:success] = "Successfully created new merchant #{username} with ID #{@current_merchant.id}"
       else
-        flash.now[:error] = "A problem occurred: Could not log in. Check that you entered the correct credentials."
+        flash.now[:warning] = "A problem occurred: Could not log in. Check that you entered the correct credentials."
         render :login_form, status: :bad_request
         return
       end
@@ -62,7 +62,7 @@ class MerchantsController < ApplicationController
   #     if @merchant.save
   #       flash[:success] = "Welcome, #{@merchant.username}! Check out your dashboard below to edit your username and email."
   #     else
-  #       flash[:error] = "Could not create new merchant: #{@merchant.errors.messages}"
+  #       flash[:warning] = "Could not create new merchant: #{@merchant.errors.messages}"
   #       return redirect_to root_path
   #     end
   #   end
@@ -82,7 +82,7 @@ class MerchantsController < ApplicationController
   def edit
     @current_merchant = Merchant.find_by(id: session[:user_id])
     if @current_merchant.nil?
-      flash.now[:error] = "You must be logged in to edit your info."
+      flash.now[:warning] = "You must be logged in to edit your info."
       # redirect_back fallback_location: root_path <-- will replace this after merging ProductsController
       redirect_to merchants_path
     end
@@ -95,7 +95,7 @@ class MerchantsController < ApplicationController
       redirect_to dashboard_path
       return
     else
-      flash.now[:error] = "A problem occurred: Could not update merchant info."
+      flash.now[:warning] = "A problem occurred: Could not update merchant info."
       render :edit, status: :bad_request
       return
     end
@@ -105,7 +105,7 @@ class MerchantsController < ApplicationController
   def dashboard
     @current_merchant = Merchant.find_by(id: session[:user_id])
     unless @current_merchant
-      flash[:error] = "You must be logged in to see this page."
+      flash[:warning] = "You must be logged in to see this page."
       # redirect_to root_path <-- will replace this after merging ProductsController
       redirect_to merchants_path
       return
