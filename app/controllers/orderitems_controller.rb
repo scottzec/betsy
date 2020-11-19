@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class OrderitemController < ApplicationController
+class OrderitemsController < ApplicationController
   def new
     @orderitem = Orderitem.new
   end
@@ -106,5 +106,18 @@ class OrderitemController < ApplicationController
     flash.now[:success] = "Successfully removed #{@orderitem.name} from cart!"
     render order_path(session[:order_id])
     return
+  end
+
+  def index
+    @orderitem = Orderitem.all
+  end
+
+  def show
+    @orderitem = Orderitem.find_by(id: params[:id])
+
+    if @orderitem.nil?
+      redirect_to product_path, status: :temporary_redirect
+      return
+    end
   end
 end

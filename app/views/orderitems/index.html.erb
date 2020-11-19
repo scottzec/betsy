@@ -1,0 +1,10 @@
+<h2>Trip Details</h2>
+
+<ul>
+  <li>ID: <%= @orderitem.id %></li>
+  <li>Product: <%= link_to @orderitem.product.name, product_path(@orderitem.product) %></li>
+  <li>Order: <%= link_to @orderitem.order.id, order_path(@orderitem.order) %></li>
+  <li>Quantity: <%= @orderitem.quantity %></li>
+</ul>
+
+<p> <%= link_to "Edit Trip Details", edit_product_orderitem_path_path(@orderitem.id) %> </p>
