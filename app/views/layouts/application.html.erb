@@ -9,13 +9,6 @@
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
   <header>
-    <% flash.each do |name, message| %>
-      <%if name != 'error_messages' %>
-        <div class='<%= name == 'success' ? "alert alert-#{name}" : "alert alert-warning" %>'>
-          <span><%= message %></span>
-        </div>
-      <% end %>
-    <% end %>
     <% if session[:user_id] %>
       <%= link_to "Log out", logout_path, method: "delete" %>
     <% else %>
