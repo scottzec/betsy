@@ -2,22 +2,38 @@
   <h1> Merchant: <%=@merchant.username %></h1>
   <h2> Products</h2>
   <div class="container"></div>
+    <% if @products.empty? %>
+
+    <p>this merchant doesn't have any products yet. come back again later.</p>
+      <% if !session[:user_id].nil? && session[:user_id] == @merchant.id %>
+        <%= link_to "that's me! i have something to sell now!", new_merchant_product_path(merchant_id: @merchant.id), method: :get %>
+      <% end %>
+    <% end %>
+
     <% @products.each do |product| %>
       <% if product.stock >= 0  %>
-        <% if product.photo_url == "nil" %>
+        <!-- for product image -->
+        <% if product.photo_url == "nil" || product.photo_url.nil? %>
           <%= link_to image_tag("defaultimage.jpg"), product_path(product.id), method: :get%>
         <% else %>
           <%= link_to image_tag("#{product.photo_url}"), product_path(product.id), method: :get%>
         <% end %>
         <%= link_to content_tag(:h3, "#{product.name}"), product_path(product.id), method: :get %>
-        <span><%=product.price%></span>
+        <span><%="%.2f" % product.price%></span>
 
         <p>Quantity in Stock:
+          <!-- check if out of stock -->
           <% if product.stock == 0 %>
             SOLD OUT!
           <% else %>
             <%= product.stock %>
+            <%= link_to content_tag(:p, "add to cart"), product_orderitem_path(product_id: product.id), method: :post %>
           <% end %></p>
+      <% if !session[:user_id].nil? && session[:user_id] == product.merchant_id %>
+        <%= link_to content_tag(:p, "edit #{product.name}"), edit_merchant_product_path(product.id), method: :get %>
+        <!-- add links to delete/retire product -->
+      <% end %>
+
       <%end %>
     <% end %>
   </div>
