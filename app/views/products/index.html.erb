@@ -8,7 +8,7 @@
       <th>Price</th>
       <th>Photo URL</th>
       <th>Qty In Stock</th>
-<!--      <th>Merchant ID</th>-->
+      <th>Merchant ID</th>
     </tr>
     </thead>
 
@@ -21,7 +21,7 @@
         <td> <%= product.price %> </td>
         <td> <%= product.photo_url %> </td>
         <td> <%= product.stock %> </td>
-<!--        <td> <%#= merchant.product.name %> </td> But the relation is the other way!-->
+        <td> <%= product.merchant.name %> </td> But the relation is the other way!
       </tr>
     <% end %>
     </tbody>
