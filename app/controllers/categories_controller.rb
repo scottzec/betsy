@@ -1,6 +1,6 @@
 class CategoriesController < ApplicationController
   def index
-    @cat = Category.all
+    @cats = Category.all
   end
 
   def show

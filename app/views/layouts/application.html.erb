@@ -11,7 +11,9 @@
   <header>
     <nav>
       <ul>
-        <%= link_to content_tag(:li, "our merchants"), merchants_path, method: "get" %>
+        <%= link_to content_tag(:li, "browse all products"), products_path, method: "get" %>
+        <%= link_to content_tag(:li, "browse by category"), categories_path, method: "get" %>
+        <%= link_to content_tag(:li, "browse by merchants"), merchants_path, method: "get" %>
         <% if session[:user_id] %>
           <%= link_to content_tag(:li, "dashboard"), dashboard_path, method: "get" %>
         <% end %>

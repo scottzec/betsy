@@ -1,0 +1,13 @@
+<main>
+
+  <h2>new category</h2>
+
+  <%= form_with model: @cat, class: 'create-category', url: categories_path do |f| %>
+
+    <%= f.label :name %>
+    <%= f.text_field :name, class: "form-control" %>
+
+    <%= f.submit "add category", class:"btn btn-primary", data: {confirm: "are you sure?"}%>
+  <% end %>
+
+</main>
