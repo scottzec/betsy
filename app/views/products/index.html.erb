@@ -1,0 +1,31 @@
+<main>
+  <h2>Products Lists</h2>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Price</th>
+      <th>Photo URL</th>
+      <th>Qty In Stock</th>
+<!--      <th>Merchant ID</th>-->
+    </tr>
+    </thead>
+
+    <tbody>
+    <% @products.each do |product| %>
+      <tr>
+        <td> <%= link_to product.name, product_path(product.id) %> </td>
+        <td> <%= product.description %> </td>
+        <td> <%= product.price %> </td>
+        <td> <%= product.price %> </td>
+        <td> <%= product.photo_url %> </td>
+        <td> <%= product.stock %> </td>
+<!--        <td> <%#= merchant.product.name %> </td> But the relation is the other way!-->
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+
+  <%= link_to 'cactus & clover home', root_path, class: "?????" %>
+</main>
