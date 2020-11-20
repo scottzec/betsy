@@ -13,6 +13,7 @@ class Product < ApplicationRecord
 
   validates :photo_url, presence: true
   validates :photo_url, url: true
+  # Uses validates_url gem https://github.com/perfectline/validates_url
 
   validates :stock, allow_nil: true, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 
