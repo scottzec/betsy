@@ -1,15 +1,24 @@
 <main>
   <h2>Your Cart</h2>
-  <% if @orderitems %>
-    <ul>
-    <% @orderitems.each do |item| %>
-      <li>Product: <%= item.name %></li>
-      <li>Quantity: <%= item.quantity %></li>
-      <li>Price: <%= item.price %></li>
-      <li>Subtotal: <%= item.price * item.quantity %></li>
+  <% if @cart.orderitems %>
+    <ol>
+    <% @cart.orderitems.each do |item| %>
+      <li>Product: <%= item.product.name %></li>
+      <ul>
+        <li>Quantity: <%= item.quantity %></li>
+        <li>Price: <%= item.product.price %></li>
+        <li>Subtotal: <%= item.product.price * item.quantity %></li>
+      </ul>
     <% end %>
-    </ul>
+    </ol>
     <% else %>
       <p>There's nothing in your cart. Start browsing! <%= link_to "Browse Products", root_path %></p>
   <% end %>
+
+  Total: <%= @cart.total %>
+
+  <hr>
+
+  Complete Purchase:
+  //form goes here//
 </main>

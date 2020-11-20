@@ -1,6 +1,8 @@
 class OrdersController < ApplicationController
   # before_action :require_login, only: [:merchant_show]
 
+  before_action :find_cart, only: [:cart]
+
   def cart; end
 
   def show # this is order confirmation
@@ -135,5 +137,9 @@ class OrdersController < ApplicationController
 
   def order_params
     return params.require(:order).permit( :status, :name, :email, :address, :credit_card_number, :cvv, :expiration_date, :zip_code)
+  end
+
+  def find_cart
+    @cart = Order.find_by(id: session[:order_id])
   end
 end
