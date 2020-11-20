@@ -9,9 +9,10 @@
 <main>
   <h2>Order #<%= @order.id %></h2>
   <ul>
-    <li>Name: <%= @order.username %></li>
+    <li>Name: <%= @order.name %></li>
     <li>Email: <%= @order.email %></li>
-    <li>Mailing Address <%= @order.address @order.zip_code %></li>
+    <li>Mailing Address: <%= @order.address %></li>
+    <li>Zip Code: <%= @order.zip_code %> </li>
     <li>Last 4 Digits of CC <%= @order.credit_card_number[-4..-1] %></li>
     <li>Credit Card Expiration Date <%= @order.expiration_date %></li>
   </ul>
