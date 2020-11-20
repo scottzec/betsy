@@ -21,9 +21,9 @@ class OrderitemsController < ApplicationController
       return
     end
 
-    if quantity < 1
-      flash.now[:warning] = 'Cannot add 0 items'
-      render product_path(product.id)
+    if quantity.nil? || quantity < 1
+      flash[:warning] = 'Cannot add 0 items'
+      redirect_back(fallback_location: root_path)
       return
     elsif product.stock.zero?
       flash.now[:warning] = 'Item out of stock, cannot add to cart'
@@ -120,5 +120,36 @@ class OrderitemsController < ApplicationController
       redirect_to root_path, status: :temporary_redirect
       return
     end
+  end
+
+  def mark_shipped
+    @orderitem = Orderitem.find_by(id: params[:id])
+
+    if @orderitem.nil?
+      redirect_back(fallback_location: root_path)
+      return
+    end
+
+    if @orderitem.shipped == true
+      flash.now[:warning] = 'Product already marked shipped'
+      redirect_back(fallback_location: root_path)
+      return
+    end
+
+    if ! @orderitem.update(shipped: true)
+      flash[:warning] = 'A problem occurred: could not update to shipped'
+      redirect_back(fallback_location: root_path)
+      return
+    end
+
+
+    o1 = @orderitem.order
+
+    if o1.orderitems.find_by(shipped: true).nil?
+      o1.status = "complete"
+      o1.save
+    end
+
+    redirect_back(fallback_location: root_path)
   end
 end

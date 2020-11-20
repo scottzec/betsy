@@ -44,9 +44,9 @@
           <% end %>
         </td>
         <td><%= product.description %></td>
-        <td><%= link_to "view", product_path(product.id), method: :post, class: "btn btn-primary"%></td>
-        <td><%= link_to "edit", edit_product_path(product.id), method: :post, class: "btn btn-primary"%></td>
-        <td><%= link_to "delete", product_path(product.id), method: :delete, class: "btn btn-primary"%></td>
+        <td><%= link_to "view", product_path(product.id), method: :get, class: "btn btn-primary"%></td>
+        <td><%= link_to "edit", edit_product_path(product.id), method: :get, class: "btn btn-primary"%></td>
+        <td><%= link_to "delete", product_path(product.id), method: :delete, data: {confirm: "Are you sure?"}, class: "btn btn-primary"%></td>
         <!-- link_to retire/unretire -->
       </tr>
     <% end %>

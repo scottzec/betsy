@@ -19,6 +19,8 @@
         <% end %>
       </ul>
     </nav>
+      <%= link_to "Cart", cart_path %>
+
     <% if session[:user_id] %>
       <%= link_to "log out", logout_path, method: "delete" %>
     <% else %>
