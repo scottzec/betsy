@@ -78,5 +78,4 @@ ActiveRecord::Schema.define(version: 2020_11_18_034100) do
     t.bigint "product_id"
     t.index ["product_id"], name: "index_reviews_on_product_id"
   end
-
 end

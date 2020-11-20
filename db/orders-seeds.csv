@@ -1,0 +1,6 @@
+status,name,email,address,credit_card_number,cvv,expiration_date,zip_code,total
+paid,buyer1,buyer1@email.com,123 Ada Court Seattle WA,1093739415543701,361,01/21,98101,10
+paid,buyer2,buyer2@email.com,123 Ada Street Seattle WA,8713415481720634,534,04/21,98105,40
+paid,buyer3,buyer3@email.com,123 Ada Drive Seattle WA,8095033490458975,252,01/24,98109,25
+paid,buyer4,buyer4@email.com,123 Ada Lane Seattle WA,3981346647450665,946,02/26,98114,30
+paid,buyer5,buyer5@email.com,123 Ada Road Seattle WA,1606400169480036,243,04/29,98124,15

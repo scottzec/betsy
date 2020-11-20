@@ -1,53 +1,50 @@
 class OrdersController < ApplicationController
-  def cart
-    @order = Order.find_by(id: session[:order_id])
+  # before_action :require_login, only: [:merchant_show]
 
-    if @order.nil?
-      flash[:error] = "No items in shopping cart"
-    end
-  end
+  def cart; end
 
-  def index
-    @orders = Order.all
-  end
-
-  def show
+  def show # this is order confirmation
     @order = Order.find_by(id: params[:id])
 
     if @order.nil?
       flash[:error] = "Sorry, that order cannot be found"
       redirect_to root_path
       return
-    else
-      #if session[:merchant_id] # not sure how to say view orders from a particular merchant
-      redirect_to order_path(@order.id)
     end
   end
 
-  def edit
-    if session[:order_id]
-      @order = Order.find_by(id: session[:order_id])
-    else
-      flash[:error] = "A problem occurred. We couldn't find your order."
+  def merchant_show
+    @order = Order.find_by(id: params[:id])
+
+    if @order.nil?
+      flash[:error] = "Sorry, that order cannot be found"
       redirect_to root_path
+      return
+    end
+
+    if @current_merchant.nil?
+      flash[:error] = "Users must be logged in for this functionality"
+      redirect_to root_path
+      return
+    end
+
+    # we are looking at an order that the merchant has products in
+    @orderitems = @order.filter_order_items(@current_merchant) # use orderitems in the view for collection of items
+
+    if @orderitems.empty?
+      flash[:error] = "You do not have products in this order"
+      redirect_to root_path # redirect to merchant's dashboard
+      return
     end
   end
 
-  def update
-    @order = Order.find_by(id: session[:order_id])
+  def edit; end # the final checkout
 
-    # Purchasing an order makes the following changes:
-    # Reduces the number of inventory for each product
-    # Changes the order state from "pending" to "paid"
-    # Clears the current cart
-    if @order.update(order_params)
+  def update # moves cart status
+    if @cart.update(order_params) && @cart.checkout
       flash[:success] = "Your order has been confirmed."
       session[:order_id] = nil
-      @order.status = "paid"
-      @items = @order.orderitems
-      @items.each do |item|
-        Product.find(item.product).stock -= item.quantity
-      end
+      redirect_to order_path(@cart.id)
       return
     else
       flash[:error] = "A problem occurred. We couldn't complete your order."
@@ -56,23 +53,17 @@ class OrdersController < ApplicationController
     end
   end
 
-  def destroy
-    if @order.nil?
-      flash[:error] = "Order cannot be found"
-      redirect_to root_path
-      return
-    end
-
-    if @order.destroy
-      flash[:success] = "Your order has been cancelled."
-      redirect_to root_path
-      return
-    end
-  end
+    # def cancel
+    #   if @order.update(status: "cancelled")
+        # flash[:success] = "Order successfully cancelled."
+    #   # restore the stock
+    #   # no part of the order has been fulfilled - order items on merchant dashboard
+    #   # complete once all order items have been filled
+    # end
 
   private
 
   def order_params
-    return params.require(:order).permit( :status, :name, :email, :address, :credit_card_number, :cvv, :expiration_date, :zip_code, :total)
+    return params.require(:order).permit( :status, :name, :email, :address, :credit_card_number, :cvv, :expiration_date, :zip_code)
   end
 end
