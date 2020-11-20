@@ -40,7 +40,7 @@ class Merchant < ApplicationRecord
   def all_orders(status: nil)
     orderitems = self.orderitems
     return nil if orderitems.empty?
-    
+
     allorders = Hash.new
     orderitems.each do |orderitem|
       order = Order.find_by(id: orderitem.order_id)
