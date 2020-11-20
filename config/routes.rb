@@ -7,13 +7,13 @@ Rails.application.routes.draw do
   end
 
   resources :products do
-      resources :reviews
-      resources :orderitem
+    resources :reviews
   end
+  
+  resources :orderitems #may be able to delete later, or have only: [:show]
 
   get "/cart", to: "orders#cart", as: "cart"
   get "/orders/:id/merchant_show", to: "orders#merchant_show", as: "merchant_show"
-
 
   resources :orders   # , only: [:show, :edit, :update]
 
