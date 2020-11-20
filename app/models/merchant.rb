@@ -18,6 +18,12 @@ class Merchant < ApplicationRecord
   #
 
   # total revenue based on completed orders
+  # all unique orders and order items associated with merchant, can be sorted by status
+  #
+  # @params status (string), default nil for all orderitems
+  # @output float represent revenue from all order items (of certain category if selected)
+  # @post ... should not change any objects or fields involved?
+  # invalid status input or having no assoc. orderitems will return 0.
   def total_revenue(status: nil)
     @orderitems = self.orderitems
     return 0 if @orderitems.empty?
@@ -37,9 +43,14 @@ class Merchant < ApplicationRecord
   end
 
   # all unique orders and order items associated with merchant, can be sorted by status
-  def all_orders(status: nil)
+  #
+  # @params status (string), default nil for all orders
+  # @output hash where Order => [OrderItems]
+  # @post ... should not change any objects or fields involved?
+  # invalid status input or no orderitems will return an empty hash.
+  def get_orders(status: nil)
     orderitems = self.orderitems
-    return nil if orderitems.empty?
+    return {} if orderitems.empty?
 
     allorders = Hash.new
     orderitems.each do |orderitem|
@@ -48,9 +59,9 @@ class Merchant < ApplicationRecord
       # if status input, will match by status
       if status.nil? || order.status.downcase == status
         if allorders.has_key?(orderitem.order_id)
-          allorders[order_id] << orderitem
+          allorders[order] << orderitem
         else
-          allorders[order_id] = [orderitem]
+          allorders[order] = [orderitem]
         end
       end
     end
