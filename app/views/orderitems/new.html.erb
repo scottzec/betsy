@@ -1,0 +1,9 @@
+<h3> Add item to cart: </h3>
+
+<%= form_with model: @orderitem, class: 'order-item-form' do |f| %>
+
+  <%= f.label :quantity %>
+  <%= f.text_field :quantity %>
+
+  <%= f.submit "Add to Cart", class: "button" %>
+<% end %>

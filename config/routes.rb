@@ -3,13 +3,17 @@ Rails.application.routes.draw do
   root to: 'products#index'
 
   resources :merchants do
-    resources :products
+    resources :products#, only: [:new, :create, :edit, :update, :destroy]
   end
 
   resources :products do
-      resources :reviews, only: [:new, :create]
-      resources :orderitem
+    resources :reviews, only: [:new, :create]
   end
+  
+  resources :orderitems #may be able to delete later, or have only: [:show]
+
+  get "/cart", to: "orders#cart", as: "cart"
+  get "/orders/:id/merchant_show", to: "orders#merchant_show", as: "merchant_show"
 
   resources :orders   # , only: [:show, :edit, :update]
 

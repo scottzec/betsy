@@ -1,0 +1,26 @@
+<!--Guest Users/Unauthenticated -->
+<!--After purchasing an order, I can view a confirmation screen including:-->
+<!--Each item in the order with a quantity and line-item subtotal-->
+<!--A link to the item description page-->
+<!--Order total price-->
+<!--Date/time the order was placed-->
+<!--The current status of the order-->
+
+<section>
+  <h2>Order #<%= @order.id %></h2>
+    <% @order.orderitems.each do |orderitem| %>
+      <% if orderitem %>
+        <ul>
+          <li><%= orderitem.product.name %></li>
+          <li><%= orderitem.product.description %></li>
+          <li><%= orderitem.quantity %></li>
+        </ul>
+      <% end %>
+  <% end %>
+  <ul>
+    <li>Order Total: <%= @order.total %></li>
+    <li>Order Status: <%= @order.status %></li>
+    <li>Order Date: <%= @order.updated_at %></li>
+  </ul>
+</section>
+

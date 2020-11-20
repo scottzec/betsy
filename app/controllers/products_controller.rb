@@ -12,14 +12,22 @@ class ProductsController < ApplicationController
   end
 
   def create
-    @product = Product.new(product_params)
+    @current_merchant = Merchant.find_by(id: session[:user_id])
+    if @current_merchant.nil?
+      flash[:warning] = "You need to be logged in to list a product"
+      head :not_found
+      return
+    end
+    # creates a product with product params that belongs to the current_merchant
+    @product = @current_merchant.products.new(product_params)
+
     if @product.save # returns true if db insert succeeds
       # Add @product.category to flash messages once category is set up
       flash[:success] = "Your #{@product.name} has been added successfully to the catalog"
       redirect_to product_path(@product.id)
       return
     else
-      flash.now[:error] = "Something's gone awry. Your listing hasn't been created"
+      flash.now[:warning] = "Something's gone awry. Your listing hasn't been created"
       render :new, status: :bad_request
       return
     end
@@ -58,9 +66,18 @@ class ProductsController < ApplicationController
   end
 
   def destroy
-    # Do we want a delete? It doesn't mention delete
-    # Only: Retire a product from being sold, which hides it from browsing
-    # I noted a custom method for this. Not sure about delete
+    if @product.nil?
+      head :not_found
+      return
+    end
+
+    @product= Product.find_by_id(params[:id])
+    @product.destroy
+    flash[:success] = "Your product listing #{@product.name} has now been deleted"
+    redirect_to products_path
+    return
+  end
+
   end
 
   private
