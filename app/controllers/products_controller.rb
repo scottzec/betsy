@@ -78,8 +78,6 @@ class ProductsController < ApplicationController
     return
   end
 
-  end
-
   private
 
   # Do I need merchant_id in strong params?
