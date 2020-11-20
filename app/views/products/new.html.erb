@@ -1,7 +1,18 @@
 <!-- explicitly to test categories -->
 <!-- will work once products controllers can create from current_merchant-->
 
+
 <%= form_for @product, url: merchant_products_path do |f| %>
+  <% if @product.errors.any? %>
+    <ul class="errors">
+      <% @product.errors.each do |column, message| %>
+        <li>
+          <p><%= column.capitalize %> <%= message %></p>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+
   <%= f.label :name %>
   <%= f.text_field :name %>
 
