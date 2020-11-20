@@ -161,21 +161,20 @@ describe MerchantsController do
         expect(@merchant1.email).must_equal "m1@email.com"
       end
 
-      # UNCOMMENT AFTER VALIDATIONS
-      # it "doesn't update a merchant's info when invalid parameters are input" do
-      #   post login_path(@login_data)
-      #
-      #   edit_merchant_data[:merchant][:username] = nil
-      #
-      #   # Act-Assert
-      #   expect{
-      #     patch merchant_path(@merchant1.id), params: edit_merchant_data
-      #   }.wont_change "Merchant.count"
-      #
-      #   must_respond_with :bad_request
-      #   expect(@merchant1.username).must_equal "m1"
-      #   expect(@merchant1.email).must_equal "m1@email.com"
-      # end
+      it "doesn't update a merchant's info when invalid parameters are input" do
+        post login_path(@login_data)
+
+        edit_merchant_data[:merchant][:username] = nil
+
+        # Act-Assert
+        expect{
+          patch merchant_path(@merchant1.id), params: edit_merchant_data
+        }.wont_change "Merchant.count"
+
+        must_respond_with :bad_request
+        expect(@merchant1.username).must_equal "m1"
+        expect(@merchant1.email).must_equal "m1@email.com"
+      end
 
     end
   end
