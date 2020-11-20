@@ -43,6 +43,9 @@ class Order < ApplicationRecord
   # def cancel
   #   # is this order able to be cancelled
   #   # none of these items should be shipped
+  #   self.orderitems.each do |item|
+  #     if item.shipped 
+  #   end
   # end
 
   def total
