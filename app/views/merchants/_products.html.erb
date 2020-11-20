@@ -2,10 +2,10 @@
   <div class="container"></div>
   <% if product.stock >= 0  %>
     <!-- for product image -->
-    <% if product.photo_url == "nil" || product.photo_url.nil? %>
-      <%= link_to image_tag("defaultimage.jpg"), product_path(product.id), method: :get%>
-    <% else %>
+    <% begin %>
       <%= link_to image_tag("#{product.photo_url}"), product_path(product.id), method: :get%>
+    <% rescue %>
+      <%= link_to image_tag("defaultimage.jpg"), product_path(product.id), method: :get%>
     <% end %>
     <%= link_to content_tag(:h3, "#{product.name}"), product_path(product.id), method: :get %>
     <span><%="$%.2f" % product.price%></span>
@@ -16,7 +16,7 @@
         SOLD OUT!
       <% else %>
         <%= product.stock %>
-        <%= link_to content_tag(:p, "add to cart"), product_orderitem_path(product_id: product.id), method: :post %>
+        <%= link_to content_tag(:p, "add to cart"), orderitem_path(product_id: product.id), method: :post %>
       <% end %></p>
     <% if !session[:user_id].nil? && session[:user_id] == product.merchant_id %>
       <%= link_to content_tag(:p, "edit #{product.name}"), edit_merchant_product_path(product.id), method: :get %>

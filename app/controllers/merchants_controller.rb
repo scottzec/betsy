@@ -74,30 +74,38 @@ class MerchantsController < ApplicationController
   def destroy
     session[:user_id] = nil
     flash[:success] = "successfully logged out!"
-    # redirect_to root_path <-- will replace this after merging ProductsController
-    redirect_to merchants_path
+    redirect_to root_path
   end
 
 
   def edit
-    # redundant after OAuth
+    # line 83 redundant after OAuth
     @current_merchant = Merchant.find_by(id: session[:user_id])
     if @current_merchant.nil?
-      flash.now[:warning] = "you must be logged in to edit your info."
-      # redirect_back fallback_location: root_path <-- will replace this after merging ProductsController
+      flash[:warning] = "you must login to see this page."
       redirect_to merchants_path
+    elsif @current_merchant != Merchant.find_by(id: params[:id])
+      flash[:warning] = "invalid merchant or unauthorized access: you must be logged into your own account to edit your info."
+      redirect_to dashboard_path
     end
   end
 
   def update
-    # redundant after OAuth
+    # line 92 redundant after OAuth
     @current_merchant = Merchant.find_by(id: session[:user_id])
-    if @current_merchant.update(merchant_params)
+    if @current_merchant.nil?
+      flash[:warning] =  "you must login to update your info."
+      redirect_to merchants_path
+    elsif @current_merchant != Merchant.find_by(id: params[:id])
+      flash[:warning] = "invalid merchant or unauthorized access: you must be logged into your own account to edit your info."
+      redirect_to dashboard_path
+    elsif @current_merchant.update(merchant_params)
       flash[:success] = "successfully updated merchant info!"
       redirect_to dashboard_path
       return
     else
       flash.now[:warning] = "a problem occurred: could not update merchant info."
+      flash[:error] = @current_merchant.errors.messages
       render :edit, status: :bad_request
       return
     end
@@ -109,8 +117,7 @@ class MerchantsController < ApplicationController
     @current_merchant = Merchant.find_by(id: session[:user_id])
     unless @current_merchant
       flash[:warning] = "you must be logged in to see this page."
-      # redirect_to root_path <-- will replace this after merging ProductsController
-      redirect_to merchants_path
+      redirect_to root_path
       return
     end
   end
