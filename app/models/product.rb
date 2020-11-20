@@ -5,5 +5,17 @@ class Product < ApplicationRecord
   has_many :reviews
   belongs_to :merchant
 
-  # Custom Method: Retire a product from being sold, which hides it from browsing
+  validates :name, presence: true
+
+  validates :description, presence: true
+
+  validates :price, numericality: { greater_than_or_equal_to: 0 }
+
+  validates :photo_url, presence: true
+  validates :photo_url, url: true
+
+  validates :stock, allow_nil: true, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+
+
+  # Custom Method: Optional. Retire a product from being sold, which hides it from browsing
 end
