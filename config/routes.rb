@@ -1,15 +1,21 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   root to: 'products#index'
-  resources :merchants
+
+  resources :merchants do
+    resources :products
+  end
+
   resources :products do
     resources :reviews
-    resources :orderitems
   end
-  resources :orders do
-    resources :orderitems
-  end
-  resources :orderitems
+  
+  resources :orderitems #may be able to delete later, or have only: [:show]
+
+  get "/cart", to: "orders#cart", as: "cart"
+  get "/orders/:id/merchant_show", to: "orders#merchant_show", as: "merchant_show"
+
+  resources :orders   # , only: [:show, :edit, :update]
 
   # OAuth routes for merchant authentication
   # get "/auth/github", as: "github_login"
