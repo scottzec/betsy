@@ -8,7 +8,7 @@
       <th>Price</th>
       <th>Photo URL</th>
       <th>Qty In Stock</th>
-      <th>Merchant ID</th>
+      <th>Merchant Name</th>
     </tr>
     </thead>
 
@@ -18,10 +18,9 @@
         <td> <%= link_to product.name, product_path(product.id) %> </td>
         <td> <%= product.description %> </td>
         <td> <%= product.price %> </td>
-        <td> <%= product.price %> </td>
         <td> <%= product.photo_url %> </td>
         <td> <%= product.stock %> </td>
-        <td> <%= product.merchant.username %> </td> But the relation is the other way!
+        <td> <%= product.merchant.username %> </td>
       </tr>
     <% end %>
     </tbody>
