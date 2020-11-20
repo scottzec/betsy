@@ -30,6 +30,7 @@ class ReviewsController < ApplicationController
         flash[:success] = "successfully left review of #{@product.name} by #{@merchant.username}"
         redirect_to product_path(@product.id)
       else
+        flash[:error] = @review.errors.messages
         render :new, status: :bad_request
       end
     else

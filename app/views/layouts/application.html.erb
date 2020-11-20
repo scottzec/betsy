@@ -30,7 +30,17 @@
 
     <section class="flash">
       <% flash.each do |name, message| %>
+        <% if message.is_a?(Hash) %>
+          <div class="alert-<%=name%>">
+            <ul>
+              <%message.each do |field, error| %>
+                <li><%=field %>: <%= error.join(", ") %></li>
+              <% end %>
+            </ul>
+          </div>
+        <%else %>
         <div class="alert-<%=name%>"><%= message %></div>
+        <%end %>
       <% end %>
     </section>
     <%= yield %>

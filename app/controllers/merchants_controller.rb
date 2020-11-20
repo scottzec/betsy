@@ -105,6 +105,7 @@ class MerchantsController < ApplicationController
       return
     else
       flash.now[:warning] = "a problem occurred: could not update merchant info."
+      flash[:error] = @current_merchant.errors.messages
       render :edit, status: :bad_request
       return
     end

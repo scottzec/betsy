@@ -86,6 +86,9 @@ describe MerchantsController do
       end
     end
     describe "edit" do
+      # testing both invalid cases (after login, if not logged in doesn't even reach this point i think)
+      # because they technically come from difference sources
+      # even though they all redirect to the same path
       it "blocks invalid merchants" do
         post login_path(@login_data)
 

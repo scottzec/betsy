@@ -41,6 +41,7 @@ class CategoriesController < ApplicationController
       flash[:success] = "successfully created new category #{@cat.name}."
       redirect_to dashboard_path
     else
+      flash[:error] = @cat.errors.messages
       render :new, status: :bad_request
     end
     return
