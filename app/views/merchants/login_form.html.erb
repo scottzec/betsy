@@ -1,0 +1,14 @@
+<main>
+  <h2>Log In</h2>
+
+  <%= form_with model: @current_merchant, class: 'login__form', url: login_path do |f| %>
+
+      <%= f.label :username %>
+      <%= f.text_field :username, class: "form-control" %>
+
+      <%= f.label :email %>
+      <%= f.text_field :email, class: "form-control" %>
+
+      <%= f.submit "Log In", class:"btn btn-primary"%>
+  <% end %>
+</main>
