@@ -28,10 +28,10 @@
     <% @current_merchant.products.each do |product| %>
       <tr>
         <td>
-          <% if product.photo_url == "nil" || product.photo_url.nil? %>
+          <% begin %>
+            <%= link_to image_tag("#{product.photo_url}"), product_path(product.id), method: :get%>
+          <% rescue %>
             <%= link_to image_tag("defaultimage.jpg"), product_path(product.id), method: :get%>
-          <% else %>
-            <%#= link_to image_tag("#{product.photo_url}"), product_path(product.id), method: :get%>
           <% end %>
           <%= product.name %>
         </td>

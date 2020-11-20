@@ -71,10 +71,20 @@ describe CategoriesController do
     describe "create" do
       before do
         @login_data = {merchant: {username: @merchant1.username, email:@merchant1.email} }
-        post login_path(@login_data) # REFACTOR
       end
       # needs OAuth
+      it "blocks signed out merchants from making categories" do
+        @cat = {category: {name: "test"} }
+
+        expect{
+          post categories_path, params: @cat
+        }.wont_change "Category.count"
+
+        must_redirect_to categories_path
+      end
       it "creates a new valid category" do
+        post login_path(@login_data)
+
         @cat = {category: {name: "test"} }
 
         expect{
@@ -84,16 +94,17 @@ describe CategoriesController do
         must_redirect_to dashboard_path
 
       end
-      # add after validations
-      # it "returns a bad request and renders the new page if category is blank" do
-      #   @cat = {category: {name: "test"} }
-      #
-      #   expect{
-      #     post categories_path, params: @cat
-      #   }.wont_change "Category.count"
-      #
-      #   must_respond_with :bad_request
-      # end
+
+      it "returns a bad request and renders the new page if category is blank" do
+         post login_path(@login_data)
+         @cat = {category: {name: nil} }
+
+         expect{
+           post categories_path, params: @cat
+         }.wont_change "Category.count"
+
+         must_respond_with :bad_request
+      end
     end
   end
 end

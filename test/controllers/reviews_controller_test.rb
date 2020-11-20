@@ -40,24 +40,56 @@ describe ReviewsController do
     end
   end
   describe "create" do
-    # right now, the views only permit creation of reviews through the new page
-    # this by default already prevents a signed in user from accessing the
-    it "creates a new review" do
+    before do
       @review = {review: {rating: 5, review: "this should work"} }
+    end
+    it "creates a new review" do
+
+      expect{
+        post product_reviews_path(@product.id), params: @review
+      }.must_change "Review.count", 1
+
+      must_redirect_to product_path(@product.id)
+      new_review = Review.find_by(product_id: @product.id)
+      expect(new_review.rating).must_equal @review[:review][:rating]
+      expect(new_review.review).must_equal @review[:review][:review]
+    end
+    it "doesn't create a review for a product that doesn't exist" do
+      expect{
+        post product_reviews_path(-1), params: @review
+      }.wont_change "Review.count"
+
+      must_redirect_to root_path
+    end
+    it "lets a merchant review another product" do
+      @login_data = {merchant: {username: @merchant2.username, email:@merchant2.email} }
+      post login_path(@login_data) # REFACTOR
+
       expect{
         post product_reviews_path(@product.id), params: @review
       }.must_change "Review.count", 1
 
       must_redirect_to product_path(@product.id)
     end
-    # when validations can be implemented
-    # it "forbids the saving of an invalid review"" do
-    #   @invalid_review = {review: {product_id: @product.id, rating: -1, review: "invalid rating"} }
-    #   expect{
-    #     post product_reviews_path(review_params)
-    #   }.wont_change "Review.count"
-    #
-    #   must_respond_with :bad_request
-    # end
+    it "blocks a merchant from reviewing their own product" do
+      # yes, even if they try to do it through postman
+      @login_data = {merchant: {username: @merchant1.username, email:@merchant1.email} }
+      post login_path(@login_data) # REFACTOR
+
+      expect{
+        post product_reviews_path(@product.id), params: @review
+      }.wont_change "Review.count"
+
+      must_redirect_to product_path(@product.id)
+    end
+
+    it "forbids the saving of an invalid review" do
+      @invalid_review = {review: {product_id: @product.id, rating: -1, review: "invalid rating"} }
+      expect{
+        post product_reviews_path(@product.id), params: @invalid_review
+      }.wont_change "Review.count"
+
+      must_respond_with :bad_request
+    end
   end
 end
