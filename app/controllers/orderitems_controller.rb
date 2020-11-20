@@ -8,10 +8,11 @@ class OrderitemsController < ApplicationController
   def create
     order = Order.find_by(id: session[:order_id])
     product = Product.find_by(id: params[:product_id])
-    quantity = params[:quantity]
+    quantity = params[:orderitem][:quantity].to_i
 
     if order.nil?
       order = Order.new
+      order.save
       session[:order_id] = order.id
     end
 
@@ -39,6 +40,7 @@ class OrderitemsController < ApplicationController
     @orderitem.order_id = order.id
     @orderitem.product_id = product.id
     @orderitem.quantity = quantity
+
 
     if @orderitem.save
       flash[:success] = 'Product successfully added to cart!'
