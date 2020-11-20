@@ -21,9 +21,9 @@ class OrderitemsController < ApplicationController
       return
     end
 
-    if quantity < 1
-      flash.now[:warning] = 'Cannot add 0 items'
-      render product_path(product.id)
+    if quantity.nil? || quantity < 1
+      flash[:warning] = 'Cannot add 0 items'
+      redirect_back(fallback_location: root_path)
       return
     elsif product.stock.zero?
       flash.now[:warning] = 'Item out of stock, cannot add to cart'
