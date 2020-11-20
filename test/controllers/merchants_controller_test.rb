@@ -12,8 +12,6 @@ describe MerchantsController do
     end
 
     it "responds with success when there are no merchants saved" do
-      # Arrange
-
       # Act
       get merchants_path
       # Assert
@@ -38,7 +36,7 @@ describe MerchantsController do
 
     end
 
-    it "responds with 404 with an invalid user id" do
+    it "responds with a redirect to the merchants page with an invalid id" do
       # Act
       get merchant_path(-1)
       # Assert

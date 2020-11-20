@@ -61,6 +61,8 @@ class ProductsController < ApplicationController
       flash.now[:warning] = "There was a problem. We couldn't update your listing"
       render :edit
       return
+
+    end
   end
 
   def destroy

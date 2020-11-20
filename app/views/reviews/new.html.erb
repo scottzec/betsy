@@ -1,0 +1,34 @@
+<main>
+  <h2>review <%="#{@product.name} by #{@merchant.username}" %></h2>
+  <h2><%="$%.2f" % @product.price %></h2>
+  <p><%=@product.description %></p>
+  <% if @product.photo_url == "nil" || @product.photo_url.nil? %>
+    <%= link_to image_tag("defaultimage.jpg"), product_path(@product.id), method: :get%>
+  <% else %>
+    <%= link_to image_tag("#{@product.photo_url}"), product_path(@product.id), method: :get%>
+  <% end %>
+
+  <%= form_with model: @review, class: 'review__form', url: product_reviews_path do |f| %>
+    <h3> rating (1-5) </h3>
+    <%= f.radio_button :rating, 1 %>
+    <%= f.label "1 (awful)"%>
+    <br/>
+    <%= f.radio_button :rating, 2 %>
+    <%= f.label "2 (pretty bad)"%>
+    <br/>
+    <%= f.radio_button :rating, 3 %>
+    <%= f.label "3 (okay)"%>
+    <br/>
+    <%= f.radio_button :rating, 4%>
+    <%= f.label "4 (great)"%>
+    <br/>
+    <%= f.radio_button :rating, 5 %>
+    <%= f.label "5 (amazing!!!)"%>
+    <br/>
+
+    <h3> review</h3>
+    <%= f.text_area(:review,{class: "form-control"} ) %>
+
+    <%= f.submit "submit review", class:"btn btn-primary"%>
+  <% end %>
+</main>

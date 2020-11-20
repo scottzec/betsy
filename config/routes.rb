@@ -3,11 +3,11 @@ Rails.application.routes.draw do
   root to: 'products#index'
 
   resources :merchants do
-    resources :products
+    resources :products#, only: [:new, :create, :edit, :update, :destroy]
   end
 
   resources :products do
-    resources :reviews
+    resources :reviews, only: [:new, :create]
   end
   
   resources :orderitems #may be able to delete later, or have only: [:show]
@@ -16,6 +16,9 @@ Rails.application.routes.draw do
   get "/orders/:id/merchant_show", to: "orders#merchant_show", as: "merchant_show"
 
   resources :orders   # , only: [:show, :edit, :update]
+
+  # for categories
+  resources :categories, only: [:index, :show, :new, :create]
 
   # OAuth routes for merchant authentication
   # get "/auth/github", as: "github_login"
