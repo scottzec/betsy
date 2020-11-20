@@ -1,5 +1,17 @@
 <!-- explicitly to test reviews -->
 
+<%= form_for Orderitem.new do |f| %>
+
+  <%= hidden_field_tag "product_id", @product.id %>
+
+  <%= f.label :quantity %>
+  <%= f.text_field :quantity %>
+
+
+  <%= f.submit "Add to Cart", class: "btn btn-primary" %>
+<% end %>
+
+
 <%= link_to content_tag(:h3, "leave a review"), new_product_review_path(@product.id), method: :get %>
 
 <h3>reviews</h3>
