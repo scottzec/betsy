@@ -82,14 +82,14 @@ describe ReviewsController do
 
       must_redirect_to product_path(@product.id)
     end
-    # when validations can be implemented
-    # it "forbids the saving of an invalid review"" do
-    #   @invalid_review = {review: {product_id: @product.id, rating: -1, review: "invalid rating"} }
-    #   expect{
-    #     post product_reviews_path(review_params)
-    #   }.wont_change "Review.count"
-    #
-    #   must_respond_with :bad_request
-    # end
+
+    it "forbids the saving of an invalid review" do
+      @invalid_review = {review: {product_id: @product.id, rating: -1, review: "invalid rating"} }
+      expect{
+        post product_reviews_path(@product.id), params: @invalid_review
+      }.wont_change "Review.count"
+
+      must_respond_with :bad_request
+    end
   end
 end
