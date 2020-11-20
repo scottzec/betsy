@@ -121,4 +121,35 @@ class OrderitemsController < ApplicationController
       return
     end
   end
+
+  def mark_shipped
+    @orderitem = Orderitem.find_by(id: params[:id])
+
+    if @orderitem.nil?
+      redirect_back(fallback_location: root_path)
+      return
+    end
+
+    if @orderitem.shipped == true
+      flash.now[:warning] = 'Product already marked shipped'
+      redirect_back(fallback_location: root_path)
+      return
+    end
+
+    if ! @orderitem.update(shipped: true)
+      flash[:warning] = 'A problem occurred: could not update to shipped'
+      redirect_back(fallback_location: root_path)
+      return
+    end
+
+
+    o1 = @orderitem.order
+
+    if o1.orderitems.find_by(shipped: true).nil?
+      o1.status = "complete"
+      o1.save
+    end
+
+    redirect_back(fallback_location: root_path)
+  end
 end
