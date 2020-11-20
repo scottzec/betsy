@@ -10,28 +10,12 @@ describe OrdersController do
     Order.create(status: 'paid', name: "buyer", email: "buyer@email.com", address: "123 Ada Court", credit_card_number: '123456789', cvv: '123', expiration_date: '2/21', total: 20)
   end
 
-  describe "index" do
-    it "responds with success when many orders are saved" do
-      Order.create
-      get orders_path
-      must_respond_with :success
-    end
-
-    it "responds with success when no orders are saved" do
-      Order.destroy_all
-
-      expect(Order.count).must_equal 0
-      get orders_path
-      must_respond_with :success
-    end
-  end
-
   describe "show" do
-    it "redirects to the order's show page when showing an existing order" do
+    it "responds with success when showing an existing valid order for an unauthenticated user" do
       order.save
 
       get order_path(order.id)
-      must_respond_with :redirect
+      must_respond_with :success
     end
 
     it "responds with an error message if given an invalid id" do
@@ -40,6 +24,15 @@ describe OrdersController do
       expect(flash[:error]).must_equal "Sorry, that order cannot be found"
       must_respond_with :redirect
     end
+  end
+
+  describe "merchant show" do
+    it "responds with success if the merchant is logged in and the order contains a product of theirs" do
+      # merchant.save
+
+
+    end
+
   end
 
   describe "edit" do
@@ -108,9 +101,19 @@ describe OrdersController do
   end
 
   describe "cart" do
-    it "keeps track of the user's order/cart" do
+    it "can get the cart" do
       get cart_path
       must_respond_with :success
+    end
+  end
+
+  describe "checkout" do
+    it "confirms the order if the cart can be checked out" do
+
+    end
+
+    it "cannot confirm the order if the cart cannot be checked out" do
+
     end
   end
 
@@ -120,7 +123,7 @@ describe OrdersController do
 
       expect do
         delete order_path(order.id)
-      end.must_change 'Order.count', -1
+      end.must_change 'Orderitems.count', -1
 
       must_respond_with :redirect
       must_redirect_to root_path

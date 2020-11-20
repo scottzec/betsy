@@ -56,7 +56,7 @@ class OrdersController < ApplicationController
   end
 
 
-  def update # moves cart status
+  def update
     if @cart.update(order_params)
       flash[:success] = "Your order info has been updated."
       redirect_to root_path
