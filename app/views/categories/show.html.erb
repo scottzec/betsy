@@ -1,0 +1,9 @@
+<main>
+<h1> "<%=@cat.name%>" products</h1>
+  <% if @cat.products.empty? %>
+    <p> no products in "<%=@cat.name %>" category yet!</p>
+    <span> sign in to add a product here!</span>
+  <% else %>
+    <%= render partial: "merchants/products", locals: { products: @products } %>
+  <% end %>
+</main>

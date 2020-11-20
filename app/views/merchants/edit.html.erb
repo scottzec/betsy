@@ -1,0 +1,17 @@
+<main>
+
+  <h2>edit your info</h2>
+
+  <%= form_with model: @current_merchant, class: 'create-merchant', url: merchant_path(@current_merchant.id) do |f| %>
+
+    <%= f.label :username %>
+    <%= f.text_field :username, class: "form-control" %>
+
+    <%= f.label :email %>
+    <%= f.text_field :email, class: "form-control" %>
+
+    <%= f.submit "save changes", class:"btn btn-primary", data: {confirm: "are you sure?"}%>
+  <% end %>
+
+</main>
+

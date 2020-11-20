@@ -1,0 +1,11 @@
+<main>
+  <h1>browse by category</h1>
+  <% if !session[:user_id].nil? %>
+    <%= link_to content_tag(:h2, "create new category"), new_category_path, method: :get%>
+  <% end %>
+  <ul>
+    <% @cats.each do |cat| %>
+      <%= link_to content_tag(:li, "#{cat.name}"), category_path(id: cat.id), method: :get%>
+    <% end %>
+  </ul>
+</main>
