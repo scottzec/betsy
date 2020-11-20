@@ -21,4 +21,6 @@
 
   Complete Purchase:
   //form goes here//
+  <%= render partial: "form", locals: { action_name: "Complete", model: @cart}, method: :post %>
+
 </main>
