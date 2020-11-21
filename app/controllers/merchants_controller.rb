@@ -16,7 +16,7 @@ class MerchantsController < ApplicationController
     end
   end
 
-  # REPLACE BELOW WITH SOME WORKING VERSION OF THE COMMENTED OUT CODE
+  # BACKUP WITHOUT OAUTH
   # need to add migration before OAuth can be used
   # def login_form
   #   @current_merchant = Merchant.new
