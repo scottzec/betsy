@@ -50,5 +50,6 @@ describe Merchant do
     describe "get orders" do
 
     end
+    describe
   end
 end

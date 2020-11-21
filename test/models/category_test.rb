@@ -53,10 +53,11 @@ describe Category do
 
   describe "validations" do
     it "must have a name" do
-      no_name = Category.new(name:nil)
+      no_name = Category.new(name: nil)
       expect(no_name.valid?).must_equal false
+      expect(no_name.errors.messages[:name]).must_include "can't be blank"
     end
-    # can be instantiated creates a category with no products and is confirmed valid.
+    # can be instantiated test creates a category with no products and is confirmed valid.
   end
   # no custom methods
 end
