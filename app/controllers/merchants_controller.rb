@@ -74,11 +74,11 @@ class MerchantsController < ApplicationController
     return redirect_to dashboard_path
   end
 
-  # def destroy
-  #   session[:user_id] = nil
-  #   flash[:success] = "successfully logged out!"
-  #   redirect_to root_path
-  # end
+  def destroy
+    session[:user_id] = nil
+    flash[:success] = "successfully logged out!"
+    redirect_to root_path
+  end
 
 
   def edit

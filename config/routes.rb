@@ -29,7 +29,7 @@ Rails.application.routes.draw do
   # get "/login", to: "merchants#login_form", as: "login"
   # post "/login", to: "merchants#login"
   # keep this for OAuth
-  # delete "/logout", to: "merchants#destroy", as: "logout"
+  delete "/logout", to: "merchants#destroy", as: "logout"
   # route for merchant dashbaord
   get "/dashboard", to: "merchants#dashboard", as: "dashboard"
 end
