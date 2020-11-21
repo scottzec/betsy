@@ -21,7 +21,7 @@
     <li>Order Total: <%= @order.total %></li>
     <li>Order Status: <%= @order.status %></li>
     <li>Order Date: <%= @order.updated_at %></li>
-    <li> //placeholder for cancel order// </li>
+    <li><button><%= link_to "Cancel Order", order_path(@order.id), method: :delete, data: {confirm: "Are you sure?"} %></button></li>
   </ul>
 </section>
 
