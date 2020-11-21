@@ -44,7 +44,7 @@ class OrderitemsController < ApplicationController
 
     if @orderitem.save
       flash[:success] = 'Product successfully added to cart!'
-      redirect_to order_path(order.id)
+      redirect_to cart_path
       return
     else
       flash[:warning] = 'A problem occurred: could not add item to cart'
