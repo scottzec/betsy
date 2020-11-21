@@ -24,8 +24,8 @@
     <% if session[:user_id] %>
       <%= link_to "log out", logout_path, method: "delete" %>
     <% else %>
-      <!-- FOR OAUTH < % = # link_to "Login with Github", github_login_path % > -->
-      <%= link_to "login", login_path %>
+      <%= link_to "Login with Github", github_login_path %>
+      <!-- < % = # link_to "login", login_path % > -->
     <% end %>
   </header>
   <body>
