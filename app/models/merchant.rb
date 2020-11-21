@@ -54,9 +54,10 @@ class Merchant < ApplicationRecord
 
     allorders = Hash.new
     orderitems.each do |orderitem|
-      order = Order.find_by(id: orderitem.order_id)
+      order = Order.where(id: orderitem.order_id)
       # if no status input, will collect everything.
       # if status input, will match by status
+      # would be nice if postgresql can hash
       if status.nil? || order.status.downcase == status
         if allorders.has_key?(orderitem.order_id)
           allorders[order] << orderitem
