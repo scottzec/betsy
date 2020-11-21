@@ -38,6 +38,7 @@ class Order < ApplicationRecord
       return false unless self.save
     end
     self.status = "paid"
+    self.save
     return true
   end
 

@@ -1,6 +1,8 @@
 class OrdersController < ApplicationController
   # before_action :require_login, only: [:merchant_show]
 
+  before_action :find_cart, only: [:cart, :checkout, :edit, :update]
+
   def cart; end
 
   def show # this is order confirmation
@@ -41,7 +43,7 @@ class OrdersController < ApplicationController
 
   def edit; end # the final checkout
 
-  def checkout
+  def checkout # this was checkout
     if @cart.update(order_params)
       @cart.checkout
       flash[:success] = "Your order has been confirmed."
@@ -55,18 +57,18 @@ class OrdersController < ApplicationController
     end
   end
 
-
-  def update
-    if @cart.update(order_params)
-      flash[:success] = "Your order info has been updated."
-      redirect_to root_path
-      return
-    else
-      flash[:error] = "A problem occurred. We couldn't update your order."
-      render :edit, status: :bad_request
-      return
-    end
-  end
+  #
+  # def update # original update
+  #   if @cart.update(order_params)
+  #     flash[:success] = "Your order info has been updated."
+  #     redirect_to root_path
+  #     return
+  #   else
+  #     flash[:error] = "A problem occurred. We couldn't update your order."
+  #     render :edit, status: :bad_request
+  #     return
+  #   end
+  # end
 
   # def update # moves cart status NOT NEEDED, KEEPING AS A COMMENT FOR NOW
   #   if @cart.update(order_params) && @cart.checkout
@@ -135,5 +137,9 @@ class OrdersController < ApplicationController
 
   def order_params
     return params.require(:order).permit( :status, :name, :email, :address, :credit_card_number, :cvv, :expiration_date, :zip_code)
+  end
+
+  def find_cart
+    @cart = Order.find_by(id: session[:order_id])
   end
 end
