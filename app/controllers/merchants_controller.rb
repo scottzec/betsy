@@ -57,20 +57,21 @@ class MerchantsController < ApplicationController
       # merchant was found in the database
       flash[:success] = "Logged in as returning user #{@merchant.username}"
     else
-      # make this new merchant... somehow
-      # @merchant = Merchant.build_from_github(auth_hash)
-      #
-      # if @merchant.save
-      #   flash[:success] = "Welcome, #{@merchant.username}! Check out your dashboard below to edit your username and email."
-      # else
-      #   flash[:warning] = "Could not create new merchant: #{@merchant.errors.messages}"
-      #   return redirect_to root_path
+      @merchant = Merchant.build_from_github(auth_hash)
+
+      if @merchant.save
+        flash[:success] = "Welcome, #{@merchant.username}! Check out your dashboard below to edit your username and email."
+      else
+        flash[:warning] = "Could not create new merchant:"
+        flash[:error]= @merchant.errors.messages
+        return redirect_to root_path
       end
+
     end
 
     session[:user_id] = @merchant.id
-    # redirect_to root_path # in case something goes horribly wrong
-    redirect_to dashboard_path
+    # return redirect_to root_path # in case something goes horribly wrong
+    return redirect_to dashboard_path
   end
 
   # def destroy
