@@ -66,6 +66,7 @@ class OrderitemsController < ApplicationController
   def update
     @orderitem = Orderitem.find_by(id: params[:id])
     product = Product.find_by(id: @orderitem.product_id)
+    name = product.name
 
     if @orderitem.nil?
       head :not_found
@@ -78,7 +79,7 @@ class OrderitemsController < ApplicationController
       return
     elsif params[:quantity].to_i < 1
       @orderitem.destroy
-      flash[:success] = "Removed #{@orderitem.name} from cart"
+      flash[:success] = "Removed #{name} from cart"
       redirect_back(fallback_location: root_path)
       return
     end
@@ -98,15 +99,15 @@ class OrderitemsController < ApplicationController
     @orderitem = Orderitem.find_by(id: params[:id])
 
     if @orderitem.nil?
-      flash.now[:warning] = 'A problem occurred: could not locate order item'
-      render order_path(session[:order_id])
+      flash[:warning] = 'A problem occurred: could not locate order item'
+      redirect_back(fallback_location: root_path)
       return
     end
 
     @orderitem.destroy
 
-    flash.now[:success] = "Successfully removed #{@orderitem.name} from cart!"
-    render order_path(session[:order_id])
+    flash[:success] = "Successfully removed #{@orderitem.product.name} from cart!"
+    redirect_back(fallback_location: root_path)
     return
   end
 

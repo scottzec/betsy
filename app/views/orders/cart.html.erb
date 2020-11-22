@@ -20,6 +20,12 @@
             <%= f.submit "Update", class: "btn btn-primary" %>
           <% end %>
         </li>
+        <li>
+          <%= form_with(url: orderitem_path(item.id), method: "delete") do |f| %>
+
+            <%= f.submit "Remove", class: "btn btn-primary" %>
+          <% end %>
+        </li>
       </ul>
     <% end %>
       Total: <%= number_to_currency(@cart.total) %>
