@@ -8,6 +8,24 @@
         <li>Quantity: <%= item.quantity %></li>
         <li>Price: <%= number_to_currency(item.product.price) %></li>
         <li>Subtotal: <%= number_to_currency(item.product.price * item.quantity) %></li>
+        <li>
+          <%= form_with(url: orderitem_path(item.id), method: "patch") do |f| %>
+
+            <%= hidden_field_tag "orderitem_id", item.id %>
+
+            <%= f.label :quantity %>
+            <%= f.text_field :quantity %>
+
+
+            <%= f.submit "Update", class: "btn btn-primary" %>
+          <% end %>
+        </li>
+        <li>
+          <%= form_with(url: orderitem_path(item.id), method: "delete") do |f| %>
+
+            <%= f.submit "Remove", class: "btn btn-primary" %>
+          <% end %>
+        </li>
       </ul>
     <% end %>
       Total: <%= number_to_currency(@cart.total) %>
