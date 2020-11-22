@@ -279,24 +279,46 @@ describe Order do
     end
 
     describe "cancel" do
-      it "returns false if the order cannot be cancelled" do
+      it "returns false if the order is not cancelled (not all parts of the transaction go through)" do
+        # Arrange
         new_order.save
 
+        merchant_1 = Merchant.create(username: "merchant 1", email: "merchant1@email.com")
+        merchant_2 = Merchant.create(username: "merchant 2", email: "merchant2@email.com")
+        product_1 = Product.create(name: "plant 1", description: "test 1", price: 5.0, photo_url: "link", stock: 5, merchant_id: merchant_1.id)
+        product_2 = Product.create(name: "plant 2", description: "test 2", price: 7.0, photo_url: "link", stock: 4, merchant_id: merchant_2.id)
+        Orderitem.create(quantity: 2, order_id: new_order.id, product_id: product_1.id, shipped: false)
+        Orderitem.create(quantity: 3, order_id: new_order.id, product_id: product_2.id, shipped: false)
+
+        # Act
+        new_order.cancel
+
+        # Assert
+        expect(new_order.status).must_equal "paid"
+        expect(product_1.stock).must_equal 3
+        expect(product_2.stock).must_equal 1
 
       end
 
-      it "returns false if the status update cannot be saved" do
+      it "returns true if the order is cancelled (all parts of transaction go through)" do
+        # Arrange
+        new_order.save
 
+        merchant_1 = Merchant.create(username: "merchant 1", email: "merchant1@email.com")
+        merchant_2 = Merchant.create(username: "merchant 2", email: "merchant2@email.com")
+        product_1 = Product.create(name: "plant 1", description: "test 1", price: 5.0, photo_url: "link", stock: 5, merchant_id: merchant_1.id)
+        product_2 = Product.create(name: "plant 2", description: "test 2", price: 7.0, photo_url: "link", stock: 4, merchant_id: merchant_2.id)
+        Orderitem.create(quantity: 2, order_id: new_order.id, product_id: product_1.id, shipped: false)
+        Orderitem.create(quantity: 3, order_id: new_order.id, product_id: product_2.id, shipped: false)
+
+        # Act
+        new_order.cancel
+
+        # Assert
+        expect(new_order.status).must_equal "cancelled"
+        expect(product_1.stock).must_equal 5
+        expect(product_2.stock).must_equal 4
       end
-
-      it "returns false if the product stock cannot be updated to reflect the cancelled order" do
-
-      end
-
-      it "returns true if the order is cancelled" do
-
-      end
-
     end
 
     describe "total" do
