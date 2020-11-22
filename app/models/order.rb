@@ -1,6 +1,5 @@
 class Order < ApplicationRecord
   has_many :orderitems
-  # has_many :merchants, through: [:orderitems, :products]
 
   def self.make_cart
     Order.create
@@ -42,30 +41,23 @@ class Order < ApplicationRecord
     return true
   end
 
-  def can_cancel
-    # is this order able to be cancelled
-    # none of these items should be shipped
-    return false if self.orderitems.to_a.any? { |item| item.shipped }
-      # flash[:error] = "Sorry, we cannot cancel your order as items have already shipped"
-      # redirect_to root_path
+  def can_cancel?
+    return false if self.status == "cancelled"
+    return false if self.orderitems.to_a.any? { |item| item.shipped? } # maybe separate these two
+    return true
+  end
 
-    # self.orderitems.each do |item|
-    #   if item.shipped
-    #     return false
-    #   end
-    # end
-
+  def cancel
+    return false unless can_cancel?
+    Order.transaction do
+      return false unless self.update(status: "cancelled")
       items = self.orderitems
       items.each do |item|
         item.product.stock += item.quantity
         return false unless item.product.save
       end
-      return false unless self.save
-      return true
-  end
-
-  def complete
-    return self.orderitems.to_a.all? { |item| item.shipped }
+    end
+    return true
   end
 
   def total

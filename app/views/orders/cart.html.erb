@@ -6,45 +6,45 @@
       <li>Product: <%= item.product.name %></li>
       <ul>
         <li>Quantity: <%= item.quantity %></li>
-        <li>Price: <%= item.product.price %></li>
-        <li>Subtotal: <%= item.product.price * item.quantity %></li>
+        <li>Price: <%= number_to_currency(item.product.price) %></li>
+        <li>Subtotal: <%= number_to_currency(item.product.price * item.quantity) %></li>
       </ul>
-        Total: <%= @cart.total %>
-        <h3>Complete Purchase:</h3>
-        <%= form_with(url: cart_path, method: "patch", model: @cart) do |f| %>
-          <div class="form-group">
-            <%= f.label :name %>
-            <%= f.text_field :name, class: "form-control" %>
-          </div>
-          <div class="form-group">
-            <%= f.label :email %>
-            <%= f.text_field :email, class: "form-control" %>
-          </div>
-          <div class="form-group">
-            <%= f.label :address %>
-            <%= f.text_field :address, class: "form-control" %>
-          </div>
-          <div class="form-group">
-            <%= f.label :credit_card_number %>
-            <%= f.text_area :credit_card_number, class: "form-control" %>
-          </div>
-          <div class="form-group">
-            <%= f.label :cvv %>
-            <%= f.text_area :cvv, class: "form-control" %>
-          </div>
-          <div class="form-group">
-            <%= f.label :expiration_date %>
-            <%= f.text_area :expiration_date, class: "form-control" %>
-          </div>
-          <div class="form-group">
-            <%= f.label :zip_code %>
-            <%= f.text_area :zip_code, class: "form-control" %>
-          </div>
-          <div class="form-group">
-            <%= f.submit "Checkout Order", class: "btn btn-primary" %>
-          </div>
-        <% end %>
     <% end %>
+      Total: <%= number_to_currency(@cart.total) %>
+      <h3>Complete Purchase:</h3>
+      <%= form_with(url: cart_path, method: "patch", model: @cart) do |f| %>
+        <div class="form-group">
+          <%= f.label :name %>
+          <%= f.text_field :name, class: "form-control" %>
+        </div>
+        <div class="form-group">
+          <%= f.label :email %>
+          <%= f.text_field :email, class: "form-control" %>
+        </div>
+        <div class="form-group">
+          <%= f.label :address %>
+          <%= f.text_field :address, class: "form-control" %>
+        </div>
+        <div class="form-group">
+          <%= f.label :credit_card_number %>
+          <%= f.text_area :credit_card_number, class: "form-control" %>
+        </div>
+        <div class="form-group">
+          <%= f.label :cvv %>
+          <%= f.text_area :cvv, class: "form-control" %>
+        </div>
+        <div class="form-group">
+          <%= f.label :expiration_date %>
+          <%= f.text_area :expiration_date, class: "form-control" %>
+        </div>
+        <div class="form-group">
+          <%= f.label :zip_code %>
+          <%= f.text_area :zip_code, class: "form-control" %>
+        </div>
+        <div class="form-group">
+          <%= f.submit "Checkout Order", class: "btn btn-primary" %>
+        </div>
+      <% end %>
     </ol>
     <% else %>
       <p>There's nothing in your cart. Start browsing! <%= link_to "Browse Products", root_path %></p>
