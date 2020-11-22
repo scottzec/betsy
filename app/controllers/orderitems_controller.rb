@@ -6,14 +6,14 @@ class OrderitemsController < ApplicationController
   end
 
   def create
-    order = Order.find_by(id: session[:order_id])
+    @cart = Order.find_by(id: session[:order_id])
     product = Product.find_by(id: params[:product_id])
     quantity = params[:orderitem][:quantity].to_i
 
-    if order.nil?
-      order = Order.new
-      order.save
-      session[:order_id] = order.id
+    if @cart.nil?
+      @cart = Order.new
+      @cart.save
+      session[:order_id] = @cart.id
     end
 
     if product.nil?
@@ -37,7 +37,7 @@ class OrderitemsController < ApplicationController
     end
 
     @orderitem = Orderitem.new
-    @orderitem.order_id = order.id
+    @orderitem.order_id = @cart.id
     @orderitem.product_id = product.id
     @orderitem.quantity = quantity
 
