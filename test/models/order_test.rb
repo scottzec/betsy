@@ -73,13 +73,6 @@ describe Order do
       expect(new_order.errors.messages[:address]).must_equal ["can't be blank"]
     end
 
-    # it "must include the @ sign in email" do
-    #   new_order.email = "email.com"
-    #   expect(new_order.valid?(:checkout)).must_equal false
-    #   expect(new_order.errors.messages).must_include :email
-    #   expect(new_order.errors.messages[:email]).must_equal ["must include @ in email"]
-    # end
-
     it "must have a credit card number" do
       # Arrange
       new_order.credit_card_number = nil
@@ -119,16 +112,6 @@ describe Order do
       expect(new_order.errors.messages).must_include :zip_code
       expect(new_order.errors.messages[:zip_code]).must_equal ["can't be blank"]
     end
-
-    # it "must have a total" do
-    #   # Arrange
-    #   new_order.total = nil
-    #
-    #   # Assert
-    #   expect(new_order.valid?(:checkout)).must_equal false
-    #   expect(new_order.errors.messages).must_include :total
-    #   expect(new_order.errors.messages[:total]).must_equal ["can't be blank"]
-    # end
   end
 
   describe "custom methods" do
@@ -181,25 +164,25 @@ describe Order do
 
     describe "checkout" do
       before do
-        @order = Order.create(status: "pending", name: "buyer", email: "buyer@email.com", address: "123 Ada Court", credit_card_number: '123456789', cvv: '123', expiration_date: '2/21', total: 20)
-        @merchant_1 = Merchant.create(username: "merchant 1", email: "merchant1@email.com")
-        @merchant_2 = Merchant.create(username: "merchant 2", email: "merchant2@email.com")
+        @order = Order.create!(status: "pending", name: "buyer", email: "buyer@email.com", address: "123 Ada Court", credit_card_number: '123456789', cvv: '123', expiration_date: '2/21', total: 20)
+        @merchant_1 = Merchant.create!(username: "merchant 1", email: "merchant1@email.com")
+        @merchant_2 = Merchant.create!(username: "merchant 2", email: "merchant2@email.com")
       end
 
       it "reduces the number of inventory for each product" do
         # Arrange
-        @product_1 = Product.create(name: "plant 1", description: "test 1", price: 5.0, photo_url: "link", stock: 5, merchant_id: @merchant_1.id)
-        @product_2 = Product.create(name: "plant 2", description: "test 2", price: 7.0, photo_url: "link", stock: 4, merchant_id: @merchant_2.id)
+        @product_1 = Product.create!(name: "plant 1", description: "test 1", price: 5.0, photo_url: "link", stock: 5, merchant_id: @merchant_1.id)
+        @product_2 = Product.create!(name: "plant 2", description: "test 2", price: 7.0, photo_url: "link", stock: 4, merchant_id: @merchant_2.id)
 
-        @orderitem_1 = Orderitem.create(quantity: 2, order_id: @order.id, product_id: @product_1.id, shipped: false)
-        @orderitem_2 = Orderitem.create(quantity: 3, order_id: @order.id, product_id: @product_2.id, shipped: false)
+        @orderitem_1 = Orderitem.create!(quantity: 2, order_id: @order.id, product_id: @product_1.id, shipped: false)
+        @orderitem_2 = Orderitem.create!(quantity: 3, order_id: @order.id, product_id: @product_2.id, shipped: false)
 
         # Act
         @order.checkout
 
         # Assert
-        expect(@product_1.stock).must_equal 3
-        expect(@product_2.stock).must_equal 1
+        expect(@product_1.reload.stock).must_equal 3
+        expect(@product_2.reload.stock).must_equal 1
       end
 
       it "changes the order status from pending to paid" do
@@ -275,7 +258,6 @@ describe Order do
         # Assert
         expect(new_order.can_cancel?).must_equal true
       end
-
     end
 
     describe "cancel" do
@@ -283,41 +265,44 @@ describe Order do
         # Arrange
         new_order.save
 
-        merchant_1 = Merchant.create(username: "merchant 1", email: "merchant1@email.com")
-        merchant_2 = Merchant.create(username: "merchant 2", email: "merchant2@email.com")
-        product_1 = Product.create(name: "plant 1", description: "test 1", price: 5.0, photo_url: "link", stock: 5, merchant_id: merchant_1.id)
-        product_2 = Product.create(name: "plant 2", description: "test 2", price: 7.0, photo_url: "link", stock: 4, merchant_id: merchant_2.id)
-        Orderitem.create(quantity: 2, order_id: new_order.id, product_id: product_1.id, shipped: false)
-        Orderitem.create(quantity: 3, order_id: new_order.id, product_id: product_2.id, shipped: false)
+        merchant_1 = Merchant.create!(username: "merchant 1", email: "merchant1@email.com")
+        merchant_2 = Merchant.create!(username: "merchant 2", email: "merchant2@email.com")
+        product_1 = Product.create!(name: "plant 1", description: "test 1", price: 5.0, photo_url: "link", stock: 5, merchant_id: merchant_1.id)
+        product_2 = Product.create!(name: "plant 2", description: "test 2", price: 7.0, photo_url: "link", stock: 4, merchant_id: merchant_2.id)
+        Orderitem.create!(quantity: 2, order_id: new_order.id, product_id: product_1.id, shipped: false)
+        Orderitem.create!(quantity: 3, order_id: new_order.id, product_id: product_2.id, shipped: false)
 
         # Act
+        new_order.checkout
         new_order.cancel
 
         # Assert
+        expect(new_order.cancel).must_equal false
         expect(new_order.status).must_equal "paid"
-        expect(product_1.stock).must_equal 3
-        expect(product_2.stock).must_equal 1
-
+        expect(product_1.reload.stock).must_equal 3
+        expect(product_2.reload.stock).must_equal 1
       end
 
       it "returns true if the order is cancelled (all parts of transaction go through)" do
         # Arrange
         new_order.save
 
-        merchant_1 = Merchant.create(username: "merchant 1", email: "merchant1@email.com")
-        merchant_2 = Merchant.create(username: "merchant 2", email: "merchant2@email.com")
-        product_1 = Product.create(name: "plant 1", description: "test 1", price: 5.0, photo_url: "link", stock: 5, merchant_id: merchant_1.id)
-        product_2 = Product.create(name: "plant 2", description: "test 2", price: 7.0, photo_url: "link", stock: 4, merchant_id: merchant_2.id)
-        Orderitem.create(quantity: 2, order_id: new_order.id, product_id: product_1.id, shipped: false)
-        Orderitem.create(quantity: 3, order_id: new_order.id, product_id: product_2.id, shipped: false)
+        merchant_1 = Merchant.create!(username: "merchant 1", email: "merchant1@email.com")
+        merchant_2 = Merchant.create!(username: "merchant 2", email: "merchant2@email.com")
+        product_1 = Product.create!(name: "plant 1", description: "test 1", price: 5.0, photo_url: "link", stock: 5, merchant_id: merchant_1.id)
+        product_2 = Product.create!(name: "plant 2", description: "test 2", price: 7.0, photo_url: "link", stock: 4, merchant_id: merchant_2.id)
+        Orderitem.create!(quantity: 2, order_id: new_order.id, product_id: product_1.id, shipped: false)
+        Orderitem.create!(quantity: 3, order_id: new_order.id, product_id: product_2.id, shipped: false)
 
         # Act
+        new_order.checkout
         new_order.cancel
 
         # Assert
+        expect(new_order.cancel).must_equal true
         expect(new_order.status).must_equal "cancelled"
-        expect(product_1.stock).must_equal 5
-        expect(product_2.stock).must_equal 4
+        expect(product_1.reload.stock).must_equal 5
+        expect(product_2.reload.stock).must_equal 4
       end
     end
 

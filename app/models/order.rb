@@ -1,6 +1,6 @@
 class Order < ApplicationRecord
   has_many :orderitems
-  validates :status, :name, :email, :address, :credit_card_number, :cvv, :expiration_date, :zip_code, :total, presence: {strict: true}, on: :checkout
+  validates :status, :name, :email, :address, :credit_card_number, :cvv, :expiration_date, :zip_code, :total, presence: true, on: :checkout
   validates :email, format: {with: /@/, message: "must include @ in email"}, on: :checkout
 
   def self.make_cart
@@ -40,6 +40,9 @@ class Order < ApplicationRecord
     end
     self.status = "paid"
     self.save!
+
+  rescue ActiveRecord::RecordInvalid
+    puts "Something went wrong. We couldn't checkout your order."
     return true
   end
 
@@ -59,6 +62,10 @@ class Order < ApplicationRecord
         return false unless item.product.save!
       end
     end
+
+    rescue ActiveRecord::RecordInvalid
+      puts "Something went wrong. We couldn't cancel your order."
+
     return true
   end
 
