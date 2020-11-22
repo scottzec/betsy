@@ -1,6 +1,6 @@
 class Order < ApplicationRecord
   has_many :orderitems
-  validates :status, :name, :email, :address, :credit_card_number, :cvv, :expiration_date, :zip_code, :total, presence: true, on: :checkout
+  validates :status, :name, :email, :address, :credit_card_number, :cvv, :expiration_date, :zip_code, :total, presence: {strict: true}, on: :checkout
   validates :email, format: {with: /@/, message: "must include @ in email"}, on: :checkout
 
   def self.make_cart
@@ -26,20 +26,20 @@ class Order < ApplicationRecord
     # Reduces the number of inventory for each product
     # Changes the order state from "pending" to "paid"
     # Clears the current cart
+
     Order.transaction do
-      # self.status = "paid"
       items = self.orderitems
       items.each do |item|
         if item.product.stock < item.quantity
           return false
         end
         item.product.stock -= item.quantity
-        return false unless item.product.save
+        return false unless item.product.save!
       end
-      return false unless self.save
+      return false unless self.save!
     end
     self.status = "paid"
-    self.save
+    self.save!
     return true
   end
 
@@ -52,11 +52,11 @@ class Order < ApplicationRecord
   def cancel
     return false unless can_cancel?
     Order.transaction do
-      return false unless self.update(status: "cancelled")
+      return false unless self.update!(status: "cancelled")
       items = self.orderitems
       items.each do |item|
         item.product.stock += item.quantity
-        return false unless item.product.save
+        return false unless item.product.save!
       end
     end
     return true

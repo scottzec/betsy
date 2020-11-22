@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
 
     if @cart.nil?
       @cart = Order.make_cart
+      session[:order_id] = @cart.id
     end
 
     if @cart.nil?
