@@ -42,6 +42,95 @@ describe Order do
     end
   end
 
+  describe "validations" do
+    it "must have a name" do
+      # Arrange
+      new_order.name = nil
+
+      # Assert
+      expect(new_order.valid?(:checkout)).must_equal false
+      expect(new_order.errors.messages).must_include :name
+      expect(new_order.errors.messages[:name]).must_equal ["can't be blank"]
+    end
+
+    it "must have an email" do
+      # Arrange
+      new_order.email = nil
+
+      # Assert
+      expect(new_order.valid?(:checkout)).must_equal false
+      expect(new_order.errors.messages).must_include :email
+      expect(new_order.errors.messages[:email]).must_equal ["can't be blank"]
+    end
+
+    it "must have an address" do
+      # Arrange
+      new_order.address = nil
+
+      # Assert
+      expect(new_order.valid?(:checkout)).must_equal false
+      expect(new_order.errors.messages).must_include :address
+      expect(new_order.errors.messages[:address]).must_equal ["can't be blank"]
+    end
+
+    it "must include the @ sign in email" do
+      new_order.email = "email.com"
+      expect(new_order.valid?(:checkout)).must_equal false
+      expect(new_order.errors.messages).must_include :email
+      expect(new_order.errors.messages[:email]).must_equal ["must include @ in email"]
+    end
+
+    it "must have a credit card number" do
+      # Arrange
+      new_order.credit_card_number = nil
+
+      # Assert
+      expect(new_order.valid?(:checkout)).must_equal false
+      expect(new_order.errors.messages).must_include :credit_card_number
+      expect(new_order.errors.messages[:credit_card_number]).must_equal ["can't be blank"]
+    end
+
+    it "must have a cvv" do
+      # Arrange
+      new_order.cvv = nil
+
+      # Assert
+      expect(new_order.valid?(:checkout)).must_equal false
+      expect(new_order.errors.messages).must_include :cvv
+      expect(new_order.errors.messages[:cvv]).must_equal ["can't be blank"]
+    end
+
+    it "must have an expiration date" do
+      # Arrange
+      new_order.expiration_date = nil
+
+      # Assert
+      expect(new_order.valid?(:checkout)).must_equal false
+      expect(new_order.errors.messages).must_include :expiration_date
+      expect(new_order.errors.messages[:expiration_date]).must_equal ["can't be blank"]
+    end
+
+    it "must have a zip code" do
+      # Arrange
+      new_order.zip_code = nil
+
+      # Assert
+      expect(new_order.valid?(:checkout)).must_equal false
+      expect(new_order.errors.messages).must_include :zip_code
+      expect(new_order.errors.messages[:zip_code]).must_equal ["can't be blank"]
+    end
+
+    it "must have a total" do
+      # Arrange
+      new_order.total = nil
+
+      # Assert
+      expect(new_order.valid?(:checkout)).must_equal false
+      expect(new_order.errors.messages).must_include :total
+      expect(new_order.errors.messages[:total]).must_equal ["can't be blank"]
+    end
+  end
+
   describe "custom methods" do
     describe "make_cart" do
       it "creates the shopping cart, which is an instance of order" do
