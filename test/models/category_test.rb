@@ -16,8 +16,8 @@ describe Category do
       expect(category).must_equal categories(:category1)
     end
     it "can belong to a product along with another category" do
-      product = categories(:category2).products.find_by(id: products(:product1))
-      product2 = categories(:category3).products.find_by(id: products(:product1))
+      product = categories(:category2).products.find_by(id: products(:product2))
+      product2 = categories(:category3).products.find_by(id: products(:product2))
 
       expect(product).must_equal product2
     end
