@@ -1,0 +1,15 @@
+test:
+  provider: github
+  uid: user.id
+  email: test@test.com
+  username: testing
+  provider_email: test@test.com
+  provider_name: testing
+
+user:
+  provider: github
+  uid: user.id
+  email: user@user.com
+  username: user
+  provider_email: user@user.com
+  provider_name: user

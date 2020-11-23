@@ -16,3 +16,14 @@
 @import "bootstrap";
 
 @import "**/*";
+
+.btn-primary {
+  background-color: darkolivegreen;
+  border-color: darkolivegreen;
+  margin: 5px;
+}
+
+.btn-primary:hover {
+  background-color: olive;
+  border-color: olive;
+}

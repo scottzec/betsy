@@ -1,5 +1,5 @@
 class OrdersController < ApplicationController
-  # before_action :require_login, only: [:merchant_show]
+  before_action :require_login, only: [:merchant_show]
 
   def cart; end
 

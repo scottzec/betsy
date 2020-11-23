@@ -3,7 +3,7 @@ class Merchant < ApplicationRecord
   has_many :orderitems, through: :products
 
   validates :username, presence: true, uniqueness: true
-  # validates :email, presence: true, uniqueness: true
+  validates :email, presence: true, uniqueness: true
 
   def self.build_from_github(auth_hash)
     merchant = Merchant.new
@@ -11,7 +11,13 @@ class Merchant < ApplicationRecord
     merchant.provider = "github"
     # merchant can change name later
     merchant.username = auth_hash["info"]["name"]
+    if merchant.username.nil?
+      merchant.username = auth_hash["info"]["nickname"]
+    end
     merchant.provider_name = auth_hash["info"]["name"]
+    if merchant.provider_name.nil?
+      merchant.provider_name = auth_hash["info"]["nickname"]
+    end
     merchant.email = auth_hash["info"]["email"]
     merchant.provider_email = auth_hash["info"]["email"]
 
@@ -61,7 +67,7 @@ class Merchant < ApplicationRecord
       # if status input, will match by status
       # would be nice if postgresql can hash
       if status.nil? || order.status.downcase == status
-        if allorders.has_key?(orderitem.order_id)
+        if allorders.has_key?(order)
           allorders[order] << orderitem
         else
           allorders[order] = [orderitem]

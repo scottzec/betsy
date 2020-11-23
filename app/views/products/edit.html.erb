@@ -1,0 +1,42 @@
+<%#= form_with @product, merchant_id: @product.merchant.id, url: merchant_product_path do |f| %>
+
+<%#= form_with(@product, url: merchant_products_path, method: "patch") do |f| %>
+<%#= form_with(url: merchant_product_path, method: "patch") do |f| %>
+<!--https://edgeguides.rubyonrails.org/routing.html#creating-paths-and-urls-from-objects-->
+<%#= form_with(url: merchant_product_path(@product.merchant.id, @product.id), method: "patch") do |f| %>
+<%= form_with(url: merchant_product_path(@product, @product.merchant), method: "patch") do |f| %>
+
+  <% if @product.errors.any? %>
+    <ul class="errors">
+      <% @product.errors.each do |column, message| %>
+        <li>
+          <p><%= column.capitalize %> <%= message %></p>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+
+  <%#= hidden_field_tag "merchant_id", @product.merchant.id %>
+
+  <%= f.label :name %>
+  <%= f.text_field :name %>
+
+  <%= f.label :description %>
+  <%= f.text_field :description %>
+
+  <%= f.label :price %>
+  <%= f.text_field :price %>
+
+  <%= f.label :photo_url %>
+  <%= f.text_field :photo_url %>
+
+  <%= f.label :stock %>
+  <%= f.text_field :stock %>
+
+  <% Category.all.each do |cat| %>
+    <h4><%= cat.name %></h4>
+    <%= check_box_tag "product[category_ids][]", cat.id, @product.category_ids.include?(cat.id) %>
+  <% end %>
+
+  <%= f.submit 'Edit Product' %>
+<% end %>

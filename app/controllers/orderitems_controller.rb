@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class OrderitemsController < ApplicationController
+  before_action :require_login, only: [:mark_shipped]
   def new
     @orderitem = Orderitem.new
   end
@@ -12,7 +13,8 @@ class OrderitemsController < ApplicationController
 
     if @cart.nil?
       @cart = Order.new
-      @cart.save!
+      @cart.status = "pending"
+      @cart.save
       session[:order_id] = @cart.id
     end
 

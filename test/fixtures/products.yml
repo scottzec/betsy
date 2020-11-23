@@ -1,0 +1,35 @@
+product1:
+  name: prickly pear
+  description: prickly
+  price: 2.00
+  photo_url: url
+  stock: 10
+  merchant: test
+  categories: category1
+
+product2:
+  name: succulent baby
+  description: shiny
+  price: 2.00
+  photo_url: url
+  stock: 15
+  merchant: test
+  categories: category2, category3
+
+product3:
+  name: monstera
+  description: jungle vibes
+  price: 12.00
+  photo_url: url
+  stock: 1
+  merchant: user
+  categories: category3
+
+product4:
+  name: fern
+  description: pnw favorite
+  price: 5.60
+  photo_url: url
+  stock: 59
+  merchant: user
+  categories: category3
