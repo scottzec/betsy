@@ -1,6 +1,5 @@
 class MerchantsController < ApplicationController
-  # UNCOMMENT FOR OAUTH
-  # skip_before_action :require_login, except: [:dashboard, :edit, :update]
+  skip_before_action :require_login, except: [:dashboard, :edit, :update]
 
   def index
     @merchants = Merchant.all
@@ -83,11 +82,12 @@ class MerchantsController < ApplicationController
 
   def edit
     # line 83 redundant after OAuth
-    @current_merchant = Merchant.find_by(id: session[:user_id])
-    if @current_merchant.nil?
-      flash[:warning] = "you must login to see this page."
-      redirect_to merchants_path
-    elsif @current_merchant != Merchant.find_by(id: params[:id])
+    # @current_merchant = Merchant.find_by(id: session[:user_id])
+    # if @current_merchant.nil?
+    #   flash[:warning] = "you must login to see this page."
+    #   redirect_to merchants_path
+    # els
+    if @current_merchant != Merchant.find_by(id: params[:id])
       flash[:warning] = "invalid merchant or unauthorized access: you must be logged into your own account to edit your info."
       redirect_to dashboard_path
     end
@@ -95,11 +95,12 @@ class MerchantsController < ApplicationController
 
   def update
     # line 92 redundant after OAuth
-    @current_merchant = Merchant.find_by(id: session[:user_id])
-    if @current_merchant.nil?
-      flash[:warning] =  "you must login to update your info."
-      redirect_to merchants_path
-    elsif @current_merchant != Merchant.find_by(id: params[:id])
+    # @current_merchant = Merchant.find_by(id: session[:user_id])
+    # if @current_merchant.nil?
+    #   flash[:warning] =  "you must login to update your info."
+    #   redirect_to merchants_path
+    # els
+    if @current_merchant != Merchant.find_by(id: params[:id])
       flash[:warning] = "invalid merchant or unauthorized access: you must be logged into your own account to edit your info."
       redirect_to dashboard_path
     elsif @current_merchant.update(merchant_params)
@@ -117,12 +118,12 @@ class MerchantsController < ApplicationController
   # equivalent to current_user in ada books
   def dashboard
     # redundant after OAuth
-    @current_merchant = Merchant.find_by(id: session[:user_id])
-    unless @current_merchant
-      flash[:warning] = "you must be logged in to see this page."
-      redirect_to root_path
-      return
-    end
+    # @current_merchant = Merchant.find_by(id: session[:user_id])
+    # unless @current_merchant
+    #   flash[:warning] = "you must be logged in to see this page."
+    #   redirect_to root_path
+    #   return
+    # end
   end
 
   private

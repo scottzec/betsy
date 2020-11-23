@@ -43,13 +43,15 @@ describe Merchant do
 
   describe "custom methods" do
     describe "total revenue" do
-      it "returns 0 if there are no order items do" do
+      it "returns 0 if there are no order items" do
 
       end
     end
     describe "get orders" do
 
     end
-    describe
+    describe "build from github" do
+
+    end
   end
 end

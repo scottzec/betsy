@@ -1,6 +1,5 @@
 class CategoriesController < ApplicationController
-  # UNCOMMENT FOR OAUTH
-  # skip_before_action :require_login, except: [:index, :show]
+  skip_before_action :require_login, except: [:index, :show]
   def index
     @cats = Category.all
   end

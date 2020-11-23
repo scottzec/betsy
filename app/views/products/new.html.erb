@@ -28,10 +28,8 @@
   <%= f.label :stock %>
   <%= f.text_field :stock %>
 
-  <% Category.all.each do |cat| %>
-    <h4><%= cat.name %></h4>
-    <%= check_box_tag "product[category_ids][]", cat.id, @product.category_ids.include?(cat.id) %>
-  <% end %>
+  <%=f.label :categories %>
+  <%= collection_check_boxes(:product, :category_ids, Category.all, :id, :name) %>
 
   <%= f.submit 'create product' %>
 <% end %>

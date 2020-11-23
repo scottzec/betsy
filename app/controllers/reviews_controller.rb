@@ -1,4 +1,5 @@
 class ReviewsController < ApplicationController
+  skip_before_action :require_login
   def new
     if !Product.find_by(id:params[:product_id]).nil?
       @product = Product.find_by(id: params[:product_id])
