@@ -1,18 +1,6 @@
 require "test_helper"
 
 describe Category do
-  # before do
-  #   @merchant = Merchant.create(username: "test", email: "test@test.com")
-  #   @category = Category.create(name: "test")
-  #   @category2 = Category.create(name: "test2")
-  #   @product = Product.create(name: "product",
-  #                             description: "the product",
-  #                             price: 10.00,
-  #                             photo_url: "/images/defaultimage.jpg",
-  #                             stock: 10,
-  #                             merchant_id: @merchant.id)
-  # end
-
   it "can be instantiated" do
     expect(categories(:category1).valid?).must_equal true
   end

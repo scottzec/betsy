@@ -1,19 +1,8 @@
 require "test_helper"
 
 describe Review do
-  before do
-    @merchant = Merchant.create(username: "test", email: "test@test.com")
-    @product = Product.create(name: "product",
-                              description: "the product",
-                              price: 10.00,
-                              photo_url: "/images/defaultimage.jpg",
-                              stock: 10,
-                              merchant_id: @merchant.id)
-    @review = Review.create(rating: 5, review: "cool", product_id: @product.id)
-    @review2 = Review.create(rating: 5, review: "cooler", product_id: @product.id)
-  end
   it "can be instantiated" do
-    expect(@review.valid?).must_equal true
+    expect(reviews(:review1).valid?).must_equal true
   end
   it "will have the required fields" do
     rev = Review.first
@@ -23,25 +12,25 @@ describe Review do
 
   describe "relationships" do
     it "can belong to a product" do
-      review = @product.reviews.find_by(id: @review.id)
+      review = products(:product1).reviews.find_by(id: reviews(:review1).id)
 
-      expect(review).must_equal @review
+      expect(review).must_equal reviews(:review1)
     end
     it "can belong to a product along with another review" do
-      prod = @review.product
-      prod2 = @review2.product
+      prod = reviews(:review1).product
+      prod2 = reviews(:review2).product
 
       expect(prod).must_equal prod2
     end
     it "can get information about a product through its relation" do
-      product = @review.product
+      product = reviews(:review1).product
 
-      expect(product.name).must_equal @product.name
-      expect(product.description).must_equal @product.description
-      expect(product.price).must_be_close_to @product.price
-      expect(product.stock).must_equal @product.stock
-      expect(product.photo_url).must_equal @product.photo_url
-      expect(product.merchant_id).must_equal @product.merchant_id
+      expect(product.name).must_equal products(:product1).name
+      expect(product.description).must_equal products(:product1).description
+      expect(product.price).must_be_close_to products(:product1).price
+      expect(product.stock).must_equal products(:product1).stock
+      expect(product.photo_url).must_equal products(:product1).photo_url
+      expect(product.merchant_id).must_equal products(:product1).merchant_id
     end
   end
 
@@ -78,7 +67,10 @@ describe Review do
     end
 
     it "must belong to a product" do
+      no_product = Review.new(rating: 1)
 
+      expect(no_product.valid?).must_equal false
+      expect(no_product.errors.messages[:product]).must_include "must exist"
     end
   end
   # no custom methods
