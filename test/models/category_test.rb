@@ -1,20 +1,20 @@
 require "test_helper"
 
 describe Category do
-  before do
-    @merchant = Merchant.create(username: "test", email: "test@test.com")
-    @category = Category.create(name: "test")
-    @category2 = Category.create(name: "test2")
-    @product = Product.create(name: "product",
-                              description: "the product",
-                              price: 10.00,
-                              photo_url: "/images/defaultimage.jpg",
-                              stock: 10,
-                              merchant_id: @merchant.id)
-  end
+  # before do
+  #   @merchant = Merchant.create(username: "test", email: "test@test.com")
+  #   @category = Category.create(name: "test")
+  #   @category2 = Category.create(name: "test2")
+  #   @product = Product.create(name: "product",
+  #                             description: "the product",
+  #                             price: 10.00,
+  #                             photo_url: "/images/defaultimage.jpg",
+  #                             stock: 10,
+  #                             merchant_id: @merchant.id)
+  # end
 
   it "can be instantiated" do
-    expect(@category.valid?).must_equal true
+    expect(categories(:category1).valid?).must_equal true
   end
   it "will have the required fields" do
     cat = Category.first
@@ -23,30 +23,25 @@ describe Category do
 
   describe "relationships" do
     it "can belong to a product" do
-      @product.categories << @category
-      category = @product.categories.find_by(id: @category.id)
+      category = products(:product1).categories.find_by(id: categories(:category1).id)
 
-      expect(category).must_equal @category
+      expect(category).must_equal categories(:category1)
     end
     it "can belong to a product along with another category" do
-      @product.categories << @category
-      @product.categories << @category2
-
-      product = @category.products.find_by(id: @product.id)
-      product2 = @category2.products.find_by(id: @product.id)
+      product = categories(:category2).products.find_by(id: products(:product1))
+      product2 = categories(:category3).products.find_by(id: products(:product1))
 
       expect(product).must_equal product2
     end
     it "can get information about a product through its relation" do
-      @product.categories << @category
-      product = @category.products.find_by(id: @product.id)
+      product = categories(:category1).products.find_by(id: products(:product1).id)
 
-      expect(product.name).must_equal @product.name
-      expect(product.description).must_equal @product.description
-      expect(product.price).must_be_close_to @product.price
-      expect(product.stock).must_equal @product.stock
-      expect(product.photo_url).must_equal @product.photo_url
-      expect(product.merchant_id).must_equal @product.merchant_id
+      expect(product.name).must_equal products(:product1).name
+      expect(product.description).must_equal products(:product1).description
+      expect(product.price).must_be_close_to products(:product1).price
+      expect(product.stock).must_equal products(:product1).stock
+      expect(product.photo_url).must_equal products(:product1).photo_url
+      expect(product.merchant_id).must_equal products(:product1).merchant_id
       # should expect all products to be tied to a merchant
     end
   end
