@@ -81,4 +81,11 @@ class MerchantsController < ApplicationController
     return params.require(:merchant).permit(:username, :email)
   end
 
+  def edit_merchant_auth
+    if @current_merchant != Merchant.find_by(id: params[:id])
+      flash[:warning] = "invalid merchant or unauthorized access: you must be logged into your own account to edit your info."
+      redirect_to dashboard_path
+      return
+    end
+  end
 end
