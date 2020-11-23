@@ -9,15 +9,14 @@
         <li>Price: <%= number_to_currency(item.product.price) %></li>
         <li>Subtotal: <%= number_to_currency(item.product.price * item.quantity) %></li>
         <li>
-          <%= form_with(url: orderitem_path(item.id), method: "patch") do |f| %>
+          <%= form_with(url: orderitem_path(item.id), method: "patch", class: "form-inline")  do |f| %>
 
-            <%= hidden_field_tag "orderitem_id", item.id %>
-
-            <%= f.label :quantity %>
+            <div class="form-group">
+            <%= f.label :quantity, "Quantity: " %>
             <%= f.text_field :quantity %>
+            </div>
 
-
-            <%= f.submit "Update", class: "btn btn-primary" %>
+            <%= f.submit "Update", form: {style: 'display:inline-block;'}, class: "btn btn-dark" %>
           <% end %>
         </li>
         <li>
