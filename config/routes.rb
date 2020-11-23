@@ -14,9 +14,8 @@ Rails.application.routes.draw do
   resources :orderitems #may be able to delete later, or have only: [:show]
 
   get "/cart", to: "orders#cart", as: "cart"
-  patch "/cart", to: "orders#checkout", as: "checkout"
+  patch "/cart", to: "orders#checkout"
   get "/orders/:id/merchant_show", to: "orders#merchant_show", as: "merchant_show"
-  # patch "/checkout", to: "orders#checkout", as: "checkout"
   resources :orders   # , only: [:show, :edit, :update, :destroy]
 
   # for categories

@@ -37,11 +37,11 @@ class Order < ApplicationRecord
       end
       return false unless self.save!
     end
-    self.status = "paid"
-    return self.save(context: :checkout_context)
+      self.status = "paid"
+      return self.save(context: :checkout_context)
 
-  rescue ActiveRecord::RecordInvalid
-    puts "Something went wrong. We couldn't checkout your order."
+    rescue ActiveRecord::RecordInvalid
+      puts "Something went wrong. We couldn't checkout your order."
     return true
   end
 
@@ -76,5 +76,3 @@ class Order < ApplicationRecord
     return sum
   end
 end
-
-

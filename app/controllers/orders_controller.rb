@@ -42,15 +42,14 @@ class OrdersController < ApplicationController
   def edit; end
 
   def checkout
-    if @cart.checkout
-      @cart.update(order_params)
+    if @cart.update(order_params) && @cart.checkout
       flash[:success] = "Your order has been confirmed."
       session[:order_id] = nil
       redirect_to order_path(@cart.id)
       return
     else
       flash.now[:errors] = @cart.errors.messages
-      render :edit, status: :bad_request # something strange happening here, want to give user a second chance to enter the right info
+      render :cart, status: :bad_request
       return
     end
   end
