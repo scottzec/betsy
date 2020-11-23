@@ -177,10 +177,44 @@ describe Merchant do
 
     describe "build from github" do
       it "correctly assigns fields from auth hash when github name is present" do
-        
+        # even though build from github doesn't save, the model validation checks for uniqueness
+        # we have to build a new merchant with unique attributes (except provider)
+        new_merchant = Merchant.new(provider: 'github', uid: 5432154, username: "new", email: "new@new.com")
+        auth_hash = mock_auth_hash(new_merchant)
+
+        new_mer_saved = Merchant.build_from_github(auth_hash)
+
+        expect(new_mer_saved.valid?).must_equal true
+
+        expect(new_mer_saved.provider).must_equal new_merchant.provider
+        expect(new_mer_saved.uid).must_equal new_merchant.uid
+        expect(new_mer_saved.username).must_equal new_merchant.username
+        expect(new_mer_saved.provider_name).must_equal new_merchant.username
+        expect(new_mer_saved.email).must_equal new_merchant.email
+        expect(new_mer_saved.provider_email).must_equal new_merchant.email
       end
 
-      it "correct assigns username to nickname when name is NOT present but nickname is " do
+      it "correctly assigns username to nickname when name is NOT present but nickname is " do
+        # we need to make a special hash that has a name but no nickname just for this test
+        # this isn't built into mock_auth_hash (nor does it make sense to be) so we have to make it ourselves
+        auth_hash = {provider: 'github',
+                     uid: 1919191919,
+                     info: {
+                            email: "noname@name.com",
+                            name: nil,
+                            nickname: "nickname exists"
+                            }
+                     }
+        new_mer_saved = Merchant.build_from_github(auth_hash)
+
+        expect(new_mer_saved.valid?).must_equal true
+
+        expect(new_mer_saved.provider).must_equal auth_hash[:provider]
+        expect(new_mer_saved.uid).must_equal auth_hash[:uid]
+        expect(new_mer_saved.username).must_equal auth_hash[:info][:nickname]
+        expect(new_mer_saved.provider_name).must_equal auth_hash[:info][:nickname]
+        expect(new_mer_saved.email).must_equal auth_hash[:info][:email]
+        expect(new_mer_saved.provider_email).must_equal auth_hash[:info][:email]
 
       end
     end
