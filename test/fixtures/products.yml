@@ -5,7 +5,7 @@ product1:
   photo_url: url
   stock: 10
   merchant: test
-  #category: cactus
+  categories: category1
 
 product2:
   name: succulent baby
@@ -14,7 +14,7 @@ product2:
   photo_url: url
   stock: 15
   merchant: test
-  #category: succulent
+  categories: category2, category3
 
 product3:
   name: monstera
@@ -23,7 +23,7 @@ product3:
   photo_url: url
   stock: 1
   merchant: user
-  #category: houseplant
+  categories: category3
 
 product4:
   name: fern
@@ -32,4 +32,4 @@ product4:
   photo_url: url
   stock: 59
   merchant: user
-  #category: houseplant
+  categories: category3

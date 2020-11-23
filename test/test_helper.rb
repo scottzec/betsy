@@ -18,4 +18,29 @@ class ActiveSupport::TestCase
   fixtures :all
 
   # Add more helper methods to be used by all tests here...
+  def setup
+    OmniAuth.config.test_mode = true
+  end
+  # for one of the tests (merchant#create), need to make a mock auth outside of this method
+  # otherwise this shoudl work for everything
+  def mock_auth_hash(user)
+    return {
+      provider: user.provider,
+      uid: user.uid,
+      info: {
+        email: user.email,
+        name: user.name,
+        nickname: user.name
+      }
+    }
+  end
+
+  def perform_login(merchant = nil)
+    merchant ||= Merchant.first
+
+    OmniAuth.config.mock_auth[:github] = OmniAuth::AuthHash.new(mock_auth_hash(merchant))
+    get auth_callback_path(:github)
+
+    return merchant
+  end
 end

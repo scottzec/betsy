@@ -1,5 +1,5 @@
 class ProductsController < ApplicationController
-
+  skip_before_action :require_login, except: [:new, :create, :edit, :update, :destroy]
   # Add controller filter once set up
   # before_action :find_product, only: [:show, :edit, :update, :destroy?]
 

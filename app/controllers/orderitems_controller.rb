@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class OrderitemsController < ApplicationController
+  before_action :require_login, only: [:mark_shipped]
   def new
     @orderitem = Orderitem.new
   end
