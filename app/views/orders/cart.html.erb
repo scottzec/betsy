@@ -30,16 +30,6 @@
       Total: <%= number_to_currency(@cart.total) %>
       <h3>Complete Purchase:</h3>
       <%= form_with(url: cart_path, method: "patch", model: @cart) do |f| %>
-        <% if @cart.errors.any? %>
-          <ul class="errors">
-            <% @cart.errors.each do |column, message| %>
-              <li>
-                <strong><%= column.capitalize %></strong> <%= message %>
-              </li>
-            <% end %>
-          </ul>
-        <% end %>
-
         <div class="form-group">
           <%= f.label :name %>
           <%= f.text_field :name, class: "form-control" %>

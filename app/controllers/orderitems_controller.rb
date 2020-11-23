@@ -52,7 +52,7 @@ class OrderitemsController < ApplicationController
     @orderitem.quantity = quantity
 
 
-    if @orderitem.save
+    if @orderitem.save!
       flash[:success] = 'Product successfully added to cart!'
       redirect_to cart_path
       return
