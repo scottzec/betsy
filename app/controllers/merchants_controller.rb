@@ -1,6 +1,6 @@
 class MerchantsController < ApplicationController
   skip_before_action :require_login, except: [:dashboard, :edit, :update]
-
+  before_action :edit_merchant_auth, only: [:edit, :update]
   def index
     @merchants = Merchant.all
   end
@@ -48,17 +48,11 @@ class MerchantsController < ApplicationController
 
 
   def edit
-    if @current_merchant != Merchant.find_by(id: params[:id])
-      flash[:warning] = "invalid merchant or unauthorized access: you must be logged into your own account to edit your info."
-      redirect_to dashboard_path
-    end
+    # to go to edit page
   end
 
   def update
-    if @current_merchant != Merchant.find_by(id: params[:id])
-      flash[:warning] = "invalid merchant or unauthorized access: you must be logged into your own account to edit your info."
-      redirect_to dashboard_path
-    elsif @current_merchant.update(merchant_params)
+    if @current_merchant.update(merchant_params)
       flash[:success] = "successfully updated merchant info!"
       redirect_to dashboard_path
       return
