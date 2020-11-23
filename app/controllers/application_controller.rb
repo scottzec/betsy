@@ -14,6 +14,9 @@ class ApplicationController < ActionController::Base
       flash[:error] = "A problem occurred. The shopping cart could not be found."
       redirect_to root_path
     end
+
+    @cart.status = "pending"
+    @cart.save
   end
 
   # UNCOMMENT FOR OAUTH
