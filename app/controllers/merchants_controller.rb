@@ -68,6 +68,7 @@ class MerchantsController < ApplicationController
   # equivalent to current_user in ada books
   def dashboard
     # might need to do something here for filter table later
+    @orders = @current_merchant.get_orders(status: params[:sort])
   end
 
   private
