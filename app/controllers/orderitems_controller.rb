@@ -36,6 +36,14 @@ class OrderitemsController < ApplicationController
       return
     end
 
+    if @orderitem = @cart.orderitems.find_by(product_id: product.id)
+      new_quant = quantity + @orderitem.quantity.to_i
+      @orderitem.update(quantity: new_quant)
+      flash[:success] = "Successfully updated #{@orderitem.product.name} quantity!"
+      redirect_to cart_path
+      return
+    end
+
     @orderitem = Orderitem.new
     @orderitem.order_id = @cart.id
     @orderitem.product_id = product.id
