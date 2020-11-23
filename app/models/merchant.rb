@@ -67,7 +67,7 @@ class Merchant < ApplicationRecord
       # if status input, will match by status
       # would be nice if postgresql can hash
       if status.nil? || order.status.downcase == status
-        if allorders.has_key?(orderitem.order_id)
+        if allorders.has_key?(order)
           allorders[order] << orderitem
         else
           allorders[order] = [orderitem]

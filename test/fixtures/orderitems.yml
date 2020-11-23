@@ -1,3 +1,9 @@
+waiting0:
+  order: pending
+  product: product4
+  quantity: 2
+  shipped: false
+
 waiting1:
   order: pending
   product: product3
