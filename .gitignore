@@ -5,7 +5,7 @@
 #   git config --global core.excludesfile '~/.gitignore_global'
 
 # Ignore idea, why does it keep showing up
-.idea/
+.idea
 
 # Ignore bundler config.
 /.bundle
