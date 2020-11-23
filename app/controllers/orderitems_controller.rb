@@ -12,7 +12,7 @@ class OrderitemsController < ApplicationController
 
     if @cart.nil?
       @cart = Order.new
-      @cart.save
+      @cart.save!
       session[:order_id] = @cart.id
     end
 
@@ -50,7 +50,7 @@ class OrderitemsController < ApplicationController
     @orderitem.quantity = quantity
 
 
-    if @orderitem.save
+    if @orderitem.save!
       flash[:success] = 'Product successfully added to cart!'
       redirect_to cart_path
       return

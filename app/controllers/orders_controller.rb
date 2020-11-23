@@ -29,12 +29,12 @@ class OrdersController < ApplicationController
       return
     end
 
-    # we are looking at an order that the merchant has products in
-    @orderitems = @order.filter_order_items(@current_merchant) # use orderitems in the view for collection of items
+    # We are looking at an order that the merchant has products in
+    @orderitems = @order.filter_order_items(@current_merchant) 
 
     if @orderitems.empty?
       flash[:error] = "You do not have products in this order"
-      redirect_to dashboard_path # redirect to merchant's dashboard
+      redirect_to dashboard_path 
       return
     end
   end
@@ -42,16 +42,15 @@ class OrdersController < ApplicationController
   def edit; end
 
   def checkout
-    if @cart.update(order_params)
-      @cart.checkout
+    if @cart.checkout
+      @cart.update(order_params)
       flash[:success] = "Your order has been confirmed."
       session[:order_id] = nil
       redirect_to order_path(@cart.id)
-      puts @cart.errors.messages
       return
     else
-      flash[:errors] = @cart.errors.messages
-      render :edit, status: :bad_request
+      flash.now[:errors] = @cart.errors.messages
+      render :edit, status: :bad_request # something strange happening here, want to give user a second chance to enter the right info
       return
     end
   end
@@ -78,6 +77,7 @@ class OrdersController < ApplicationController
   private
 
   def order_params
-    return params.require(:order).permit( :status, :name, :email, :address, :credit_card_number, :cvv, :expiration_date, :zip_code)
+    return params.require(:order).permit(:status, :name, :email, :address, :credit_card_number, :cvv, :expiration_date, :zip_code)
   end
 end
+

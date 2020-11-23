@@ -1,7 +1,7 @@
 class Order < ApplicationRecord
   has_many :orderitems
-  validates :status, :name, :email, :address, :credit_card_number, :cvv, :expiration_date, :zip_code, :total, presence: true
-  validates :email, format: {with: /@/, message: "must include @ in email"}, on: :checkout
+  validates :status, :name, :email, :address, :credit_card_number, :cvv, :expiration_date, :zip_code, presence: true, on: :checkout_context
+  validates :email, format: {with: /@/, message: "must include @ in email"}, on: :checkout_context
 
   def self.make_cart
     Order.create
@@ -16,7 +16,7 @@ class Order < ApplicationRecord
     return false
   end
 
-  # retrieve order items just for this merchant
+  # Retrieve order items just for this merchant
   def filter_order_items(merchant)
     self.orderitems.to_a.select { |orderitem| orderitem.product.merchant == merchant}
   end
@@ -26,7 +26,6 @@ class Order < ApplicationRecord
     # Reduces the number of inventory for each product
     # Changes the order state from "pending" to "paid"
     # Clears the current cart
-
     Order.transaction do
       items = self.orderitems
       items.each do |item|
@@ -39,7 +38,7 @@ class Order < ApplicationRecord
       return false unless self.save!
     end
     self.status = "paid"
-    self.save!
+    return self.save(context: :checkout_context)
 
   rescue ActiveRecord::RecordInvalid
     puts "Something went wrong. We couldn't checkout your order."
@@ -77,3 +76,5 @@ class Order < ApplicationRecord
     return sum
   end
 end
+
+
