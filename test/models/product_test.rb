@@ -4,20 +4,20 @@ describe Product do
   describe "relationships" do
     it "product can have multiple reviews" do
 
-      # Arrange user3 in users.yml
+      # Arrange product2 in products.yml
       product = products(:product2)
 
-      # Assert relationship to vote model, 3 votes by user3 in votes.yml
+      # Assert relationship to reviews model, 3 reviews for product2
       expect(product.reviews.count).must_equal 3
     end
 
-    it "product has a category" do
+    it "product has 2 categories" do
 
-      # Arrange user3 in users.yml
+      # Arrange
       product = products(:product2)
 
-      # Assert relationship to vote model, 3 votes by user3 in votes.yml
-      expect(product.reviews.count).must_equal 3
+      # Assert
+      expect(product.categories.count).must_equal 2
     end
   end
   
