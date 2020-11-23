@@ -1,55 +1,52 @@
-# require "test_helper"
-#
-# describe ProductsController do
-#   let (:new_product) {
-#     Product.new(name: "Rubber Duck",
-#                 description: "for all your coding needs",
-#                 price: 2.99,
-#                 photo_url: xxxx,
-#                 stock: 52,
-#                 )
-#   }
-#   before do
-#     Product.create(name: "Computer",
-#                   description: "useful",
-#                   price: 9999,
-#                   photo_url: xxxx,
-#                   stock: 100,)
-#   end
-#
-#   let (:product_hash) {
-#     {
-#         product: {
-#             name: "Party Blob",
-#             description: "the one and only: technicolor",
-#             price: 30,
-#             photo_url: xxxx,
-#             stock: 1,
-#         }
-#     }
-#   }
-#   before do
-#     @product = Product.new
-#   end
-#
-#   describe "show" do
-#     it "can get a valid trip" do
-#       # Act
-#       get trip_path(new_trip.id)
-#
-#       # Assert
-#       must_respond_with :success
-#     end
-#
-#     it "will redirect for an invalid trip" do
-#       # Act
-#       get trip_path(-1)
-#
-#       # Assert
-#       must_respond_with :redirect
-#     end
-#   end
-#
+require "test_helper"
+
+describe ProductsController do
+  let (:new_product) {
+    Product.new(name: "Rubber Duck",
+                description: "for all your coding needs",
+                price: 2.99,
+                photo_url: xxxx,
+                stock: 52,
+                )
+  }
+  before do
+    Product.create(name: "Computer",
+                   description: "useful",
+                   price: 9999,
+                   photo_url: xxxx,
+                   stock: 100,)
+  end
+
+  let (:product_hash) {
+    {
+        product: {
+            name: "Party Blob",
+            description: "the one and only: technicolor",
+            price: 30,
+            photo_url: xxxx,
+            stock: 1,
+        }
+    }
+  }
+
+  describe "show" do
+    it "can get a valid trip" do
+      # Act
+      get product_path(new_product.id)
+
+      # Assert
+      must_respond_with :success
+    end
+
+    it "will redirect for an invalid trip" do
+      # Act
+      get product_path(-1)
+
+      # Assert
+      must_respond_with :redirect
+    end
+  end
+
 #   describe "create" do
 #     it "can create a new trip" do
 #
@@ -119,4 +116,3 @@
 #     end
 #   end
 # end
-#
