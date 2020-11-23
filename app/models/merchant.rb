@@ -62,7 +62,7 @@ class Merchant < ApplicationRecord
 
     allorders = Hash.new
     orderitems.each do |orderitem|
-      order = Order.where(id: orderitem.order_id)
+      order = Order.find_by_id(orderitem.order_id)
       # if no status input, will collect everything.
       # if status input, will match by status
       # would be nice if postgresql can hash

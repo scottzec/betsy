@@ -113,7 +113,7 @@ describe Merchant do
       end
     end
     describe "get orders" do
-      it "returns [] if there are no orders" do
+      it "returns {} if there are no orders" do
         Order.delete_all
         Orderitem.delete_all
 
@@ -123,17 +123,61 @@ describe Merchant do
         expect(all_orders).must_be_kind_of Hash
       end
       it "returns all orders w/ order items (if no filter specified or invalid filter specified)" do
+        orders = merchants(:test).get_orders
 
+        # pull info another way
+        products = Product.where(merchant: merchants(:test))
+        orderitems = Orderitem.where(product: products)
+        orders2 = Order.where(orderitems: orderitems)
+
+        # num of key/value pairs from method must equal number of orders
+        expect(orders2.count).must_equal orders.size()
+
+        # with this loop need to check:
+        # - keys of get_orders return match orders in orders2
+        # - keys are a type of order
+        # - values aka array of orderitems does not contain order items belonging to another merchant.
+
+        orders.each do |order, orderitems|
+          # keys of get_orders return match orders in orders2 & are type of order
+          expect(orders2).must_include order # <- we derived orders2 from Order, so this checks both
+          orderitems.each do |orderitem|
+            expect(orderitem.merchant).must_equal merchants(:test) # check orderitems merchant
+          end
+        end
       end
 
       it "returns orders w/orderitems filtered by status" do
+        orders = merchants(:user).get_orders(status: 'pending')
 
+        # pull info another way
+        products = Product.where(merchant: merchants(:user))
+        orderitems = Orderitem.where(product: products)
+        orders2 = Order.where(orderitems: orderitems, status: 'pending')
+
+        # num of key/value pairs from method must equal number of orders
+        expect(orders2.count).must_equal orders.size()
+
+        # with this loop need to check:
+        # - keys of get_orders return match orders in orders2
+        # - keys are a type of order
+        # - values aka array of orderitems does not contain order items belonging to another merchant.
+        # - ALSO check status of order
+
+        orders.each do |order, orderitems|
+          # keys of get_orders return match orders in orders2 & are type of order
+          expect(orders2).must_include order # <- we derived orders2 from Order, so this checks both
+          expect(order.status).must_equal 'pending'
+          orderitems.each do |orderitem|
+            expect(orderitem.merchant).must_equal merchants(:user) # check orderitems merchant
+          end
+        end
       end
     end
 
     describe "build from github" do
       it "correctly assigns fields from auth hash when github name is present" do
-
+        
       end
 
       it "correct assigns username to nickname when name is NOT present but nickname is " do
