@@ -1,0 +1,49 @@
+review1:
+  rating: 5
+  review: amazing
+  product: product1
+
+review2:
+  rating: 1
+  review: ugly
+  product: product1
+
+review3:
+  rating: 4
+  review: pretty
+  product: product1
+
+review4:
+  rating: 3
+  review: so-so
+  product: product1
+
+review5:
+  rating: 1
+  review: disappointment
+  product: product2
+
+review6:
+  rating: 5
+  review: mmhmm
+  product: product2
+
+review7:
+  rating: 4
+  review: pretty
+  product: product2
+
+review8:
+  rating: 4
+  review: green
+  product: product3
+
+review9:
+  rating: 5
+  review: nice
+  product: product3
+
+review10:
+  rating: 2
+  review: had better
+  product: product3
