@@ -21,4 +21,17 @@ class ActiveSupport::TestCase
   def setup
     OmniAuth.config.test_mode = true
   end
+  # for one of the tests (merchant#create), need to make a mock auth outside of this method
+  # otherwise this shoudl work for everything
+  def mock_auth_hash(user)
+    return {
+      provider: user.provider,
+      uid: user.uid,
+      info: {
+        email: user.email,
+        name: user.name,
+        nickname: user.name
+      }
+    }
+  end
 end

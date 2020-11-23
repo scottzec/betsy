@@ -1,0 +1,11 @@
+test:
+  provider: github
+  uid: 011899988199
+  email: test@test.com
+  name: testing
+
+user:
+  provider: github
+  uid: 91197253
+  email: user@user.com
+  name: user
