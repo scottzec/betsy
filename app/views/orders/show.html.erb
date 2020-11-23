@@ -6,31 +6,14 @@
 <!--Date/time the order was placed-->
 <!--The current status of the order-->
 
-<!--<section>-->
-<!--  <h2>Order #<%#= @order.id %></h2>-->
-    <%# @order.orderitems.each do |orderitem| %>
-      <%# if orderitem %>
-<!--        <ul>-->
-<!--          <li><%#= link_to "#{orderitem.product.name}", orderitem.product.description %></li>-->
-<!--          <li><%#= orderitem.quantity %></li>-->
-<!--          <li><%#= number_to_currency(orderitem.product.price * orderitem.quantity) %></li>-->
-<!--        </ul>-->
-      <%# end %>
-  <%# end %>
-<!--  <ul>-->
-<!--    <li>Order Total: <%#= number_to_currency(@order.total) %></li>-->
-<!--    <li>Order Status: <%#= @order.status %></li>-->
-<!--    <li>Order Date: <%#= @order.updated_at %></li>-->
-<!--    <li><button><%#= link_to "Cancel Order", order_path(@order.id), method: :delete, data: {confirm: "Are you sure?"} %></button></li>-->
-<!--  </ul>-->
-
+<section>
+  <h3>Order #<%= @order.id %></h3>
   <table class="table">
     <thead>
-    <h2>Order #<%= @order.id %></h2>
     <tr>
       <th>Product</th>
       <th>Quantity</th>
-      <th>Total</th>
+      <th>Subtotal</th>
     </tr>
     </thead>
     <tbody>
@@ -47,10 +30,12 @@
   <ul>
     <li>Order Total: <%= number_to_currency(@order.total) %></li>
     <li>Order Status: <%= @order.status %></li>
-    <li>Order Date: <%= @order.updated_at %></li>
+    <li>Order Date: <%= @order.updated_at.strftime("%B %d, %Y") %></li>
   </ul>
+
 <% if @order.can_cancel? %>
   <button><%= link_to "Cancel Order", order_path(@order.id), method: :delete, data: {confirm: "Are you sure?"} %></button>
 <% end %>
+
 </section>
 
