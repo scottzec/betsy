@@ -96,60 +96,11 @@ describe Merchant do
         expect(total_revenue).must_be_close_to total
       end
 
-      it "returns total revenue of items on pending orders ONLY when pending status applied" do
+      it "returns total revenue of items on orders filtered by status" do
         total_revenue = merchants(:user).total_revenue(status: 'pending')
         total = 0
         orders = Order.where(status: 'pending')
         orderitems = orders.where(orderitems: [orderitems(:waiting0), orderitems(:waiting1)]) # this part is why we can't just loop
-
-        orderitems.each do |order|
-          order.orderitems.each do |orderitem|
-            if orderitem.merchant == merchants(:user)
-              total += orderitem.quantity * orderitem.product.price
-            end
-          end
-        end
-        expect(total_revenue).must_be_close_to total
-      end
-
-      it "returns total revenue items on paid orders ONLY when paid status applied" do
-        total_revenue = merchants(:test).total_revenue(status: 'paid')
-        total = 0
-        orders = Order.where(status: 'paid')
-        orderitems = orders.where(orderitems: [orderitems(:waiting2), orderitems(:waiting3)]) # this part is why we can't just loop
-
-        orderitems.each do |order|
-          order.orderitems.each do |orderitem|
-            if orderitem.merchant == merchants(:test)
-              total += orderitem.quantity * orderitem.product.price
-            end
-          end
-        end
-        expect(total_revenue).must_be_close_to total
-      end
-
-      it "returns total revenue of items on complete orders ONLY when complete status applied" do
-        total_revenue = merchants(:test).total_revenue(status: 'complete')
-
-        total = 0
-        orders = Order.where(status: 'complete')
-        orderitems = orders.where(orderitems: [orderitems(:shipped2)]) # this part is why we can't just loop
-
-        orderitems.each do |order|
-          order.orderitems.each do |orderitem|
-            if orderitem.merchant == merchants(:test)
-              total += orderitem.quantity * orderitem.product.price
-            end
-          end
-        end
-        expect(total_revenue).must_be_close_to total
-      end
-
-      it "returns total revenue of items on cancelled order ONLY when cancelled status applied" do
-        total_revenue = merchants(:user).total_revenue(status: 'cancelled')
-        total = 0
-        orders = Order.where(status: 'cancelled')
-        orderitems = orders.where(orderitems: [orderitems(:waiting4)]) # this part is why we can't just loop
 
         orderitems.each do |order|
           order.orderitems.each do |orderitem|
@@ -175,19 +126,7 @@ describe Merchant do
 
       end
 
-      it "returns only pending orders w/orderitems ONLY when pending status applied" do
-
-      end
-
-      it "returns only paid orders w/orderitems ONLY when paid status applied" do
-
-      end
-
-      it "returns only complete orders w/orderitems ONLY when complete status applied" do
-
-      end
-
-      it "returns only cancelled orders w/orderitemsONLY when cancelled status applied" do
+      it "returns orders w/orderitems filtered by status" do
 
       end
     end
