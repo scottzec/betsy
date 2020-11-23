@@ -5,12 +5,17 @@ describe Orderitem do
   #   value(1+1).must_equal 2
   # end
 
+  let (:merchant) {
+    Merchant.create(username: "Fake Name",
+                    email: "fake@name.com")
+  }
+
   let (:order) {
     Order.create(status: "paid", name: "test buyer", email: "test@email.com", address: "123 test st. south", credit_card_number: "1234 5678 9123 4567", cvv: "123", expiration_date: "01/02", zip_code: "12345")
   }
 
   let (:product) {
-    Product.create(name: "Product1", description: "a plant we found", price: 12.35, photo_url: "no url", stock: 10 )
+    Product.create(name: "Product1", description: "a plant we found", price: 12.35, photo_url: "no url", stock: 10, merchant_id: merchant.id)
   }
 
   let (:orderitem) {
@@ -18,16 +23,17 @@ describe Orderitem do
                      order: order,
                      product: product)
   }
+  describe "instantiation" do
+    it "can be instantiated" do
+      expect(orderitem.valid?).must_equal true
+    end
 
-  it "can be instantiated" do
-    expect(orderitem.valid?).must_equal true
-  end
-
-  it "will have the required fields" do
-    orderitem.save
-    new_oi = Orderitem.last
-    [:quantity, :order_id, :product_id].each do |field|
-      expect(new_oi).must_respond_to field
+    it "will have the required fields" do
+      orderitem.save
+      new_oi = Orderitem.last
+      [:quantity, :order_id, :product_id].each do |field|
+        expect(new_oi).must_respond_to field
+      end
     end
   end
 
@@ -46,12 +52,12 @@ describe Orderitem do
 
   describe "quantity validations" do
     it "must be greater than or equal to 0" do
-      orderitem.rating = -1
+      orderitem.quantity = -1
       orderitem.save
 
       expect(orderitem.valid?).must_equal false
       expect(orderitem.errors.messages).must_include :quantity
-      expect(orderitem.errors.messages[:quantity]).must_equal ["must be greater than or equal to 1"]
+      expect(orderitem.errors.messages[:quantity]).must_equal ["must be greater than or equal to 0"]
     end
 
     it "must be an integer" do

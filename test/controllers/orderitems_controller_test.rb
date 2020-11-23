@@ -5,13 +5,18 @@ describe OrderitemsController do
   #   value(1+1).must_equal 2
   # end
   #
+  let (:merchant) {
+    Merchant.create!(username: "Fake Name",
+                     email: "fakename@email.com"
+                     )
+  }
   let (:product) {
     Product.create!(name: "orchid",
                    description: "pretty fragile flower",
                    price: 21.00,
-                   photo_url: nil,
+                   photo_url: "no url",
                    stock: 30,
-                   merchant_id: 1)
+                   merchant_id: merchant.id)
   }
 
   let (:order) {
@@ -32,13 +37,13 @@ describe OrderitemsController do
 
   describe "show" do
     # Your tests go here
-    it "responds with success when showing an existing valid trip" do
+    it "responds with success when showing an existing valid orderitem" do
       get orderitem_path(orderitem.id)
 
       must_respond_with :success
     end
 
-    it "responds with redirect with an invalid trip id" do
+    it "responds with redirect with an invalid orderitem id" do
       get orderitem_path(-1)
 
       must_respond_with :redirect
