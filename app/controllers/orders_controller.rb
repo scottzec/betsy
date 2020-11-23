@@ -47,9 +47,10 @@ class OrdersController < ApplicationController
       flash[:success] = "Your order has been confirmed."
       session[:order_id] = nil
       redirect_to order_path(@cart.id)
+      puts @cart.errors.messages
       return
     else
-      flash[:error] = "A problem occurred. We couldn't complete your order."
+      flash[:errors] = @cart.errors.messages
       render :edit, status: :bad_request
       return
     end

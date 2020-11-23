@@ -1,6 +1,6 @@
 class Order < ApplicationRecord
   has_many :orderitems
-  validates :status, :name, :email, :address, :credit_card_number, :cvv, :expiration_date, :zip_code, :total, presence: true, on: :checkout
+  validates :status, :name, :email, :address, :credit_card_number, :cvv, :expiration_date, :zip_code, :total, presence: true
   validates :email, format: {with: /@/, message: "must include @ in email"}, on: :checkout
 
   def self.make_cart

@@ -31,6 +31,7 @@
       Total: <%= number_to_currency(@cart.total) %>
       <h3>Complete Purchase:</h3>
       <%= form_with(url: cart_path, method: "patch", model: @cart) do |f| %>
+        <%#= puts %>
         <% if @cart.errors.any? %>
           <ul class="errors">
             <% @cart.errors.each do |column, message| %>
