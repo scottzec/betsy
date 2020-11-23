@@ -1,6 +1,5 @@
 pending:
   status: pending
-  orderitems: waiting1
 
 paid:
   status: paid
@@ -11,7 +10,6 @@ paid:
   cvv: 012
   expiration_date: 00/00
   zip_code: 00000
-  orderitems: waiting2, waiting3
 
 complete:
   status: complete
@@ -22,7 +20,6 @@ complete:
   cvv: 012
   expiration_date: 00/00
   zip_code: 00000
-  orderitems: shipped1, shipped2
 
 cancelled:
   status: cancelled
@@ -33,4 +30,3 @@ cancelled:
   cvv: 012
   expiration_date: 00/00
   zip_code: 00000
-  orderitems: waiting4
