@@ -1,59 +1,80 @@
 require "test_helper"
 
 describe Product do
-  let (:new_product) {
-    Product.new(name: "Kari", vin: "123", available: true)
-  }
-  before do
-    Driver.create(name: "Kari",
-                  vin: "123",
-                  available: true)
-  end
-
-  # let (:driver_hash) {
-  #   {
-  #       driver: {
-  #           name: "Sisi",
-  #           vin: "321",
-  #           available: false
-  #       }
-  #   }
-  # }
-  before do
-    @product = Product.new
-  end
-
-  it "can be instantiated" do
-    # Act
-    created_product = @work.valid?
-
-    # Assert
-    expect(created_product).must_equal true
-  end
-
-  it "will have the required fields" do
-    # Your code here
-  end
-
   describe "relationships" do
-    # Your tests go here
-  end
+    it "product can have multiple reviews" do
 
-  describe "validations" do
-    it "created product is valid" do
-      # Act
-      created_product = @work.valid?
+      # Arrange user3 in users.yml
+      product = products(:product2)
 
-      # Assert
-      expect(created_product).must_equal true
+      # Assert relationship to vote model, 3 votes by user3 in votes.yml
+      expect(product.reviews.count).must_equal 3
+    end
+
+    it "product has a category" do
+
+      # Arrange user3 in users.yml
+      product = products(:product2)
+
+      # Assert relationship to vote model, 3 votes by user3 in votes.yml
+      expect(product.reviews.count).must_equal 3
     end
   end
-
-  # Tests for methods you create should go here
-  describe "custom methods" do
-    # Your tests here
-  end
-end
+  
+  
+  # let (:new_product) {
+  #   Product.new(name: "Kari", vin: "123", available: true)
+  # }
+  # before do
+  #   Driver.create(name: "Kari",
+  #                 vin: "123",
+  #                 available: true)
+  # end
+  #
+  # # let (:driver_hash) {
+  # #   {
+  # #       driver: {
+  # #           name: "Sisi",
+  # #           vin: "321",
+  # #           available: false
+  # #       }
+  # #   }
+  # # }
+  # before do
+  #   @product = Product.new
+  # end
+#
+#   it "can be instantiated" do
+#     # Act
+#     created_product = @work.valid?
+#
+#     # Assert
+#     expect(created_product).must_equal true
+#   end
+#
+#   it "will have the required fields" do
+#     # Your code here
+#   end
+#
+#   describe "relationships" do
+#     # Your tests go here
+#   end
+#
+#   describe "validations" do
+#     it "created product is valid" do
+#       # Act
+#       created_product = @work.valid?
+#
+#       # Assert
+#       expect(created_product).must_equal true
+#     end
+#   end
+#
+#   # Tests for methods you create should go here
+#   describe "custom methods" do
+#     # Your tests here
+#   end
+# end
 
 
 # require "test_helper"
@@ -148,3 +169,4 @@ end
 #     # You may have additional methods to test
 #   end
 # end
+end
