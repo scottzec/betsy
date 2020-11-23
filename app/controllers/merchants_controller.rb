@@ -15,40 +15,7 @@ class MerchantsController < ApplicationController
     end
   end
 
-  # BACKUP WITHOUT OAUTH
-  # need to add migration before OAuth can be used
-  # def login_form
-  #   @current_merchant = Merchant.new
-  # end
-
-  # def login
-  #   username = params[:merchant][:username]
-  #   email = params[:merchant][:email]
-  #   @current_merchant = Merchant.find_by(username: username)
-  #
-  #   # since we're entering two fields, we need to check both
-  #   # once we add validations, this needs to be refactored to account for that
-  #   if @current_merchant && email = @current_merchant.email
-  #     session[:user_id] = @current_merchant.id
-  #     flash[:success] = "successfully logged in as existing user #{username}"
-  #   else
-  #     @current_merchant = Merchant.create(username: username, email: email)
-  #
-  #     if @current_merchant.valid?
-  #       session[:user_id] = @current_merchant.id
-  #       flash[:success] = "successfully created new merchant #{username} with ID #{@current_merchant.id}"
-  #     else
-  #       flash.now[:warning] = "a problem occurred: could not log in. check that you entered the correct credentials."
-  #       render :login_form, status: :bad_request
-  #       return
-  #     end
-  #   end
-  #
-  #   redirect_to dashboard_path
-  #   return
-  # end
-  # REPLACE ABOVE WITH SOME WORKING VERSION OF THE COMMENTED OUT CODE
-  # # the new function is now handled by GitHub via OAuth. We will only need a create.
+  # the new function is now handled by GitHub via OAuth. We will only need a create.
   def create
     auth_hash = request.env["omniauth.auth"]
     @merchant = Merchant.find_by(uid: auth_hash[:uid], provider: "github")
@@ -81,12 +48,6 @@ class MerchantsController < ApplicationController
 
 
   def edit
-    # line 83 redundant after OAuth
-    # @current_merchant = Merchant.find_by(id: session[:user_id])
-    # if @current_merchant.nil?
-    #   flash[:warning] = "you must login to see this page."
-    #   redirect_to merchants_path
-    # els
     if @current_merchant != Merchant.find_by(id: params[:id])
       flash[:warning] = "invalid merchant or unauthorized access: you must be logged into your own account to edit your info."
       redirect_to dashboard_path
@@ -94,12 +55,6 @@ class MerchantsController < ApplicationController
   end
 
   def update
-    # line 92 redundant after OAuth
-    # @current_merchant = Merchant.find_by(id: session[:user_id])
-    # if @current_merchant.nil?
-    #   flash[:warning] =  "you must login to update your info."
-    #   redirect_to merchants_path
-    # els
     if @current_merchant != Merchant.find_by(id: params[:id])
       flash[:warning] = "invalid merchant or unauthorized access: you must be logged into your own account to edit your info."
       redirect_to dashboard_path
@@ -117,13 +72,7 @@ class MerchantsController < ApplicationController
 
   # equivalent to current_user in ada books
   def dashboard
-    # redundant after OAuth
-    # @current_merchant = Merchant.find_by(id: session[:user_id])
-    # unless @current_merchant
-    #   flash[:warning] = "you must be logged in to see this page."
-    #   redirect_to root_path
-    #   return
-    # end
+    # might need to do something here for filter table later
   end
 
   private

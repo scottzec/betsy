@@ -25,7 +25,7 @@ class ApplicationController < ActionController::Base
 
   def require_login
     if current_merchant.nil?
-      flash[:error] = "You must be logged in to view this section"
+      flash[:warning] = "You must be logged in to view this section"
       redirect_back fallback_location: root_path
     end
   end
