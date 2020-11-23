@@ -13,6 +13,7 @@ class OrderitemsController < ApplicationController
 
     if @cart.nil?
       @cart = Order.new
+      @cart.status = "pending"
       @cart.save
       session[:order_id] = @cart.id
     end
