@@ -11,7 +11,13 @@ class Merchant < ApplicationRecord
     merchant.provider = "github"
     # merchant can change name later
     merchant.username = auth_hash["info"]["name"]
+    if merchant.username.nil?
+      merchant.username = auth_hash["info"]["nickname"]
+    end
     merchant.provider_name = auth_hash["info"]["name"]
+    if merchant.provider_name.nil?
+      merchant.provider_name = auth_hash["info"]["nickname"]
+    end
     merchant.email = auth_hash["info"]["email"]
     merchant.provider_email = auth_hash["info"]["email"]
 

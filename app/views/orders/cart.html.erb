@@ -9,9 +9,7 @@
         <li>Price: <%= number_to_currency(item.product.price) %></li>
         <li>Subtotal: <%= number_to_currency(item.product.price * item.quantity) %></li>
         <li>
-          <%= form_with(url: orderitem_path(item.id), method: "patch") do |f| %>
-
-            <%= hidden_field_tag "orderitem_id", item.id %>
+          <%= form_with(url: orderitem_path(item.id), method: "patch") do |f| %>git
 
             <%= f.label :quantity %>
             <%= f.text_field :quantity %>
