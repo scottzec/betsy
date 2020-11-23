@@ -26,6 +26,7 @@ class MerchantsController < ApplicationController
       @merchant = Merchant.build_from_github(auth_hash)
 
       if @merchant.save
+
         flash[:success] = "Welcome, #{@merchant.username}! Check out your dashboard below to edit your username and email."
       else
         flash[:warning] = "Could not create new merchant:"

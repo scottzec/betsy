@@ -1,15 +1,15 @@
 test:
   provider: github
-  uid: 011899988199
+  uid: user.id
   email: test@test.com
-  name: testing
+  username: testing
   provider_email: test@test.com
   provider_name: testing
 
 user:
   provider: github
-  uid: 91197253
+  uid: user.id
   email: user@user.com
-  name: user
+  username: user
   provider_email: user@user.com
   provider_name: user

@@ -1,7 +1,3 @@
-<!-- explicitly to test categories -->
-<!-- will work once products controllers can create from current_merchant-->
-
-
 <%= form_for @product, url: merchant_products_path do |f| %>
   <% if @product.errors.any? %>
     <ul class="errors">
@@ -31,5 +27,5 @@
   <%=f.label :categories %>
   <%= collection_check_boxes(:product, :category_ids, Category.all, :id, :name) %>
 
-  <%= f.submit 'create product' %>
+  <%= f.submit 'Create Product' %>
 <% end %>

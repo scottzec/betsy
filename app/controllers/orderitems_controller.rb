@@ -7,14 +7,14 @@ class OrderitemsController < ApplicationController
   end
 
   def create
-    order = Order.find_by(id: session[:order_id])
+    @cart = Order.find_by(id: session[:order_id])
     product = Product.find_by(id: params[:product_id])
     quantity = params[:orderitem][:quantity].to_i
 
-    if order.nil?
-      order = Order.new
-      order.save
-      session[:order_id] = order.id
+    if @cart.nil?
+      @cart = Order.new
+      @cart.save
+      session[:order_id] = @cart.id
     end
 
     if product.nil?
@@ -28,17 +28,25 @@ class OrderitemsController < ApplicationController
       redirect_back(fallback_location: root_path)
       return
     elsif product.stock.zero?
-      flash.now[:warning] = 'Item out of stock, cannot add to cart'
-      render product_path(product.id)
+      flash[:warning] = 'Item out of stock, cannot add to cart'
+      redirect_back(fallback_location: root_path)
       return
     elsif quantity > product.stock
-      flash.now[:warning] = "Only #{product.stock} items left in stock"
-      render product_path(product.id)
+      flash[:warning] = "Only #{product.stock} items left in stock"
+      redirect_back(fallback_location: root_path)
+      return
+    end
+
+    if @orderitem = @cart.orderitems.find_by(product_id: product.id)
+      new_quant = quantity + @orderitem.quantity.to_i
+      @orderitem.update(quantity: new_quant)
+      flash[:success] = "Successfully updated #{@orderitem.product.name} quantity!"
+      redirect_to cart_path
       return
     end
 
     @orderitem = Orderitem.new
-    @orderitem.order_id = order.id
+    @orderitem.order_id = @cart.id
     @orderitem.product_id = product.id
     @orderitem.quantity = quantity
 
@@ -67,30 +75,31 @@ class OrderitemsController < ApplicationController
   def update
     @orderitem = Orderitem.find_by(id: params[:id])
     product = Product.find_by(id: @orderitem.product_id)
+    name = product.name
 
     if @orderitem.nil?
       head :not_found
       return
     end
 
-    if params[:quantity] > product.quantity
-      flash.now[:warning] = "Only #{product.stock} items left in stock"
-      render order_path(session[:order_id])
+    if params[:quantity].to_i > product.stock
+      flash[:warning] = "Only #{product.stock} items left in stock"
+      redirect_back(fallback_location: root_path)
       return
-    elsif params[:quantity] < 1
+    elsif params[:quantity].to_i < 1
       @orderitem.destroy
-      flash[:success] = "Removed #{@orderitem.name} from cart"
-      render order_path(session[:order_id])
+      flash[:success] = "Removed #{name} from cart"
+      redirect_back(fallback_location: root_path)
       return
     end
 
-    if @orderitem.update(params[:quantity])
-      flash[:success] = "Successfully updated #{@orderitem.name} quantity!"
-      render order_path(session[:order_id])
+    if @orderitem.update(quantity: params[:quantity])
+      flash[:success] = "Successfully updated #{@orderitem.product.name} quantity!"
+      redirect_back(fallback_location: root_path)
       return
     else # save failed :(
-      flash.now[:warning] = "A problem occurred: could not update #{@orderitem.name}"
-      render order_path(session[:order_id]), status: :bad_request
+      flash[:warning] = "A problem occurred: could not update #{@orderitem.product.name}"
+      redirect_back(fallback_location: root_path)
       return
     end
   end
@@ -99,15 +108,15 @@ class OrderitemsController < ApplicationController
     @orderitem = Orderitem.find_by(id: params[:id])
 
     if @orderitem.nil?
-      flash.now[:warning] = 'A problem occurred: could not locate order item'
-      render order_path(session[:order_id])
+      flash[:warning] = 'A problem occurred: could not locate order item'
+      redirect_back(fallback_location: root_path)
       return
     end
 
     @orderitem.destroy
 
-    flash.now[:success] = "Successfully removed #{@orderitem.name} from cart!"
-    render order_path(session[:order_id])
+    flash[:success] = "Successfully removed #{@orderitem.product.name} from cart!"
+    redirect_back(fallback_location: root_path)
     return
   end
 

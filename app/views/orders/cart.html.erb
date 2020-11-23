@@ -1,76 +1,80 @@
 <main>
   <h2>Your Cart</h2>
-  <% if @cart.orderitems %>
+  <% if @cart && @cart.orderitems.length > 0 %>
     <ol>
     <% @cart.orderitems.each do |item| %>
       <li>Product: <%= item.product.name %></li>
       <ul>
         <li>Quantity: <%= item.quantity %></li>
-        <li>Price: <%= item.product.price %></li>
-        <li>Subtotal: <%= item.product.price * item.quantity %></li>
+        <li>Price: <%= number_to_currency(item.product.price) %></li>
+        <li>Subtotal: <%= number_to_currency(item.product.price * item.quantity) %></li>
+        <li>
+          <%= form_with(url: orderitem_path(item.id), method: "patch", class: "form-inline")  do |f| %>
+
+            <div class="form-group">
+            <%= f.label :quantity, "Quantity: " %>
+            <%= f.text_field :quantity %>
+            </div>
+
+            <%= f.submit "Update", form: {style: 'display:inline-block;'}, class: "btn btn-dark" %>
+          <% end %>
+        </li>
+        <li>
+          <%= form_with(url: orderitem_path(item.id), method: "delete") do |f| %>
+
+            <%= f.submit "Remove", class: "btn btn-primary" %>
+          <% end %>
+        </li>
       </ul>
+    <% end %>
+      Total: <%= number_to_currency(@cart.total) %>
+      <h3>Complete Purchase:</h3>
+      <%= form_with(url: cart_path, method: "patch", model: @cart) do |f| %>
+        <% if @cart.errors.any? %>
+          <ul class="errors">
+            <% @cart.errors.each do |column, message| %>
+              <li>
+                <strong><%= column.capitalize %></strong> <%= message %>
+              </li>
+            <% end %>
+          </ul>
+        <% end %>
+
+        <div class="form-group">
+          <%= f.label :name %>
+          <%= f.text_field :name, class: "form-control" %>
+        </div>
+        <div class="form-group">
+          <%= f.label :email %>
+          <%= f.text_field :email, class: "form-control" %>
+        </div>
+        <div class="form-group">
+          <%= f.label :address %>
+          <%= f.text_field :address, class: "form-control" %>
+        </div>
+        <div class="form-group">
+          <%= f.label :credit_card_number, "Credit Card Number" %>
+          <%= f.text_area :credit_card_number, class: "form-control" %>
+        </div>
+        <div class="form-group">
+          <%= f.label :cvv, "CVV" %>
+          <%= f.text_area :cvv, class: "form-control" %>
+        </div>
+        <div class="form-group">
+          <%= f.label :expiration_date, "Expiration Date" %>
+          <%= f.text_area :expiration_date, class: "form-control" %>
+        </div>
+        <div class="form-group">
+          <%= f.label :zip_code, "Zip Code" %>
+          <%= f.text_area :zip_code, class: "form-control" %>
+        </div>
+        <div class="form-group">
+          <%= f.submit "Checkout Order", class: "btn btn-primary" %>
+        </div>
     <% end %>
     </ol>
     <% else %>
-      <p>There's nothing in your cart. Start browsing! <%= link_to "Browse Products", root_path %></p>
+      <p>There's nothing in your cart. <%= link_to "Start Browsing!", root_path %></p>
   <% end %>
-
-  Total: <%= @cart.total %>
-
   <hr>
-
-  Complete Purchase:
-  //form goes here//
-  <%= form_with(url: cart_path, method: "patch") do |f| %>
-    <%#= hidden_field_tag "order_id", @order.id %>
-    <div class="form-group">
-      <%= f.label :name %>
-      <%= f.text_field :name, class: "form-control" %>
-    </div>
-
-    <div class="form-group">
-      <%= f.label :email %>
-      <%= f.text_field :email, class: "form-control" %>
-    </div>
-
-    <div class="form-group">
-      <%= f.label :address %>
-      <%= f.text_field :address, class: "form-control" %>
-    </div>
-
-    <div class="form-group">
-      <%= f.label :credit_card_number %>
-      <%= f.text_area :credit_card_number, class: "form-control" %>
-    </div>
-
-    <div class="form-group">
-      <%= f.label :cvv %>
-      <%= f.text_area :cvv, class: "form-control" %>
-    </div>
-
-    <div class="form-group">
-      <%= f.label :expiration_date %>
-      <%= f.text_area :expiration_date, class: "form-control" %>
-    </div>
-
-    <div class="form-group">
-      <%= f.label :zip_code %>
-      <%= f.text_area :zip_code, class: "form-control" %>
-    </div>
-
-    <!--    <div class="form-group">-->
-    <%#= f.label :total %>
-    <%#= f.text_area :total, class: "form-control" %>
-    <!--    </div>-->
-
-    <div class="form-group">
-      <%= f.submit "Checkout Order", class: "btn btn-primary" %>
-    </div>
-  <% end %>
-
-<!--
-  <%#= form_for Orderitem.new do |f| %>
--->
-  <%#= render partial: "form", locals: { action_name: "Complete", model: @order}, url: checkout_path, method: :patch %>
-
 </main>

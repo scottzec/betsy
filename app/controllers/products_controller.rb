@@ -82,7 +82,7 @@ class ProductsController < ApplicationController
 
   # Do I need merchant_id in strong params?
   def product_params
-    return params.require(:product).permit(:name, :description, :price, :photo_url, :stock, category_ids: [])
+    return params.require(:product).permit(:name, :description, :price, :photo_url, :stock, :merchant_id, category_ids: [])
   end
 
   # def find_product
