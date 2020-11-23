@@ -10,6 +10,12 @@
   </nav>
   <h2> my order fulfillments</h2>
   <!-- some table here using the all orders method, link to ind. order as well -->
+  <!-- once shopping cart is working, used to test filter table prior to creating table-->
+  <%= link_to "pending only" , sort: "pending"%>
+  <%= link_to "paid only" , sort: "paid"%>
+  <%= link_to "complete only" , sort: "complete"%>
+  <%= link_to "cancelled only" , sort: "cancelled"%>
+  <p> <%= @orders %></p>
   <h2> my products</h2>
   <table class="table">
     <thead>

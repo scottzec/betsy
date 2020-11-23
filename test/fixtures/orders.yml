@@ -1,0 +1,32 @@
+pending:
+  status: pending
+
+paid:
+  status: paid
+  name: buyer1
+  email: buyer1@site.com
+  address: 123 Some Way E City State
+  credit_card_number: 0123456789
+  cvv: 012
+  expiration_date: 00/00
+  zip_code: 00001
+
+complete:
+  status: complete
+  name: buyer2
+  email: buyer2@site.com
+  address: 321 Other Way E City State
+  credit_card_number: 9876543210
+  cvv: 210
+  expiration_date: 01/01
+  zip_code: 00002
+
+cancelled:
+  status: cancelled
+  name: buyer3
+  email: buyer3@site.com
+  address: 333 Some Way W City State
+  credit_card_number: 9999999999
+  cvv: 999
+  expiration_date: 99/99
+  zip_code: 00003

@@ -1,0 +1,41 @@
+waiting0:
+  order: pending
+  product: product4
+  quantity: 2
+  shipped: false
+
+waiting1:
+  order: pending
+  product: product3
+  quantity: 1
+  shipped: false
+
+waiting2:
+  order: paid
+  product: product1
+  quantity: 2
+  shipped: false
+
+waiting3:
+  order: paid
+  product: product2
+  quantity: 2
+  shipped: false
+
+waiting4:
+  order: cancelled
+  product: product4
+  quantity: 10
+  shipped: false
+
+shipped1:
+  order: complete
+  product: product4
+  quantity: 10
+  shipped: true
+
+shipped2:
+  order: complete
+  product: product2
+  quantity: 5
+  shipped: true

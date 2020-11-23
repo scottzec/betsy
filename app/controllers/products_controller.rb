@@ -1,5 +1,5 @@
 class ProductsController < ApplicationController
-
+  skip_before_action :require_login, except: [:new, :create, :edit, :update, :destroy]
   # Add controller filter once set up
   # before_action :find_product, only: [:show, :edit, :update, :destroy?]
 
@@ -82,7 +82,7 @@ class ProductsController < ApplicationController
 
   # Do I need merchant_id in strong params?
   def product_params
-    return params.require(:product).permit(:name, :description, :price, :photo_url, :stock)
+    return params.require(:product).permit(:name, :description, :price, :photo_url, :stock, :merchant_id, category_ids: [])
   end
 
   # def find_product
