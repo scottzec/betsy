@@ -102,9 +102,21 @@ describe MerchantsController do
         expect(Merchant.count).must_equal start_count + 1
 
         # new user will be last user and also in session
-        session[:user_id].must_equal Merchant.last.id
+        expect(session[:user_id]).must_equal Merchant.last.id
       end
       it "redirects to the login route if given invalid user data" do
+        start_count = Merchant.count
+        invalid_mer = Merchant.new(provider: "github", uid: 11111111, username: "new_person", email: nil)
+
+        perform_login(invalid_mer)
+
+        must_redirect_to root_path
+
+        # new user created
+        expect(Merchant.count).must_equal start_count
+
+        # new user will be last user and also in session
+        expect(session[:user_id]).must_be_nil
       end
     end
     describe "destroy" do
@@ -121,15 +133,19 @@ describe MerchantsController do
       end
 
       it "guest users on that route" do
+        delete logout_path, params: {}
+
+        expect(session[:user_id]).must_be_nil
+        must_redirect_to root_path
       end
     end
   end
   describe "active session only functions" do
-    before do
-      @merchant1 = Merchant.create(username: "m1", email: "m1@email.com")
-      @merchant2 = Merchant.create(username: "m2", email: "m2@email.com")
-      @login_data = {merchant: {username: @merchant1.username, email:@merchant1.email} }
-    end
+    # before do
+    #   @merchant1 = Merchant.create(username: "m1", email: "m1@email.com")
+    #   @merchant2 = Merchant.create(username: "m2", email: "m2@email.com")
+    #   @login_data = {merchant: {username: @merchant1.username, email:@merchant1.email} }
+    # end
     let (:edit_merchant_data) {
       {
         merchant: {username: "boomer",
@@ -139,13 +155,13 @@ describe MerchantsController do
     # the following functions require login
     describe "dashboard" do
       it "allows logged in users to access dashboard" do
-        post login_path(@login_data)
+        perform_login(merchants(:test))
         get dashboard_path
 
         # this is a little redundant, but one thing to note is that the route is written so that
         # this only applies to the CURRENT user -- you can never access another merchant's dashboard but your
         # own
-        expect(Merchant.find_by(id: session[:user_id])).must_equal @merchant1
+        expect(Merchant.find_by(id: session[:user_id])).must_equal merchants(:test)
 
         must_respond_with :success
       end
@@ -155,7 +171,7 @@ describe MerchantsController do
       # because they technically come from difference sources
       # even though they all redirect to the same path
       it "blocks invalid merchants" do
-        post login_path(@login_data)
+        perform_login(merchants(:test))
 
         get edit_merchant_path(-1)
 
@@ -163,16 +179,16 @@ describe MerchantsController do
 
       end
       it "prevents a logged in merchant from accessing another merchant's edit page" do
-        post login_path(@login_data)
+        perform_login(merchants(:test))
 
-        get edit_merchant_path(@merchant2.id)
+        get edit_merchant_path(merchants(:user).id)
 
         must_redirect_to dashboard_path
       end
       it "permits access for a logged in user to access their edit page" do
-        post login_path(@login_data)
+        perform_login(merchants(:test))
 
-        get edit_merchant_path(@merchant1.id)
+        get edit_merchant_path(merchants(:test).id)
 
         must_respond_with :success
       end
@@ -180,11 +196,11 @@ describe MerchantsController do
 
     describe "update" do
       it "updates a merchant's info when valid parameters are input" do
-        post login_path(@login_data)
+        perform_login(merchants(:test))
 
         # Act-Assert
         expect{
-          patch merchant_path(@merchant1.id), params: edit_merchant_data
+          patch merchant_path(merchants(:test).id), params: edit_merchant_data
         }.wont_change "Merchant.count"
 
         must_redirect_to dashboard_path
@@ -193,7 +209,7 @@ describe MerchantsController do
         expect(edited_merchant.email).must_equal edit_merchant_data[:merchant][:email]
       end
       it "doesn't update a non-existent merchant's info " do
-        post login_path(@login_data)
+        perform_login(merchants(:test))
 
         expect{
           patch merchant_path(-1), params: edit_merchant_data
@@ -202,31 +218,31 @@ describe MerchantsController do
         must_redirect_to dashboard_path
       end
       it "doesn't update the merchant if they're not the logged in merchant" do
-        post login_path(@login_data)
+        perform_login(merchants(:test))
 
         expect{
-          patch merchant_path(@merchant2.id), params: edit_merchant_data
+          patch merchant_path(merchants(:user).id), params: edit_merchant_data
         }.wont_change "Merchant.count"
 
         must_redirect_to dashboard_path
 
-        expect(@merchant2.username).must_equal "m2"
-        expect(@merchant2.email).must_equal "m2@email.com"
+        expect(merchants(:user).username).must_equal "user"
+        expect(merchants(:user).email).must_equal "user@user.com"
       end
 
       it "doesn't update a merchant's info when invalid parameters are input" do
-        post login_path(@login_data)
+        perform_login(merchants(:test))
 
         edit_merchant_data[:merchant][:username] = nil
 
         # Act-Assert
         expect{
-          patch merchant_path(@merchant1.id), params: edit_merchant_data
+          patch merchant_path(merchants(:test).id), params: edit_merchant_data
         }.wont_change "Merchant.count"
 
         must_respond_with :bad_request
-        expect(@merchant1.username).must_equal "m1"
-        expect(@merchant1.email).must_equal "m1@email.com"
+        expect(merchants(:test).username).must_equal "testing"
+        expect(merchants(:test).email).must_equal "test@test.com"
       end
 
     end
