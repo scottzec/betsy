@@ -4,6 +4,8 @@
 <!--https://edgeguides.rubyonrails.org/routing.html#creating-paths-and-urls-from-objects-->
 <%#= form_with(url: merchant_product_path(@product.merchant.id, @product.id), method: "patch") do |f| %>
 <%= form_with(url: merchant_product_path(@product.merchant, @product), method: "patch") do |f| %>
+<%#= form_with(url: merchant_product_path(merchant_id: @product.merchant.id, product_id: @product.id), method: "patch") do |f| %>
+
 
   <% if @product.errors.any? %>
     <ul class="errors">
