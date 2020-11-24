@@ -1,9 +1,9 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   root to: 'products#index'
-  # http://localhost:3000/merchants/3/products/2
+
   resources :merchants do
-    resources :products #, only: [:new, :create, :edit, :update, :destroy]
+    resources :products #, only: [:new, :create], [:edit, :update, :destroy] can be top level
   end
 
   resources :products do
