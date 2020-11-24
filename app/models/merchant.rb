@@ -9,17 +9,18 @@ class Merchant < ApplicationRecord
     merchant = Merchant.new
     merchant.uid = auth_hash[:uid]
     merchant.provider = "github"
+
     # merchant can change name later
-    merchant.username = auth_hash["info"]["name"]
+    merchant.username = auth_hash[:info][:name]
     if merchant.username.nil?
-      merchant.username = auth_hash["info"]["nickname"]
+      merchant.username = auth_hash[:info][:nickname]
+      merchant.provider_name = auth_hash[:info][:nickname]
+    else
+      merchant.provider_name = auth_hash[:info][:name]
     end
-    merchant.provider_name = auth_hash["info"]["name"]
-    if merchant.provider_name.nil?
-      merchant.provider_name = auth_hash["info"]["nickname"]
-    end
-    merchant.email = auth_hash["info"]["email"]
-    merchant.provider_email = auth_hash["info"]["email"]
+
+    merchant.email = auth_hash[:info][:email]
+    merchant.provider_email = auth_hash[:info][:email]
 
     return merchant
   end
@@ -62,7 +63,7 @@ class Merchant < ApplicationRecord
 
     allorders = Hash.new
     orderitems.each do |orderitem|
-      order = Order.where(id: orderitem.order_id)
+      order = Order.find_by_id(orderitem.order_id)
       # if no status input, will collect everything.
       # if status input, will match by status
       # would be nice if postgresql can hash
