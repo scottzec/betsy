@@ -120,23 +120,85 @@ describe OrderitemsController do
                 quantity: 4
         }
 
-        puts "before"
-        puts oi.id
-        puts oi.quantity
-
         expect {
           patch orderitem_path(oi.id), params: oi_edit_hash
         }.wont_change "Orderitem.count"
 
-        puts "after"
-        puts oi.id
-        puts oi.quantity
+        oi.reload
 
         expect(oi.quantity).must_equal 4
 
         expect(flash[:success]).must_equal "Successfully updated #{orderitems(:waiting2).product.name} quantity!"
         must_respond_with :redirect
       end
+
+      it "will delete orderitem with 0 input" do
+
+        oi = orderitems(:waiting2)
+
+        oi_edit_hash = {
+            quantity: 0
+        }
+
+        expect {
+          patch orderitem_path(oi.id), params: oi_edit_hash
+        }.must_change "Orderitem.count", 1
+
+
+        expect(flash[:success]).must_equal "Removed #{oi.product.name} from cart"
+        must_respond_with :redirect
+      end
+
+      it "will delete orderitem with non-numeric input" do
+
+        oi = orderitems(:waiting2)
+
+        oi_edit_hash = {
+            quantity: "hotdog"
+        }
+
+        expect {
+          patch orderitem_path(oi.id), params: oi_edit_hash
+        }.must_change "Orderitem.count", 1
+
+
+        expect(flash[:success]).must_equal "Removed #{oi.product.name} from cart"
+        must_respond_with :redirect
+      end
+
+      it "will not update quantity with invalid input" do
+
+        oi = orderitems(:waiting2)
+
+        oi_edit_hash = {
+            quantity: 400
+        }
+
+        expect {
+          patch orderitem_path(oi.id), params: oi_edit_hash
+        }.wont_change "Orderitem.count"
+
+        oi.reload
+
+        expect(oi.quantity).must_equal 2
+
+        expect(flash[:warning]).must_equal "Only #{oi.product.stock} items left in stock"
+        must_respond_with :redirect
+      end
+
+      it "will not update orderitem that does not exist" do
+        oi_edit_hash = {
+            quantity: 400
+        }
+
+        expect {
+          patch orderitem_path(-1), params: oi_edit_hash
+        }.wont_change "Orderitem.count"
+
+        expect(flash[:warning]).must_equal 'A problem occurred: could not find item'
+        must_respond_with :redirect
+      end
+
     end
 
     describe "destroy" do
@@ -158,7 +220,6 @@ describe OrderitemsController do
 
         expect(flash[:warning]).must_equal 'A problem occurred: could not locate order item'
         must_respond_with :redirect
-
       end
 
     end
