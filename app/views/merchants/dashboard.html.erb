@@ -8,9 +8,35 @@
     <%= link_to content_tag(:li, "add a product"), new_merchant_product_path(merchant_id:@current_merchant.id), method: :get %>
     <%= link_to content_tag(:li, "add a category"), new_category_path, method: :get %>
   </nav>
+  <h2>my stats</h2>
+  <table class="table">
+    <tr>
+      <% ['total', 'pending', 'paid', 'complete', 'cancelled'].each do |status| %>
+        <th><%= status %></th>
+      <% end %>
+    </tr>
+    <tr>
+      <% ['total', 'pending', 'paid', 'complete', 'cancelled'].each do |status| %>
+        <td>
+          <table class="table">
+            <tr>
+              <th># orders</th>
+              <th> total revenue</th>
+            </tr>
+            <tr>
+              <td><%= status == 'total' ? @current_merchant.get_orders().size : @current_merchant.get_orders(status: status).size %></td>
+              <td><%= sprintf( "$%.2f", (status == 'total' ? @current_merchant.total_revenue() : @current_merchant.total_revenue(status: status))) %></td>
+            </tr>
+          </table>
+        </td>
+      <% end %>
+    </tr>
+
+  </table>
   <h2> my order fulfillments</h2>
   <!-- some table here using the all orders method, link to ind. order as well -->
   <!-- once shopping cart is working, used to test filter table prior to creating table-->
+  <%= link_to "all" , sort: nil %>
   <%= link_to "pending only" , sort: "pending"%>
   <%= link_to "paid only" , sort: "paid"%>
   <%= link_to "complete only" , sort: "complete"%>
