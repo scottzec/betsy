@@ -3,12 +3,11 @@ Rails.application.routes.draw do
   root to: 'products#index'
   # http://localhost:3000/merchants/3/products/2
   resources :merchants do
-    resources :products#, only: [:new, :create, :edit, :update, :destroy]
+    resources :products #, only: [:new, :create, :edit, :update, :destroy]
   end
 
   resources :products do
     resources :reviews, only: [:new, :create]
-    #resources :orderitems
   end
   
   resources :orderitems #may be able to delete later, or have only: [:show]

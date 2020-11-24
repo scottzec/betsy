@@ -48,7 +48,7 @@ class ProductsController < ApplicationController
   end
 
   def update
-    # @current_merchant = Merchant.find_by(id: session[:user_id])
+    @merchant = Merchant.find_by(id: session[:user_id])
     # @product = @current_merchant.products.find_by_id(params[:id])
     @product = Product.find_by_id(params[:id])
 
@@ -65,6 +65,7 @@ class ProductsController < ApplicationController
       # redirect_to product_path(@product.id)
       return
     else
+      raise
       flash.now[:warning] = "There was a problem. We couldn't update your listing"
       render :edit
       return

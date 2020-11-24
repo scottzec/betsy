@@ -3,8 +3,9 @@
 <%#= form_with(url: merchant_product_path, method: "patch") do |f| %>
 <!--https://edgeguides.rubyonrails.org/routing.html#creating-paths-and-urls-from-objects-->
 <%#= form_with(url: merchant_product_path(@product.merchant.id, @product.id), method: "patch") do |f| %>
-<%= form_with(url: merchant_product_path(@product.merchant, @product), method: "patch") do |f| %>
 <%#= form_with(url: merchant_product_path(merchant_id: @product.merchant.id, product_id: @product.id), method: "patch") do |f| %>
+
+<%= form_with(url: merchant_product_path(@product.merchant, @product), method: "patch") do |f| %>
 
 
   <% if @product.errors.any? %>
@@ -17,7 +18,7 @@
     </ul>
   <% end %>
 
-  <%= hidden_field_tag "merchant_id", @product.merchant.id %>
+  <%#= hidden_field_tag "merchant_id", @product.merchant.id %>
 
   <%= f.label :name %>
   <%= f.text_field :name %>
