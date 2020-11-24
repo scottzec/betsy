@@ -53,23 +53,28 @@
         <th>order #</th>
         <th>order date</th>
         <th>order status</th>
-        <th>shipped</th>
       </tr>
     <% @orders.each do |order, items| %>
       <td><%= link_to "#{order.id}", merchant_show_path(order.id) %></td>
         <td><%= order.created_at.strftime("%B %d, %Y") %></td>
       <td><%= order.status %></td>
         <table>
+<!--          <tr>-->
         <% items.each do |item| %>
+              <th>item</th>
           <td><%= link_to "#{item.product.name}", product_path(item.product.id), method: :get %></td>
-          <td><%= item.quantity %></td>
-          <td><%= number_to_currency(item.quantity * item.product.price) %></td>
-          <% if !item.shipped? %>
-            <%= link_to "Mark Shipped", mark_shipped_path(item.id), method: :patch %>
+              <th>quantity</th>
+              <td><%= item.quantity %></td>
+              <th>subtotal</th>
+              <td><%= number_to_currency(item.quantity * item.product.price) %></td>
+              <th>status</th>
+              <% if !item.shipped? %>
+            <td><%= link_to "mark shipped", mark_shipped_path(item.id), method: :patch %></td>
           <% else %>
-            <span>shipped</span>
+            <td>shipped</td>
           <% end%>
     <% end %>
+<!--          </tr>-->
         </table>
     <% end %>
   </table>
