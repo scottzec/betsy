@@ -1,29 +1,8 @@
 require "test_helper"
 
 describe OrderitemsController do
-  # it "does a thing" do
-  #   value(1+1).must_equal 2
-  # end
-  #
-
-  # describe "show" do
-  #   it "responds with success when showing an existing valid orderitem" do
-  #     oi1 = orderitems(:shipped1)
-  #     get orderitem_path(oi1.id)
-  #
-  #     must_respond_with :success
-  #   end
-  #
-  #   it "responds with redirect with an invalid orderitem id" do
-  #     get orderitem_path(-1)
-  #
-  #     must_respond_with :redirect
-  #     must_redirect_to root_path
-  #   end
-  # end
-
     describe "create" do
-      it "can create a new orderitem and cart with valid information and redirect for existing cart" do
+      it "can create a new orderitem and cart with valid information and redirect to cart" do
         oi_hash = {
             product_id: products(:product1).id,
             orderitem: {
@@ -78,9 +57,61 @@ describe OrderitemsController do
         must_respond_with :redirect
       end
 
+      it "won't create an invalid trip if 0 products requested " do
+        oi_hash = {
+            product_id: products(:product1).id,
+            orderitem: {
+                quantity: 0
+            }
+        }
 
+        expect {
+          post orderitems_path, params: oi_hash
+        }.wont_change "Orderitem.count"
+
+
+        expect(flash[:warning]).must_equal 'Cannot add 0 items'
+        must_respond_with :redirect
+      end
+
+      it "will update instead of create a new oi when already in cart" do
+          oi_hash1 = {
+              product_id: products(:product1).id,
+              orderitem: {
+                  quantity: 3
+              }
+          }
+
+          expect {
+            post orderitems_path, params: oi_hash1
+          }.must_change "Orderitem.count", 1
+
+          oi_hash2 = {
+              product_id: products(:product1).id,
+              orderitem: {
+                  quantity: 2
+              }
+          }
+
+          expect {
+            post orderitems_path, params: oi_hash2
+          }.wont_change "Orderitem.count"
+
+          new_oi = Orderitem.last
+          expect(new_oi.quantity).must_equal 5
+          expect(new_oi.order).must_be_kind_of Order
+          expect(new_oi.product).must_equal products(:product1)
+
+          must_respond_with :redirect
+          must_redirect_to cart_path
+      end
     end
 
+    describe "update" do
+
+
+
+    end
 
 
 
