@@ -28,12 +28,22 @@ list-of-colors {
 
 
 .btn-primary {
-  background-color: darkolivegreen;
-  border-color: darkolivegreen;
+  background-color: #2E492F;
+  border-color: #2E492F;
   margin: 5px;
 }
 
 .btn-primary:hover {
-  background-color: olive;
-  border-color: olive;
+  background-color: #84814F;
+  border-color: #84814F;
+}
+
+.btn-primary:focus {
+  background-color: #84814F;
+  border-color: #84814F;
+}
+
+.btn-primary:active {
+  background-color: #84814F;
+  border-color: #84814F;
 }
