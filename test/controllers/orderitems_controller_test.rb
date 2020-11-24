@@ -108,10 +108,62 @@ describe OrderitemsController do
     end
 
     describe "update" do
+      before do
+        get cart_path
+      end
 
+      it "will update quantity with valid input" do
 
+        oi = orderitems(:waiting2)
+
+        oi_edit_hash = {
+                quantity: 4
+        }
+
+        puts "before"
+        puts oi.id
+        puts oi.quantity
+
+        expect {
+          patch orderitem_path(oi.id), params: oi_edit_hash
+        }.wont_change "Orderitem.count"
+
+        puts "after"
+        puts oi.id
+        puts oi.quantity
+
+        expect(oi.quantity).must_equal 4
+
+        expect(flash[:success]).must_equal "Successfully updated #{orderitems(:waiting2).product.name} quantity!"
+        must_respond_with :redirect
+      end
+    end
+
+    describe "destroy" do
+      it "will delete an orderitem that exists and redirect" do
+        oi = orderitems(:waiting1)
+
+        expect {
+          delete orderitem_path(oi.id)
+        }.must_change "Orderitem.count", 1
+
+        expect(flash[:success]).must_equal "Successfully removed #{oi.product.name} from cart!"
+        must_respond_with :redirect
+      end
+
+      it "will not delete an orderitem that doesn't exit, will redirect" do
+        expect {
+          delete orderitem_path(-1)
+        }.wont_change "Orderitem.count"
+
+        expect(flash[:warning]).must_equal 'A problem occurred: could not locate order item'
+        must_respond_with :redirect
+
+      end
 
     end
+
+
 
 
 
