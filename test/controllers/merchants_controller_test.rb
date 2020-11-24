@@ -1,46 +1,79 @@
 require "test_helper"
 
 describe MerchantsController do
-  describe "index" do
-    it "responds with success when there are many users saved" do
-      # Arrange
-      Merchant.create(username: "test", email: "test@test.com")
-      # Act
-      get merchants_path
-      # Assert
-      must_respond_with :success
+  describe "logged out" do
+    describe "index" do
+      it "responds with success when there are many users saved" do
+        # Act
+        get merchants_path
+        # Assert
+        must_respond_with :success
+      end
+
+      it "responds with success when there are no merchants saved" do
+        Merchant.delete_all
+        # Act
+        get merchants_path
+        # Assert
+        must_respond_with :success
+      end
     end
 
-    it "responds with success when there are no merchants saved" do
-      # Act
-      get merchants_path
-      # Assert
-      must_respond_with :success
-    end
-  end
+    describe "show" do
+      it "responds with success when showing an existing valid merchant" do
+        # Arrange
+        id = Merchant.find_by_id(merchants(:test).id)[:id]
 
-  describe "show" do
-    # Arrange
-    before do
-      Merchant.create(username: "test", email: "test@test.com")
-    end
-    it "responds with success when showing an existing valid merchant" do
-      # Arrange
-      id = Merchant.find_by(username:"test")[:id]
+        # Act
+        get merchant_path(id)
 
-      # Act
-      get merchant_path(id)
+        # Assert
+        must_respond_with :success
 
-      # Assert
-      must_respond_with :success
+      end
 
+      it "responds with a redirect to the merchants page with an invalid id" do
+        # Act
+        get merchant_path(-1)
+        # Assert
+        must_redirect_to merchants_path
+      end
     end
 
-    it "responds with a redirect to the merchants page with an invalid id" do
-      # Act
-      get merchant_path(-1)
-      # Assert
-      must_redirect_to merchants_path
+    describe "dashboard" do
+      it "prevents non logged in users from accessing dashboard" do
+        get dashboard_path
+
+        must_redirect_to root_path
+
+      end
+    end
+
+    describe "edit" do
+      it "blocks non-logged in users" do
+        get edit_merchant_path(merchants(:test).id)
+
+        must_redirect_to root_path
+      end
+    end
+
+    describe "update" do
+      let (:edit_merchant_data) {
+        {
+          merchant: {username: "boomer",
+                     email: "sooner@boomer.com"}
+        }
+      }
+      it "blocks non signed in merchants" do
+        expect{
+          patch merchant_path(merchants(:test).id), params: edit_merchant_data
+        }.wont_change "Merchant.count"
+
+        must_redirect_to root_path
+
+        expect(merchants(:test).username).must_equal "testing"
+        expect(merchants(:test).email).must_equal "test@test.com"
+      end
     end
   end
 
@@ -67,12 +100,6 @@ describe MerchantsController do
     }
     # the following functions require login
     describe "dashboard" do
-      it "prevents non logged in users from accessing dashboard" do
-        get dashboard_path
-
-        must_redirect_to root_path
-
-      end
       it "allows logged in users to access dashboard" do
         post login_path(@login_data)
         get dashboard_path
@@ -111,11 +138,6 @@ describe MerchantsController do
 
         must_respond_with :success
       end
-      it "blocks non-logged in users" do
-        get edit_merchant_path(@merchant1.id)
-
-        must_redirect_to merchants_path
-      end
     end
 
     describe "update" do
@@ -152,16 +174,6 @@ describe MerchantsController do
 
         expect(@merchant2.username).must_equal "m2"
         expect(@merchant2.email).must_equal "m2@email.com"
-      end
-      it "blocks non signed in merchants" do
-        expect{
-          patch merchant_path(@merchant1.id), params: edit_merchant_data
-        }.wont_change "Merchant.count"
-
-        must_redirect_to merchants_path
-
-        expect(@merchant1.username).must_equal "m1"
-        expect(@merchant1.email).must_equal "m1@email.com"
       end
 
       it "doesn't update a merchant's info when invalid parameters are input" do
