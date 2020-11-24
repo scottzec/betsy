@@ -1,5 +1,5 @@
 <% @products.each do |product| %>
-  <div class="container"></div>
+  <section class="container">
   <% if product.stock >= 0  %>
     <!-- for product image -->
     <% begin %>
@@ -12,11 +12,20 @@
 
     <p>in stock:
       <!-- check if out of stock -->
-      <% if product.stock == 0 %>
+      <% if product.stock <= 0 %>
         SOLD OUT!
       <% else %>
         <%= product.stock %>
-        <%= link_to content_tag(:p, "add to cart"), orderitem_path(product_id: product.id), method: :post %>
+        <%= form_for Orderitem.new do |f| %>
+
+          <%= hidden_field_tag "product_id", product.id %>
+
+          <label>quantity</label>
+          <%= f.text_field :quantity %>
+
+
+          <%= f.submit "add to cart", class: "btn btn-primary" %>
+        <% end %>
       <% end %></p>
     <% if !session[:user_id].nil? && session[:user_id] == product.merchant_id %>
       <%= link_to content_tag(:p, "edit #{product.name}"), edit_merchant_product_path(product.id), method: :get %>
@@ -24,5 +33,5 @@
     <% end %>
 
   <%end %>
-  </div>
+  </section>
 <% end %>

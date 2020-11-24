@@ -2,7 +2,15 @@
 <h1>our amazing merchants</h1>
   <ul>
     <% @merchants.each do |merchant| %>
-        <%= link_to content_tag(:li,"#{merchant.username}"), merchant_path(merchant.id), method: :get %>
+      <li>
+          <% begin %>
+            <%= link_to image_tag("#{merchant.products.first.photo_url}"), product_path(merchant.products.first.id), method: :get%>
+          <% rescue %>
+            <%= link_to image_tag("defaultimage.jpg"), product_path(merchant.products.first.id), method: :get%>
+          <% end %>
+       <h3><%= link_to "#{merchant.username}", merchant_path(merchant.id), method: :get %></h3>
+       <h4><%= merchant.products.count %> items</h4>
+       </li>
     <% end %>
   </ul>
 </main>
