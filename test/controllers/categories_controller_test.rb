@@ -61,27 +61,18 @@ describe CategoriesController do
 
   describe "logged in" do
     before do
-      @merchant1 = Merchant.create(username: "m1", email: "m1@email.com")
+      perform_login(merchants(:test))
     end
-    # the following functions require login
     describe "new" do
       it "allows signed in users to visit the page to make a new category" do
-        @login_data = {merchant: {username: @merchant1.username, email:@merchant1.email} }
-        post login_path(@login_data) # REFACTOR
-
         get new_category_path
 
         must_respond_with :success
       end
     end
     describe "create" do
-      before do
-        @login_data = {merchant: {username: @merchant1.username, email:@merchant1.email} }
-      end
       # needs OAuth
       it "creates a new valid category" do
-        post login_path(@login_data)
-
         @cat = {category: {name: "test"} }
 
         expect{
@@ -93,7 +84,6 @@ describe CategoriesController do
       end
 
       it "returns a bad request and renders the new page if category is blank" do
-         post login_path(@login_data)
          @cat = {category: {name: nil} }
 
          expect{
