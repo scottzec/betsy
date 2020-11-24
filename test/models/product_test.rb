@@ -1,6 +1,29 @@
 require "test_helper"
 
 describe Product do
+  describe "instantiation" do
+      it "can be instantiated" do
+        # Arrange
+        product = Product.new
+
+        # Assert
+        expect(product).must_be_instance_of Product
+      end
+
+      #
+      # it "will have the required fields" do
+      #   # Arrange
+      #   new_driver.save
+      #   driver = Driver.first
+      #   [:name, :vin, :available].each do |field|
+      #
+      #     # Assert
+      #     expect(driver).must_respond_to field
+      #   end
+      # end
+  end
+
+
   describe "relationships" do
     it "product can have multiple reviews" do
 
@@ -9,6 +32,16 @@ describe Product do
 
       # Assert relationship to review model
       expect(product.reviews.count).must_equal 3
+      # new_passenger.trips.each do |trip|
+      #   expect(trip).must_be_instance_of Trip
+    end
+
+    it "product can have 0 reviews" do
+      # Arrange
+      product = products(:product4)
+
+      # Assert
+      expect(product.reviews.count).must_equal 0
     end
 
     it "product has a category" do
@@ -22,91 +55,79 @@ describe Product do
 
     it "product has multiple categories" do
 
-      # Arrange product2
+      # Arrange
       product = products(:product2)
 
-      # Assert relationship to vote model, 3 votes by user3 in votes.yml
+      # Assert
       expect(product.categories.count).must_equal 2
+    end
+
+    it "product can have 0 categories" do
+
+      # Arrange
+      product = products(:product5)
+
+      # Assert
+      expect(product.categories.count).must_equal 0
+    end
+
+    # it "product is related to a merchant" do
+    #
+    #   # Arrange
+    #   product = products(:product1)
+    #
+    #   # Assert
+    #   expect(product.merchant).must_equal "test"
+    # end
+  end
+
+  describe "validations" do
+    it "can be instantiated and is valid when all required fields are present" do
+      # Arrange
+      @product = products(:product1)
+
+      # Act
+      product_validity = @product.valid?
+
+      # Assert
+      expect(product_validity).must_equal true
+    end
+
+    it "is invalid without name" do
+      # Arrange
+      @product = products(:product1)
+      @product.name = nil
+
+      #Act
+      nameless_product = @product.valid?
+
+      # Assert
+      expect(nameless_product).must_equal false
+      expect(@product.errors.messages).must_include :name
+    end
+
+    it "is invalid without category" do
+      # Arrange
+      @product = products(:product1)
+      @product.description = nil
+
+      #Act
+      descriptionless_product = @product.valid?
+
+      # Assert
+      expect(descriptionless_product).must_equal false
+      expect(@product.errors.messages).must_include :description
     end
   end
 
 
-  # let (:new_product) {
-  #   Product.new(name: "Kari", vin: "123", available: true)
-  # }
-  # before do
-  #   Driver.create(name: "Kari",
-  #                 vin: "123",
-  #                 available: true)
-  # end
-  #
-  # # let (:driver_hash) {
-  # #   {
-  # #       driver: {
-  # #           name: "Sisi",
-  # #           vin: "321",
-  # #           available: false
-  # #       }
-  # #   }
-  # # }
-  # before do
-  #   @product = Product.new
-  # end
-  #
-  #   it "can be instantiated" do
-  #     # Act
-  #     created_product = @work.valid?
-  #
-  #     # Assert
-  #     expect(created_product).must_equal true
-  #   end
-  #
-  #   it "will have the required fields" do
-  #     # Your code here
-  #   end
-  #
-  #   describe "relationships" do
-  #     # Your tests go here
-  #   end
-  #
-  #   describe "validations" do
-  #     it "created product is valid" do
-  #       # Act
-  #       created_product = @work.valid?
-  #
-  #       # Assert
-  #       expect(created_product).must_equal true
-  #     end
-  #   end
-  #
-  #   # Tests for methods you create should go here
   #   describe "custom methods" do
   #     # Your tests here
   #   end
   # end
 
 
-  # require "test_helper"
-  #
-  # describe Driver do
-  #   let (:new_driver) {
-  #     Driver.new(name: "Kari", vin: "123", available: true)
-  #   }
-  #   it "can be instantiated" do
-  #     # Assert
-  #     expect(new_driver.valid?).must_equal true
-  #   end
-  #
-  #   it "will have the required fields" do
-  #     # Arrange
-  #     new_driver.save
-  #     driver = Driver.first
-  #     [:name, :vin, :available].each do |field|
-  #
-  #       # Assert
-  #       expect(driver).must_respond_to field
-  #     end
-  #   end
+
   #
   #   describe "relationships" do
   #     it "can have many trips" do
