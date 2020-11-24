@@ -36,12 +36,37 @@
   <h2> my order fulfillments</h2>
   <!-- some table here using the all orders method, link to ind. order as well -->
   <!-- once shopping cart is working, used to test filter table prior to creating table-->
+  <table class="table">
+    <table>
+      <tr>
+        <th>order #</th>
+        <th>order date</th>
+        <th>order status</th>
+        <th>shipped</th>
+      </tr>
+    <% @orders.each do |order, items| %>
+      <td><%= link_to "#{order.id}", merchant_show_path(order.id) %></td>
+        <td><%= order.created_at.strftime("%B %d, %Y") %></td>
+      <td><%= order.status %></td>
+        <table>
+        <% items.each do |item| %>
+          <td><%= link_to "#{item.product.name}", product_path(item.product.id), method: :get %></td>
+          <td><%= item.quantity %></td>
+          <td><%= number_to_currency(item.quantity * item.product.price) %></td>
+          <% if !item.shipped? %>
+            <%= link_to "Mark Shipped", mark_shipped_path(item.id), method: :patch %>
+          <% else %>
+            <span>shipped</span>
+          <% end%>
+    <% end %>
+        </table>
+    <% end %>
+  </table>
   <%= link_to "all" , sort: nil %>
   <%= link_to "pending only" , sort: "pending"%>
   <%= link_to "paid only" , sort: "paid"%>
   <%= link_to "complete only" , sort: "complete"%>
   <%= link_to "cancelled only" , sort: "cancelled"%>
-  <p> <%= @orders %></p>
   <h2> my products</h2>
   <table class="table">
     <thead>

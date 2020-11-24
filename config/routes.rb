@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   end
   
   resources :orderitems, only: [:new, :create, :edit, :update, :destroy]
+  patch "/orderitems/:id/mark_shipped", to: "orderitems#mark_shipped", as: "mark_shipped"
   
   get "/cart", to: "orders#cart", as: "cart"
   patch "/cart", to: "orders#checkout"
