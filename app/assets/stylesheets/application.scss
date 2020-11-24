@@ -26,6 +26,12 @@ list-of-colors {
 }
 
 
+.card-image {
+  width: 100%;
+  height: 20vw;
+  object-fit: cover;
+  padding: 2vw;
+}
 
 .btn-primary {
   background-color: #2E492F;
