@@ -125,19 +125,19 @@ class OrderitemsController < ApplicationController
     return
   end
 
-  def index
-    @order = Order.find_by(id: 1)
-    @orderitem = Orderitem.all
-  end
-
-  def show
-    @orderitem = Orderitem.find_by(id: params[:id])
-
-    if @orderitem.nil?
-      redirect_to root_path, status: :temporary_redirect
-      return
-    end
-  end
+  # def index
+  #   @order = Order.find_by(id: 1)
+  #   @orderitem = Orderitem.all
+  # end
+  #
+  # def show
+  #   @orderitem = Orderitem.find_by(id: params[:id])
+  #
+  #   if @orderitem.nil?
+  #     redirect_to root_path, status: :temporary_redirect
+  #     return
+  #   end
+  # end
 
   def mark_shipped
     @orderitem = Orderitem.find_by(id: params[:id])
