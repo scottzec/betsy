@@ -9,31 +9,30 @@ describe Product do
         # Assert
         expect(product).must_be_instance_of Product
       end
+  end
 
-      #
-      # it "will have the required fields" do
-      #   # Arrange
-      #   new_driver.save
-      #   driver = Driver.first
-      #   [:name, :vin, :available].each do |field|
-      #
-      #     # Assert
-      #     expect(driver).must_respond_to field
-      #   end
-      # end
+
+  describe "will have required fields" do
+    it "a product has each of the fields that are req'd (excluding categories which is optional)" do
+        # Arrange
+        product = products(:product3)
+        [:name, :description, :price, :photo_url, :stock].each do |field|
+
+          # Assert
+          expect(product).must_respond_to field
+        end
+      end
   end
 
 
   describe "relationships" do
     it "product can have multiple reviews" do
 
-      # Arrange test as merchant in users.yml
       product = products(:product2)
 
       # Assert relationship to review model
       expect(product.reviews.count).must_equal 3
-      # new_passenger.trips.each do |trip|
-      #   expect(trip).must_be_instance_of Trip
+
     end
 
     it "product can have 0 reviews" do
@@ -70,16 +69,8 @@ describe Product do
       # Assert
       expect(product.categories.count).must_equal 0
     end
-
-    # it "product is related to a merchant" do
-    #
-    #   # Arrange
-    #   product = products(:product1)
-    #
-    #   # Assert
-    #   expect(product.merchant).must_equal "test"
-    # end
   end
+
 
   describe "validations" do
     it "can be instantiated and is valid when all required fields are present" do
@@ -106,7 +97,7 @@ describe Product do
       expect(@product.errors.messages).must_include :name
     end
 
-    it "is invalid without category" do
+    it "is invalid without description" do
       # Arrange
       @product = products(:product1)
       @product.description = nil
@@ -118,85 +109,70 @@ describe Product do
       expect(descriptionless_product).must_equal false
       expect(@product.errors.messages).must_include :description
     end
+
+    it "is invalid without price" do
+      # Arrange
+      @product = products(:product1)
+      @product.price = nil
+
+      #Act
+      priceless_product = @product.valid?
+
+      # Assert
+      expect(priceless_product).must_equal false
+      expect(@product.errors.messages).must_include :price
+    end
+
+    it "is invalid with a price that isn't numerical" do
+      # Arrange
+      @product = products(:product1)
+      @product.price = "price"
+
+      #Act
+      priceless_product = @product.valid?
+
+      # Assert
+      expect(priceless_product).must_equal false
+      expect(@product.errors.messages).must_include :price
+    end
+
+    it "is invalid without photo url" do
+      # Arrange
+      @product = products(:product1)
+      @product.photo_url = nil
+
+      #Act
+      photoless_product = @product.valid?
+
+      # Assert
+      expect(photoless_product).must_equal false
+      expect(@product.errors.messages).must_include :photo_url
+    end
+
+    it "is invalid without stock" do
+      # Arrange
+      @product = products(:product1)
+      @product.stock = nil
+
+      #Act
+      stockless_product = @product.valid?
+
+      # Assert
+      expect(stockless_product).must_equal false
+      expect(@product.errors.messages).must_include :stock
+    end
+
+    it "is invalid with a stock that isn't numerical" do
+      # Arrange
+      @product = products(:product1)
+      @product.stock = "stock"
+
+      #Act
+      stockless_product = @product.valid?
+
+      # Assert
+      expect(stockless_product).must_equal false
+      expect(@product.errors.messages).must_include :stock
+    end
   end
-
-
-  #   describe "custom methods" do
-  #     # Your tests here
-  #   end
-  # end
-
-
-
-  #
-  #   describe "relationships" do
-  #     it "can have many trips" do
-  #       # Arrange
-  #       new_driver.save
-  #       new_passenger = Passenger.create(name: "Kari", phone_num: "111-111-1211")
-  #       trip_1 = Trip.create(driver_id: new_driver.id, passenger_id: new_passenger.id, date: Date.today, rating: 5, cost: 1234)
-  #       trip_2 = Trip.create(driver_id: new_driver.id, passenger_id: new_passenger.id, date: Date.today, rating: 3, cost: 6334)
-  #
-  #       # Assert
-  #       expect(new_driver.trips.count).must_equal 2
-  #       new_driver.trips.each do |trip|
-  #         expect(trip).must_be_instance_of Trip
-  #       end
-  #     end
-  #   end
-  #
-  #   describe "validations" do
-  #     it "must have a name" do
-  #       # Arrange
-  #       new_driver.name = nil
-  #
-  #       # Assert
-  #       expect(new_driver.valid?).must_equal false
-  #       expect(new_driver.errors.messages).must_include :name
-  #       expect(new_driver.errors.messages[:name]).must_equal ["can't be blank"]
-  #     end
-  #
-  #     it "must have a VIN number" do
-  #       # Arrange
-  #       new_driver.vin = nil
-  #
-  #       # Assert
-  #       expect(new_driver.valid?).must_equal false
-  #       expect(new_driver.errors.messages).must_include :vin
-  #       expect(new_driver.errors.messages[:vin]).must_equal ["can't be blank"]
-  #     end
-  #   end
-  #
-  #   # Tests for methods you create should go here
-  #   describe "custom methods" do
-  #     describe "average rating" do
-  #       # Your code here
-  #     end
-  #
-  #     describe "total earnings" do
-  #       # Your code here
-  #     end
-  #
-  #     describe "can go on/off line" do
-  #       driver = Driver.first
-  #       it "can access the availability path" do
-  #         # Act
-  #         patch availability_path(driver.id)
-  #
-  #         # Assert
-  #         must_redirect_to root_path
-  #       end
-  #       it "will not change other statistics" do
-  #         expect {
-  #           patch availability_path(driver.id)
-  #         }.wont_change "Driver.count", Driver.name
-  #
-  #         must_redirect_to root_path
-  #       end
-  #     end
-  #
-  #
-  #     # You may have additional methods to test
-  #   end
-  # end
 end
