@@ -11,19 +11,21 @@
   <header>
     <nav class="navbar navbar-dark bg-dark">
       <%= link_to  "cactus&clover", root_path, class: "navbar-brand" %>
-      <ul class="navbar-nav">
-        <li class="navbar-item">
-          <%= link_to "all products", products_path, class: "nav-link" %></li>
-        <li class="navbar-item">
-          <%= link_to "browse categories", categories_path, class: "nav-link" %></li>
-        <li class="navbar-item">
-          <%= link_to "browse merchants", merchants_path, class: "nav-link" %></li>
-        <li class="navbar-item">
-          <% if session[:user_id] %>
-            <%= link_to "dashboard", dashboard_path, class: "nav-link" %>
-          <% end %>
-        </li>
-      </ul>
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav">
+          <li class="navbar-item">
+            <%= link_to "all products", products_path, class: "nav-link" %></li>
+          <li class="navbar-item">
+            <%= link_to "browse categories", categories_path, class: "nav-link" %></li>
+          <li class="navbar-item">
+            <%= link_to "browse merchants", merchants_path, class: "nav-link" %></li>
+          <li class="navbar-item">
+            <% if session[:user_id] %>
+              <%= link_to "dashboard", dashboard_path, class: "nav-link" %>
+            <% end %>
+          </li>
+        </ul>
+      </div>
     </nav>
       <%= link_to "Cart", cart_path %>
 
