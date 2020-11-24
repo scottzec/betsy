@@ -9,14 +9,20 @@
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
   <header>
-    <nav>
-      <ul>
-        <%= link_to content_tag(:li, "browse all products"), products_path, method: "get" %>
-        <%= link_to content_tag(:li, "browse by category"), categories_path, method: "get" %>
-        <%= link_to content_tag(:li, "browse by merchants"), merchants_path, method: "get" %>
-        <% if session[:user_id] %>
-          <%= link_to content_tag(:li, "dashboard"), dashboard_path, method: "get" %>
-        <% end %>
+    <nav class="navbar navbar-dark bg-dark">
+      <%= link_to  "cactus&clover", root_path, class: "navbar-brand" %>
+      <ul class="navbar-nav">
+        <li class="navbar-item">
+          <%= link_to "all products", products_path, class: "nav-link" %></li>
+        <li class="navbar-item">
+          <%= link_to "browse categories", categories_path, class: "nav-link" %></li>
+        <li class="navbar-item">
+          <%= link_to "browse merchants", merchants_path, class: "nav-link" %></li>
+        <li class="navbar-item">
+          <% if session[:user_id] %>
+            <%= link_to "dashboard", dashboard_path, class: "nav-link" %>
+          <% end %>
+        </li>
       </ul>
     </nav>
       <%= link_to "Cart", cart_path %>
