@@ -18,7 +18,7 @@ describe OrderitemsController do
     end
 
     describe "new" do
-      it
+
     end
 
 
