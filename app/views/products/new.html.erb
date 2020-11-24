@@ -1,6 +1,8 @@
+<%#= form_with(model: @product), url: merchant_products_path do |f| %>
+<%#= form_with(model: @product, url: merchant_products_path(@current_merchant), method: "post") do |f| %>
+<!--  NEW SHOULD LOOK LIKE THIS: <%#= form_with(model: @product, url: merchant_product_path(@product.merchant, @product.id), method: "patch") do |f| %>-->
+<!--HOW TO GET FORM_WItH TO WORK per discussion with Ansel-->
 
-<!--  NEW SHOULD LOOK LIKE THIS:
-<%#= form_with(model: @product, url: merchant_product_path(@product.merchant, @product.id), method: "patch") do |f| %>-->
 
 <%= form_for @product, url: merchant_products_path do |f| %>
   <% if @product.errors.any? %>
@@ -15,21 +17,21 @@
 
   <%= f.label :name %>
   <%= f.text_field :name %>
-
+  <br>
   <%= f.label :description %>
   <%= f.text_field :description %>
-
+  <br>
   <%= f.label :price %>
   <%= f.text_field :price %>
-
+  <br>
   <%= f.label :photo_url %>
   <%= f.text_field :photo_url %>
-
+  <br>
   <%= f.label :stock %>
   <%= f.text_field :stock %>
-
+  <br>
   <%=f.label :categories %>
   <%= collection_check_boxes(:product, :category_ids, Category.all, :id, :name) %>
-
+  <br>
   <%= f.submit 'Create Product' %>
 <% end %>

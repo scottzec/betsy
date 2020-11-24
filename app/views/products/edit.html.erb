@@ -1,17 +1,8 @@
-<%#= form_with @product, merchant_id: @product.merchant.id, url: merchant_product_path do |f| %>
+<!--Previous version that was missing the model-->
+<%#= form_with(model: @product, url: merchant_product_path(merchant_id: @product.merchant.id, product_id: @product.id), method: "patch") do |f| %>
 
-<%#= form_with(url: merchant_product_path, method: "patch") do |f| %>
-<!--https://edgeguides.rubyonrails.org/routing.html#creating-paths-and-urls-from-objects-->
-<%#= form_with(url: merchant_product_path(@product.merchant.id, @product.id), method: "patch") do |f| %>
-<%#= form_with(url: merchant_product_path(merchant_id: @product.merchant.id, product_id: @product.id), method: "patch") do |f| %>
-
+<!--Simplified version-->
 <%= form_with(model: @product) do |f| %>
-<!--<%#= form_for @product, url: product_path(@product), method: "patch" do |f| %>   # IT WORKS!!!-->
-<%#= form_for @product, url: merchant_product_path(@product.merchant, @product.id), method: "patch" do |f| %>
-
-<!--  NEW SHOULD LOOK LIKE THIS: <%#= form_with(model: @product, url: merchant_product_path(@product.merchant, @product.id), method: "patch") do |f| %>-->
-
-
     <% if @product.errors.any? %>
     <ul class="errors">
       <% @product.errors.each do |column, message| %>
@@ -21,8 +12,6 @@
       <% end %>
     </ul>
   <% end %>
-
-  <%#= hidden_field_tag "merchant_id", @product.merchant.id %>
 
   <%= f.label :name %>
   <%= f.text_field :name %>
