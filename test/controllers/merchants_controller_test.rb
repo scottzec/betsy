@@ -78,7 +78,29 @@ describe MerchantsController do
   end
 
   describe "login/out functions " do
-    # holding off until OAuth is implemented to add these
+    describe "auth_callback" do
+      start_count = Merchant.count
+
+      # get user from fixtures
+      merchant = Merchant.find_by_id(merchants(:test).id)
+
+      # Tell OmniAuth to use this user's info when it sees
+      # an auth callback from github
+      OmniAuth.config.mock_auth[:github] = OmniAuth::AuthHash.new(mock_auth_hash(merchant))
+
+      # Send a login request for that user
+      # Note that we're using the named path for the callback, as defined
+      # in the `as:` clause in `config/routes.rb`
+      get auth_callback_path(:github)
+
+      must_redirect_to root_path
+
+      # Since we can read the session, check that the user ID was set as expected
+      session[:user_id].must_equal merchant.id
+
+      # Should *not* have created a new user
+      Merchant.count.must_equal start_count
+    end
     describe "create" do
       # needs OAuth
     end
