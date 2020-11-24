@@ -40,3 +40,6 @@ yarn-debug.log*
 
 # ignore dotenv file
 .env
+
+# ignore simplecov
+coverage/*
