@@ -2,6 +2,8 @@
 
 class OrderitemsController < ApplicationController
   before_action :require_login, only: [:mark_shipped]
+  before_action :find_orderitem, except: [:create, :edit, :update]
+
   def new
     @orderitem = Orderitem.new
   end
@@ -125,10 +127,10 @@ class OrderitemsController < ApplicationController
     return
   end
 
-  def index
-    @order = Order.find_by(id: 1)
-    @orderitem = Orderitem.all
-  end
+  # def index
+  #   @order = Order.find_by(id: )
+  #   @orderitems = Orderitem.all
+  # end
 
   def show
     @orderitem = Orderitem.find_by(id: params[:id])
@@ -169,4 +171,9 @@ class OrderitemsController < ApplicationController
 
     redirect_back(fallback_location: root_path)
   end
+
+  private
+
+
+
 end

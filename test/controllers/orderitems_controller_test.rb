@@ -1,10 +1,6 @@
 require "test_helper"
 
 describe OrderitemsController do
-  # it "does a thing" do
-  #   value(1+1).must_equal 2
-  # end
-  #
 
   describe "show" do
     it "responds with success when showing an existing valid orderitem" do
@@ -20,6 +16,11 @@ describe OrderitemsController do
       must_respond_with :redirect
       must_redirect_to root_path
     end
+
+    describe "new" do
+      it
+    end
+
 
   end
 
