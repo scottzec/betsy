@@ -59,6 +59,7 @@ class OrderitemsController < ApplicationController
     @orderitem.order_id = @cart.id
     @orderitem.product_id = product.id
     @orderitem.quantity = quantity
+    @orderitem.shipped = false
 
 
     if @orderitem.save!
@@ -73,20 +74,22 @@ class OrderitemsController < ApplicationController
   end
 
   def update
-    product = Product.find_by(id: @orderitem.product_id)
-    name = product.name
-
     if @orderitem.nil?
       flash.now[:warning] = 'A problem occurred: could not find item'
       redirect_back(fallback_location: root_path)
       return
     end
 
+    product = Product.find_by(id: @orderitem.product_id)
+    name = product.name
+
     if params[:quantity].to_i > product.stock
       flash[:warning] = "Only #{product.stock} items left in stock"
       redirect_back(fallback_location: root_path)
       return
-    elsif params[:quantity].to_i < 1
+    end
+
+    if params[:quantity].to_i < 1
       @orderitem.destroy
       flash[:success] = "Removed #{name} from cart"
       redirect_back(fallback_location: root_path)
