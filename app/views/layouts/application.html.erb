@@ -17,12 +17,13 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
           <ul class="navbar-nav ml-auto">
+<!--            <li class="navbar-item">-->
+              <%#= link_to "all products", products_path, class: "nav-link" %>
+<!--            </li>-->
             <li class="navbar-item">
-              <%= link_to "all products", products_path, class: "nav-link" %></li>
+              <%= link_to "categories", categories_path, class: "nav-link" %></li>
             <li class="navbar-item">
-              <%= link_to "browse categories", categories_path, class: "nav-link" %></li>
-            <li class="navbar-item">
-              <%= link_to "browse merchants", merchants_path, class: "nav-link" %></li>
+              <%= link_to "merchants", merchants_path, class: "nav-link" %></li>
             <li class="navbar-item">
               <% if session[:user_id] %>
                 <%= link_to "dashboard", dashboard_path, class: "nav-link" %>
