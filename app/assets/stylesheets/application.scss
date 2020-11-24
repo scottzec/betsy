@@ -26,12 +26,23 @@ list-of-colors {
 }
 
 
+.card-image {
+  width: 100%;
+  height: 20vw;
+  object-fit: cover;
+  padding: 1vw;
+}
+
+//.card-body {
+//  background-color: #A5A48D;
+//}
 
 .btn-primary {
   background-color: #2E492F;
   border-color: #2E492F;
   margin: 5px;
 }
+
 
 .btn-primary:hover {
   background-color: #84814F;
