@@ -1,6 +1,7 @@
 <main>
-  <h1> Merchant: <%=@merchant.username %></h1>
-  <h2> Products</h2>
+  <h1> <%=@merchant.username %></h1>
+  <h3><em>joined on <%= @merchant.created_at.strftime("%B %d, %Y").downcase %></em></h3>
+  <h2> <%=@merchant.username %>'s products</h2>
     <% if @products.empty? %>
 
     <p>this merchant doesn't have any products yet. come back again later.</p>
