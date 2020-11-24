@@ -27,7 +27,9 @@ class OrderitemsController < ApplicationController
       flash[:warning] = 'You must select a valid product'
       redirect_back(fallback_location: root_path)
       return
-    elsif product.merchant.id == session[:user_id]
+    end
+
+    if product.merchant.id == session[:user_id]
       flash[:warning] = 'You cannot add your own product to your cart'
       redirect_back(fallback_location: root_path)
       return
