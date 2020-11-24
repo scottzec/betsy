@@ -27,17 +27,9 @@
 #     end
 #   end
 #
-#   # describe "ensure cart" do
-#   #   it "creates a cart if one does not exist" do
-#   #     @cart = nil
-#   #
-#   #     expect(@cart.ensure_cart)
-#   #   end
-#   # end
-#
 #   describe "merchant show" do
 #     it "responds with success if the merchant is logged in and the order contains a product of theirs" do
-#       # merchant.save
+#
 #
 #
 #     end
