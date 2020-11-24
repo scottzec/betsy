@@ -4,13 +4,6 @@ class OrderitemsController < ApplicationController
   before_action :require_login, only: [:mark_shipped]
   before_action :find_oi, except: [:create]
 
-  # def show
-  #   if @orderitem.nil?
-  #     redirect_to root_path, status: :temporary_redirect
-  #     return
-  #   end
-  # end
-  #
   def create
     @cart = Order.find_by(id: session[:order_id])
     product = Product.find_by(id: params[:product_id])
@@ -123,23 +116,16 @@ class OrderitemsController < ApplicationController
     return
   end
 
-  # def index
-  #   @order = Order.find_by(id: 1)
-  #   @orderitem = Orderitem.all
-  # end
-  #
-  # def show
-  #   @orderitem = Orderitem.find_by(id: params[:id])
-  #
-  #   if @orderitem.nil?
-  #     redirect_to root_path, status: :temporary_redirect
-  #     return
-  #   end
-  # end
-
 
   def mark_shipped
     if @orderitem.nil?
+      flash[:warning] = 'A problem occurred: could not locate order item'
+      redirect_back(fallback_location: root_path)
+      return
+    end
+
+    if @orderitem.product.merchant.id != session[:user_id]
+      flash[:warning] = 'You cannot ship a product that does not belong to you'
       redirect_back(fallback_location: root_path)
       return
     end
@@ -165,6 +151,7 @@ class OrderitemsController < ApplicationController
     end
 
     redirect_back(fallback_location: root_path)
+    return
   end
 
 

@@ -270,6 +270,55 @@ describe OrderitemsController do
 
     end
 
+    describe "mark_shipped" do
+      it "will redirect if oi nil" do
+        perform_login(merchants(:user))
+
+        expect {
+          patch mark_shipped_path(-1)
+        }.wont_change "Orderitem.count"
+
+        expect(flash[:warning]).must_equal 'A problem occurred: could not locate order item'
+        must_respond_with :redirect
+      end
+
+      it "will not allow to mark_shipped if not logged in" do
+        expect {
+          patch mark_shipped_path(-1)
+        }.wont_change "Orderitem.count"
+
+        expect(flash[:warning]).must_equal "You must be logged in to view this section"
+        must_respond_with :redirect
+      end
+
+      it "will let merchant mark_shipped oi assoc with their product" do
+        perform_login(merchants(:user))
+
+        oi = orderitems(:waiting0)
+
+        expect {
+          patch mark_shipped_path(oi.id)
+        }.wont_change "Orderitem.count"
+
+        must_respond_with :redirect
+      end
+
+      it "will not let merchant mark_shipped oi assoc with another's product" do
+        perform_login(merchants(:test))
+
+        oi = orderitems(:waiting0)
+
+        expect {
+          patch mark_shipped_path(oi.id)
+        }.wont_change "Orderitem.count"
+
+        expect(flash[:warning]).must_equal 'You cannot ship a product that does not belong to you'
+        must_respond_with :redirect
+      end
+
+
+    end
+
 
 
 
