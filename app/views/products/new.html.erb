@@ -1,3 +1,7 @@
+
+<!--  NEW SHOULD LOOK LIKE THIS:
+<%#= form_with(model: @product, url: merchant_product_path(@product.merchant, @product.id), method: "patch") do |f| %>-->
+
 <%= form_for @product, url: merchant_products_path do |f| %>
   <% if @product.errors.any? %>
     <ul class="errors">
