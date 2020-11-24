@@ -36,11 +36,18 @@
   <h2> my order fulfillments</h2>
   <!-- some table here using the all orders method, link to ind. order as well -->
   <!-- once shopping cart is working, used to test filter table prior to creating table-->
-  <%= link_to "all" , sort: nil %>
-  <%= link_to "pending only" , sort: "pending"%>
-  <%= link_to "paid only" , sort: "paid"%>
-  <%= link_to "complete only" , sort: "complete"%>
-  <%= link_to "cancelled only" , sort: "cancelled"%>
+  <div class="dropdown">
+    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+      filter by status
+      <span class="caret"></span></button>
+    <ul class ="dropdown-menu">
+      <%= link_to content_tag(:li, "none") , sort: nil %>
+      <%= link_to content_tag(:li, "pending") , sort: "pending" %>
+      <%= link_to content_tag(:li, "paid") , sort: "paid" %>
+      <%= link_to content_tag(:li, "complete") , sort: "complete" %>
+      <%= link_to content_tag(:li, "cancelled") , sort: "cancelled" %>
+    </ul>
+  </div>
   <p> <%= @orders %></p>
   <h2> my products</h2>
   <table class="table">
