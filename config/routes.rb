@@ -23,7 +23,7 @@ Rails.application.routes.draw do
 
   # OAuth routes for merchant authentication
   get "/auth/github", as: "github_login"
-  get "/auth/:provider/callback", to: "merchants#create"
+  get "/auth/:provider/callback", to: "merchants#create", as: "auth_callback"
   # REPLACE WITH OAUTH ROUTES
   # get "/login", to: "merchants#login_form", as: "login"
   # post "/login", to: "merchants#login"

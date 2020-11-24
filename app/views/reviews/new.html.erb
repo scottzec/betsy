@@ -2,10 +2,10 @@
   <h2>review <%="#{@product.name} by #{@merchant.username}" %></h2>
   <h2><%="$%.2f" % @product.price %></h2>
   <p><%=@product.description %></p>
-  <% if @product.photo_url == "nil" || @product.photo_url.nil? %>
-    <%= link_to image_tag("defaultimage.jpg"), product_path(@product.id), method: :get%>
-  <% else %>
+  <% begin %>
     <%= link_to image_tag("#{@product.photo_url}"), product_path(@product.id), method: :get%>
+  <% rescue %>
+    <%= link_to image_tag("defaultimage.jpg"), product_path(@product.id), method: :get%>
   <% end %>
 
   <%= form_with model: @review, class: 'review__form', url: product_reviews_path do |f| %>

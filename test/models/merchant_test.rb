@@ -96,7 +96,7 @@ describe Merchant do
         expect(total_revenue).must_be_close_to total
       end
 
-      it "returns total revenue of items on pending orders ONLY when pending status applied" do
+      it "returns total revenue of items on orders filtered by status" do
         total_revenue = merchants(:user).total_revenue(status: 'pending')
         total = 0
         orders = Order.where(status: 'pending')
@@ -111,58 +111,9 @@ describe Merchant do
         end
         expect(total_revenue).must_be_close_to total
       end
-
-      it "returns total revenue items on paid orders ONLY when paid status applied" do
-        total_revenue = merchants(:test).total_revenue(status: 'paid')
-        total = 0
-        orders = Order.where(status: 'paid')
-        orderitems = orders.where(orderitems: [orderitems(:waiting2), orderitems(:waiting3)]) # this part is why we can't just loop
-
-        orderitems.each do |order|
-          order.orderitems.each do |orderitem|
-            if orderitem.merchant == merchants(:test)
-              total += orderitem.quantity * orderitem.product.price
-            end
-          end
-        end
-        expect(total_revenue).must_be_close_to total
-      end
-
-      it "returns total revenue of items on complete orders ONLY when complete status applied" do
-        total_revenue = merchants(:test).total_revenue(status: 'complete')
-
-        total = 0
-        orders = Order.where(status: 'complete')
-        orderitems = orders.where(orderitems: [orderitems(:shipped2)]) # this part is why we can't just loop
-
-        orderitems.each do |order|
-          order.orderitems.each do |orderitem|
-            if orderitem.merchant == merchants(:test)
-              total += orderitem.quantity * orderitem.product.price
-            end
-          end
-        end
-        expect(total_revenue).must_be_close_to total
-      end
-
-      it "returns total revenue of items on cancelled order ONLY when cancelled status applied" do
-        total_revenue = merchants(:user).total_revenue(status: 'cancelled')
-        total = 0
-        orders = Order.where(status: 'cancelled')
-        orderitems = orders.where(orderitems: [orderitems(:waiting4)]) # this part is why we can't just loop
-
-        orderitems.each do |order|
-          order.orderitems.each do |orderitem|
-            if orderitem.merchant == merchants(:user)
-              total += orderitem.quantity * orderitem.product.price
-            end
-          end
-        end
-        expect(total_revenue).must_be_close_to total
-      end
     end
     describe "get orders" do
-      it "returns [] if there are no orders" do
+      it "returns {} if there are no orders" do
         Order.delete_all
         Orderitem.delete_all
 
@@ -172,32 +123,98 @@ describe Merchant do
         expect(all_orders).must_be_kind_of Hash
       end
       it "returns all orders w/ order items (if no filter specified or invalid filter specified)" do
+        orders = merchants(:test).get_orders
 
+        # pull info another way
+        products = Product.where(merchant: merchants(:test))
+        orderitems = Orderitem.where(product: products)
+        orders2 = Order.where(orderitems: orderitems)
+
+        # num of key/value pairs from method must equal number of orders
+        expect(orders2.count).must_equal orders.size()
+
+        # with this loop need to check:
+        # - keys of get_orders return match orders in orders2
+        # - keys are a type of order
+        # - values aka array of orderitems does not contain order items belonging to another merchant.
+
+        orders.each do |order, orderitems|
+          # keys of get_orders return match orders in orders2 & are type of order
+          expect(orders2).must_include order # <- we derived orders2 from Order, so this checks both
+          orderitems.each do |orderitem|
+            expect(orderitem.merchant).must_equal merchants(:test) # check orderitems merchant
+          end
+        end
       end
 
-      it "returns only pending orders w/orderitems ONLY when pending status applied" do
+      it "returns orders w/orderitems filtered by status" do
+        orders = merchants(:user).get_orders(status: 'pending')
 
-      end
+        # pull info another way
+        products = Product.where(merchant: merchants(:user))
+        orderitems = Orderitem.where(product: products)
+        orders2 = Order.where(orderitems: orderitems, status: 'pending')
 
-      it "returns only paid orders w/orderitems ONLY when paid status applied" do
+        # num of key/value pairs from method must equal number of orders
+        expect(orders2.count).must_equal orders.size()
 
-      end
+        # with this loop need to check:
+        # - keys of get_orders return match orders in orders2
+        # - keys are a type of order
+        # - values aka array of orderitems does not contain order items belonging to another merchant.
+        # - ALSO check status of order
 
-      it "returns only complete orders w/orderitems ONLY when complete status applied" do
-
-      end
-
-      it "returns only cancelled orders w/orderitemsONLY when cancelled status applied" do
-
+        orders.each do |order, orderitems|
+          # keys of get_orders return match orders in orders2 & are type of order
+          expect(orders2).must_include order # <- we derived orders2 from Order, so this checks both
+          expect(order.status).must_equal 'pending'
+          orderitems.each do |orderitem|
+            expect(orderitem.merchant).must_equal merchants(:user) # check orderitems merchant
+          end
+        end
       end
     end
 
     describe "build from github" do
       it "correctly assigns fields from auth hash when github name is present" do
+        # even though build from github doesn't save, the model validation checks for uniqueness
+        # we have to build a new merchant with unique attributes (except provider)
+        new_merchant = Merchant.new(provider: 'github', uid: 5432154, username: "new", email: "new@new.com")
+        auth_hash = mock_auth_hash(new_merchant)
 
+        new_mer_saved = Merchant.build_from_github(auth_hash)
+
+        expect(new_mer_saved.valid?).must_equal true
+
+        expect(new_mer_saved.provider).must_equal new_merchant.provider
+        expect(new_mer_saved.uid).must_equal new_merchant.uid
+        expect(new_mer_saved.username).must_equal new_merchant.username
+        expect(new_mer_saved.provider_name).must_equal new_merchant.username
+        expect(new_mer_saved.email).must_equal new_merchant.email
+        expect(new_mer_saved.provider_email).must_equal new_merchant.email
       end
 
-      it "correct assigns username to nickname when name is NOT present but nickname is " do
+      it "correctly assigns username to nickname when name is NOT present but nickname is " do
+        # we need to make a special hash that has a name but no nickname just for this test
+        # this isn't built into mock_auth_hash (nor does it make sense to be) so we have to make it ourselves
+        auth_hash = {provider: 'github',
+                     uid: 1919191919,
+                     info: {
+                            email: "noname@name.com",
+                            name: nil,
+                            nickname: "nickname exists"
+                            }
+                     }
+        new_mer_saved = Merchant.build_from_github(auth_hash)
+
+        expect(new_mer_saved.valid?).must_equal true
+
+        expect(new_mer_saved.provider).must_equal auth_hash[:provider]
+        expect(new_mer_saved.uid).must_equal auth_hash[:uid]
+        expect(new_mer_saved.username).must_equal auth_hash[:info][:nickname]
+        expect(new_mer_saved.provider_name).must_equal auth_hash[:info][:nickname]
+        expect(new_mer_saved.email).must_equal auth_hash[:info][:email]
+        expect(new_mer_saved.provider_email).must_equal auth_hash[:info][:email]
 
       end
     end

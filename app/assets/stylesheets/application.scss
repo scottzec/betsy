@@ -17,13 +17,44 @@
 
 @import "**/*";
 
+list-of-colors {
+  color: #2E492F;
+  color: #A5A48D;
+  color: #F1F1F1;
+  color: #84814F;
+  color: #FFFFFF;
+}
+
+
+.card-image {
+  width: 100%;
+  height: 20vw;
+  object-fit: cover;
+  padding: 1vw;
+}
+
+//.card-body {
+//  background-color: #A5A48D;
+//}
+
 .btn-primary {
-  background-color: darkolivegreen;
-  border-color: darkolivegreen;
+  background-color: #2E492F;
+  border-color: #2E492F;
   margin: 5px;
 }
 
+
 .btn-primary:hover {
-  background-color: olive;
-  border-color: olive;
+  background-color: #84814F;
+  border-color: #84814F;
+}
+
+.btn-primary:focus {
+  background-color: #84814F;
+  border-color: #84814F;
+}
+
+.btn-primary:active {
+  background-color: #84814F;
+  border-color: #84814F;
 }

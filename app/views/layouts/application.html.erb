@@ -1,34 +1,48 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Betsy</title>
+    <title>cactus&clover</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
-  <header>
-    <nav>
-      <ul>
-        <%= link_to content_tag(:li, "browse all products"), products_path, method: "get" %>
-        <%= link_to content_tag(:li, "browse by category"), categories_path, method: "get" %>
-        <%= link_to content_tag(:li, "browse by merchants"), merchants_path, method: "get" %>
-        <% if session[:user_id] %>
-          <%= link_to content_tag(:li, "dashboard"), dashboard_path, method: "get" %>
-        <% end %>
-      </ul>
-    </nav>
-      <%= link_to "Cart", cart_path %>
-
-    <% if session[:user_id] %>
-      <%= link_to "log out", logout_path, method: "delete" %>
-    <% else %>
-      <%= link_to "Login with Github", github_login_path %>
-      <!-- < % = # link_to "login", login_path % > -->
-    <% end %>
-  </header>
   <body>
+    <header>
+      <nav class="navbar navbar-dark bg-dark navbar-expand-md">
+        <%= link_to  "cactus&clover", root_path, class: "navbar-brand" %>
+        <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <ul class="navbar-nav ml-auto">
+            <li class="navbar-item">
+              <%= link_to "all products", products_path, class: "nav-link" %></li>
+            <li class="navbar-item">
+              <%= link_to "browse categories", categories_path, class: "nav-link" %></li>
+            <li class="navbar-item">
+              <%= link_to "browse merchants", merchants_path, class: "nav-link" %></li>
+            <li class="navbar-item">
+              <% if session[:user_id] %>
+                <%= link_to "dashboard", dashboard_path, class: "nav-link" %>
+              <% end %>
+            </li>
+            <li class="navbar-item">
+              <%= link_to "cart", cart_path, class: "nav-link" %>
+            </li>
+            <li class="navbar-item">
+              <% if session[:user_id] %>
+                <%= link_to "log out", logout_path, method: "delete", class: "nav-link" %>
+              <% else %>
+                <%= link_to "Login with Github", github_login_path, class: "nav-link" %>
+                <!-- < % = # link_to "login", login_path % > -->
+              <% end %>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
 
     <section class="flash">
       <% flash.each do |name, message| %>
@@ -45,6 +59,11 @@
         <%end %>
       <% end %>
     </section>
+
     <%= yield %>
+
+  <footer>
+
+  </footer>
   </body>
 </html>
