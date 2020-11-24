@@ -91,13 +91,37 @@ describe MerchantsController do
         expect(Merchant.count).must_equal start_count
       end
       it "creates an account for a new user and redirects to the root route" do
-      end
+        start_count = Merchant.count
+        mer = Merchant.new(provider: "github", uid: 11111111, username: "new_person", email: "new@user.com")
 
+        perform_login(mer)
+
+        must_redirect_to dashboard_path
+
+        # new user created
+        expect(Merchant.count).must_equal start_count + 1
+
+        # new user will be last user and also in session
+        session[:user_id].must_equal Merchant.last.id
+      end
       it "redirects to the login route if given invalid user data" do
       end
     end
     describe "destroy" do
-      # needs OAuth
+      it "can logout an existing user" do
+        # Arrange
+        perform_login(merchants(:test))
+
+        expect(session[:user_id]).wont_be_nil
+
+        delete logout_path, params: {}
+
+        expect(session[:user_id]).must_be_nil
+        must_redirect_to root_path
+      end
+
+      it "guest users on that route" do
+      end
     end
   end
   describe "active session only functions" do
