@@ -8,12 +8,27 @@
 
 <main>
   <h2>Order #<%= @order.id %></h2>
-  <ul>
-    <li>Name: <%= @order.name %></li>
-    <li>Email: <%= @order.email %></li>
-    <li>Mailing Address: <%= @order.address %></li>
-    <li>Zip Code: <%= @order.zip_code %> </li>
-    <li>Last 4 Digits of CC <%= @order.credit_card_number[-4..-1] %></li>
-    <li>Credit Card Expiration Date <%= @order.expiration_date %></li>
-  </ul>
+
+  <table class="table">
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Mailing Address</th>
+      <th>Zip Code</th>
+      <th>Last 4 Digits of CC</th>
+      <th>Credit Card Expiration Date</th>
+    </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><%= @order.name %></td>
+        <td><%= @order.email %></td>
+        <td><%= @order.address %></td>
+        <td><%= @order.zip_code %></td>
+        <td><%= @order.credit_card_number[-4..-1] %></td>
+        <td><%= @order.expiration_date %></td>
+      </tr>
+    </tbody>
+  </table>
 </main>
