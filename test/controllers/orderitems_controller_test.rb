@@ -18,6 +18,7 @@ describe OrderitemsController do
         expect(new_oi.quantity).must_equal 3
         expect(new_oi.order).must_be_kind_of Order
         expect(new_oi.product).must_equal products(:product1)
+        expect(new_oi.shipped).must_equal false
 
         must_respond_with :redirect
         must_redirect_to cart_path
