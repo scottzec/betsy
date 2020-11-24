@@ -10,7 +10,8 @@ Rails.application.routes.draw do
     resources :reviews, only: [:new, :create]
   end
   
-  resources :orderitems #may be able to delete later, or have only: [:show]
+  resources :orderitems, except: [:show, :index, :new, :edit]
+
 
   get "/cart", to: "orders#cart", as: "cart"
   patch "/cart", to: "orders#checkout"

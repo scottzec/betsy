@@ -2,10 +2,15 @@
 
 class OrderitemsController < ApplicationController
   before_action :require_login, only: [:mark_shipped]
-  def new
-    @orderitem = Orderitem.new
-  end
+  before_action :find_oi, except: [:create]
 
+  # def show
+  #   if @orderitem.nil?
+  #     redirect_to root_path, status: :temporary_redirect
+  #     return
+  #   end
+  # end
+  #
   def create
     @cart = Order.find_by(id: session[:order_id])
     product = Product.find_by(id: params[:product_id])
@@ -67,23 +72,13 @@ class OrderitemsController < ApplicationController
     end
   end
 
-  def edit
-    @orderitem = Orderitem.find_by(id: params[:id])
-
-    if @orderitem.nil?
-      flash.now[:warning] = 'A problem occurred: could not find item in cart'
-      redirect_back(fallback_location: root_path)
-      return
-    end
-  end
-
   def update
-    @orderitem = Orderitem.find_by(id: params[:id])
     product = Product.find_by(id: @orderitem.product_id)
     name = product.name
 
     if @orderitem.nil?
-      head :not_found
+      flash.now[:warning] = 'A problem occurred: could not find item'
+      redirect_back(fallback_location: root_path)
       return
     end
 
@@ -110,8 +105,6 @@ class OrderitemsController < ApplicationController
   end
 
   def destroy
-    @orderitem = Orderitem.find_by(id: params[:id])
-
     if @orderitem.nil?
       flash[:warning] = 'A problem occurred: could not locate order item'
       redirect_back(fallback_location: root_path)
@@ -125,23 +118,7 @@ class OrderitemsController < ApplicationController
     return
   end
 
-  def index
-    @order = Order.find_by(id: 1)
-    @orderitem = Orderitem.all
-  end
-
-  def show
-    @orderitem = Orderitem.find_by(id: params[:id])
-
-    if @orderitem.nil?
-      redirect_to root_path, status: :temporary_redirect
-      return
-    end
-  end
-
   def mark_shipped
-    @orderitem = Orderitem.find_by(id: params[:id])
-
     if @orderitem.nil?
       redirect_back(fallback_location: root_path)
       return
@@ -169,4 +146,12 @@ class OrderitemsController < ApplicationController
 
     redirect_back(fallback_location: root_path)
   end
+
+
+  private
+
+  def find_oi
+    @orderitem = Orderitem.find_by(id: params[:id])
+  end
+
 end
