@@ -43,7 +43,7 @@ class Merchant < ApplicationRecord
       product = Product.find_by(id: orderitem.product_id)
       # if no status input, will total everything.
       # if status input, will match by status
-      if order.status.nil? || order.status.downcase == status
+      if (status.nil? || order.status.nil?) || order.status.downcase == status
         total += orderitem.quantity * product.price
       end
     end
@@ -67,7 +67,7 @@ class Merchant < ApplicationRecord
       # if no status input, will collect everything.
       # if status input, will match by status
       # would be nice if postgresql can hash
-      if order.status.nil? || order.status.downcase == status
+      if (status.nil? || order.status.nil?) || order.status.downcase == status
         if allorders.has_key?(order)
           allorders[order] << orderitem
         else
