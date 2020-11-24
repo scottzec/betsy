@@ -48,36 +48,37 @@
       <%= link_to content_tag(:li, "cancelled") , sort: "cancelled" %>
     </ul>
   </div>
-  <table class="table">
-      <tr>
-        <th>order #</th>
-        <th>order date</th>
-        <th>order status</th>
-      </tr>
+
     <% @orders.each do |order, items| %>
-      <td><%= link_to "#{order.id}", merchant_show_path(order.id) %></td>
-        <td><%= order.created_at.strftime("%B %d, %Y") %></td>
-      <td><%= order.status %></td>
-        <table>
-<!--          <tr>-->
-        <% items.each do |item| %>
-              <th>item</th>
-          <td><%= link_to "#{item.product.name}", product_path(item.product.id), method: :get %></td>
-              <th>quantity</th>
+    <table class="table">
+      <tr>
+        <th colspan="4"><h3>order <%= link_to "##{order.id}", merchant_show_path(order.id) %></h3>
+        <h4><%= order.created_at.strftime("%B %d, %Y").downcase %></h4>
+          <h4><em><%= order.status %></em></h4></th>
+      </tr>
+
+        <table class="table">
+          <tr>
+            <th>item</th>
+            <th>quantity</th>
+            <th>subtotal</th>
+            <th>status</th>
+          </tr>
+            <% items.each do |item| %>
+            <tr>
+              <td><%= link_to "#{item.product.name}", product_path(item.product.id), method: :get %></td>
               <td><%= item.quantity %></td>
-              <th>subtotal</th>
               <td><%= number_to_currency(item.quantity * item.product.price) %></td>
-              <th>status</th>
               <% if !item.shipped? %>
-            <td><%= link_to "mark shipped", mark_shipped_path(item.id), method: :patch %></td>
-          <% else %>
-            <td>shipped</td>
-          <% end%>
+                <td><%= link_to "mark shipped", mark_shipped_path(item.id), method: :patch %></td>
+              <% else %>
+                <td>shipped</td>
+              <% end%>
+            </tr>
+            <% end %>
+            </table>
+      </table>
     <% end %>
-<!--          </tr>-->
-        </table>
-    <% end %>
-  </table>
   <h2> my products</h2>
   <table class="table">
     <thead>

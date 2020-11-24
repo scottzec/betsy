@@ -2,31 +2,31 @@
   <h2>your cart</h2>
   <% if @cart && @cart.orderitems.length > 0 %>
     <ol>
-    <% @cart.orderitems.each do |item| %>
-      <li>Product: <%= link_to item.product.name, product_path(item.product.id)%></li>
-      <ul>
-        <li>quantity: <%= item.quantity %></li>
-        <li>price: <%= number_to_currency(item.product.price) %></li>
-        <li>subtotal: <%= number_to_currency(item.product.price * item.quantity) %></li>
-        <li>
-          <%= form_with(url: orderitem_path(item.id), method: "patch", class: "form-inline")  do |f| %>
+      <% @cart.orderitems.each do |item| %>
+        <li>Product: <%= link_to item.product.name, product_path(item.product.id)%></li>
+        <ul>
+          <li>quantity: <%= item.quantity %></li>
+          <li>price: <%= number_to_currency(item.product.price) %></li>
+          <li>subtotal: <%= number_to_currency(item.product.price * item.quantity) %></li>
+          <li>
+            <%= form_with(url: orderitem_path(item.id), method: "patch", class: "form-inline")  do |f| %>
 
-            <div class="form-group">
-            <%= f.label :quantity, "Quantity: " %>
-            <%= f.text_field :quantity %>
-            </div>
+              <div class="form-group">
+                <%= f.label :quantity, "Quantity: " %>
+                <%= f.text_field :quantity %>
+              </div>
 
-            <%= f.submit "Update", class: "btn btn-primary" %>
-          <% end %>
-        </li>
-        <li>
-          <%= form_with(url: orderitem_path(item.id), method: "delete") do |f| %>
+              <%= f.submit "Update", class: "btn btn-primary" %>
+            <% end %>
+          </li>
+          <li>
+            <%= form_with(url: orderitem_path(item.id), method: "delete") do |f| %>
 
-            <%= f.submit "Remove", class: "btn btn-primary" %>
-          <% end %>
-        </li>
-      </ul>
-    <% end %>
+              <%= f.submit "Remove", class: "btn btn-primary" %>
+            <% end %>
+          </li>
+        </ul>
+      <% end %>
       total: <%= number_to_currency(@cart.total) %>
       <h3>complete purchase:</h3>
       <%= form_with(url: cart_path, method: "patch", model: @cart) do |f| %>
@@ -61,10 +61,97 @@
         <div class="form-group">
           <%= f.submit "checkout order", class: "btn btn-primary" %>
         </div>
-    <% end %>
+      <% end %>
     </ol>
-    <% else %>
-      <p>there's nothing in your cart. <%= link_to "start browsing!", root_path %></p>
+  <% else %>
+    <p>there's nothing in your cart. <%= link_to "start browsing!", root_path %></p>
   <% end %>
   <hr>
 </main>
+
+
+<!--<main>-->
+<!--  <h2>your cart</h2>-->
+  <%# if @cart && @cart.orderitems.length > 0 %>
+<!--    <table class="table">-->
+<!--      <thead>-->
+<!--      <tr>-->
+<!--        <th>product</th>-->
+<!--        <th>quantity</th>-->
+<!--        <th>price</th>-->
+<!--        <th>subtotal</th>-->
+<!--        <th>update quantity</th>-->
+<!--        <th>remove product</th>-->
+<!--      </tr>-->
+<!--      </thead>-->
+<!--      <tbody>-->
+
+<!--      </tbody>-->
+<!--    </table>-->
+<!--    <ol>-->
+    <%# @cart.orderitems.each do |item| %>
+<!--      <li>Product: <%#= link_to item.product.name, product_path(item.product.id)%></li>-->
+<!--      <ul>-->
+<!--        <li>quantity: <%#= item.quantity %></li>-->
+<!--        <li>price: <%#= number_to_currency(item.product.price) %></li>-->
+<!--        <li>subtotal: <%#= number_to_currency(item.product.price * item.quantity) %></li>-->
+<!--        <li>-->
+          <%#= form_with(url: orderitem_path(item.id), method: "patch", class: "form-inline")  do |f| %>
+
+<!--            <div class="form-group">-->
+            <%#= f.label :quantity, "Quantity: " %>
+            <%#= f.text_field :quantity %>
+<!--            </div>-->
+
+            <%#= f.submit "Update", class: "btn btn-primary" %>
+          <%# end %>
+<!--        </li>-->
+<!--        <li>-->
+          <%#= form_with(url: orderitem_path(item.id), method: "delete") do |f| %>
+
+            <%#= f.submit "Remove", class: "btn btn-primary" %>
+          <%# end %>
+<!--        </li>-->
+<!--      </ul>-->
+    <%# end %>
+<!--      total: <%#= number_to_currency(@cart.total) %>-->
+<!--      <h3>complete purchase:</h3>-->
+      <%#= form_with(url: cart_path, method: "patch", model: @cart) do |f| %>
+<!--        <div class="form-group">-->
+          <%#= f.label :name, "name" %>
+          <%#= f.text_field :name, class: "form-control" %>
+<!--        </div>-->
+<!--        <div class="form-group">-->
+          <%#= f.label :email, "email" %>
+          <%#= f.text_field :email, class: "form-control" %>
+<!--        </div>-->
+<!--        <div class="form-group">-->
+          <%#= f.label :address, "address" %>
+          <%#= f.text_field :address, class: "form-control" %>
+<!--        </div>-->
+<!--        <div class="form-group">-->
+          <%#= f.label :credit_card_number, "credit card number" %>
+          <%#= f.text_area :credit_card_number, class: "form-control" %>
+<!--        </div>-->
+<!--        <div class="form-group">-->
+          <%#= f.label :cvv, "cvv" %>
+          <%#= f.text_area :cvv, class: "form-control" %>
+<!--        </div>-->
+<!--        <div class="form-group">-->
+          <%#= f.label :expiration_date, "expiration date" %>
+          <%#= f.text_area :expiration_date, class: "form-control" %>
+<!--        </div>-->
+<!--        <div class="form-group">-->
+          <%#= f.label :zip_code, "zip code" %>
+          <%#= f.text_area :zip_code, class: "form-control" %>
+<!--        </div>-->
+<!--        <div class="form-group">-->
+          <%#= f.submit "checkout order", class: "btn btn-primary" %>
+<!--        </div>-->
+    <%# end %>
+<!--    </ol>-->
+    <%# else %>
+<!--      <p>there's nothing in your cart. <%#= link_to "start browsing!", root_path %></p>-->
+  <%# end %>
+<!--  <hr>-->
+<!--</main>-->
