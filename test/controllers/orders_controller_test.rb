@@ -2,12 +2,12 @@ require "test_helper"
 
 describe OrdersController do
   before do
-    @merchant = Merchant.create(username: 'test merchant', email: 'test_merchant@email.com')
+    @merchant = Merchant.create(username: 'test merchant', email: 'test_merchant@email.com', provider: "github", uid: 11111112)
     @product = Product.create(name: 'test plant', description: 'test description', price: 5.0, photo_url: "url.com/plant", stock: 6, merchant_id: @merchant.id)
   end
 
   let(:order) do
-    Order.create(status: 'paid', name: "buyer", email: "buyer@email.com", address: "123 Ada Court", credit_card_number: '123456789', cvv: '123', expiration_date: '2/21', total: 20)
+     Order.create(status: 'paid', name: "buyer", email: "buyer@email.com", address: "123 Ada Court", credit_card_number: '123456789', cvv: '123', expiration_date: '2/21', total: 20)
   end
 
   describe "show" do
@@ -30,6 +30,8 @@ describe OrdersController do
   describe "merchant show" do
     it "responds with success if the merchant is logged in and the order contains a product of theirs" do
       perform_login(@merchant)
+
+
 
 
     end
@@ -56,15 +58,23 @@ describe OrdersController do
   end
 
   describe "destroy" do
+    before do
+      get cart_path
+    end
+
     it "changes the order status to cancelled when the order exists and can be cancelled, then responds with redirect" do
       order.save
+      order_id = order.id
 
       expect do
-        delete order_path(order.id)
+        delete order_path(order_id)
       end.wont_change 'Order.count'
+
+      order = Order.find_by_id(order_id)
 
       must_respond_with :redirect
       must_redirect_to order_path
+      expect(order.status).must_equal "cancelled"
     end
 
     it 'does not change the order status when the order does not exist, then responds with redirect' do
@@ -75,7 +85,7 @@ describe OrdersController do
       end.wont_change 'Order.count'
 
       must_respond_with :redirect
-      must_redirect_to order_path
+      must_redirect_to root_path
     end
   end
 end

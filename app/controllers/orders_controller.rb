@@ -60,9 +60,7 @@ class OrdersController < ApplicationController
       flash[:error] = "Order couldn't be found"
       redirect_to root_path
       return
-    end
-
-    if @order.cancel
+    elsif @order.cancel
        flash[:success] = "Order #{@order.id} successfully cancelled."
        redirect_to order_path(@order.id)
        return
