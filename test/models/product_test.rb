@@ -11,6 +11,14 @@ describe Product do
       expect(product.reviews.count).must_equal 3
     end
 
+    it "product can have 0 reviews" do
+      # Arrange
+      product = products(:product4)
+
+      # Assert
+      expect(product.reviews.count).must_equal 0
+    end
+
     it "product has a category" do
 
       # Arrange product1
@@ -22,13 +30,32 @@ describe Product do
 
     it "product has multiple categories" do
 
-      # Arrange product2
+      # Arrange
       product = products(:product2)
 
-      # Assert relationship to vote model, 3 votes by user3 in votes.yml
+      # Assert
       expect(product.categories.count).must_equal 2
     end
+
+    it "product can have 0 categories" do
+
+      # Arrange
+      product = products(:product5)
+
+      # Assert
+      expect(product.categories.count).must_equal 0
+    end
+
+    # it "product is related to a merchant" do
+    #
+    #   # Arrange
+    #   product = products(:product1)
+    #
+    #   # Assert
+    #   expect(product.merchant).must_equal "test"
+    # end
   end
+
 
 
   # let (:new_product) {

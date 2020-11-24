@@ -33,3 +33,12 @@ product4:
   stock: 59
   merchant: user
   categories: category3
+
+product5:
+  name: moss
+  description: squishy
+  price: 4
+  photo_url: url
+  stock: 3
+  merchant: user
+  categories:
