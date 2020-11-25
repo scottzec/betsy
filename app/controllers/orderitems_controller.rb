@@ -9,12 +9,13 @@ class OrderitemsController < ApplicationController
     product = Product.find_by(id: params[:product_id])
     quantity = params[:orderitem][:quantity].to_i
 
-    if @cart.nil?
-      @cart = Order.new
-      @cart.status = "pending"
-      @cart.save
-      session[:order_id] = @cart.id
-    end
+    # commenting this out - because of ensure_cart in application controller we don't need to check this
+    # if @cart.nil?
+    #   @cart = Order.new
+    #   @cart.status = "pending"
+    #   @cart.save
+    #   session[:order_id] = @cart.id
+    # end
 
     if product.nil?
       flash[:warning] = 'You must select a valid product'

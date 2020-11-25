@@ -15,7 +15,7 @@ class OrdersController < ApplicationController
 
   def merchant_show
     @order = Order.find_by(id: params[:id])
-    @current_merchant = Merchant.find_by(id: session[:user_id])
+    # @current_merchant = Merchant.find_by(id: session[:user_id])
 
     if @order.nil?
       flash[:error] = "Sorry, that order cannot be found"
@@ -23,11 +23,12 @@ class OrdersController < ApplicationController
       return
     end
 
-    if @current_merchant.nil?
-      flash[:error] = "Users must be logged in for this functionality"
-      redirect_to root_path
-      return
-    end
+    # commenting this out - don't need this anymore because of require_login
+    # if @current_merchant.nil?
+    #   flash[:error] = "Users must be logged in for this functionality"
+    #   redirect_to root_path
+    #   return
+    # end
 
     # We are looking at an order that the merchant has products in
     @orderitems = @order.filter_order_items(@current_merchant) 
