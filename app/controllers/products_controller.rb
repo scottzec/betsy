@@ -58,7 +58,6 @@ class ProductsController < ApplicationController
     if @product.update(product_params.reverse_merge(categories: []))
       flash[:success] = "Your #{@product.name} has been updated"
       redirect_to dashboard_path
-      # redirect_to product_path(@product.id)
       return
     else
 
