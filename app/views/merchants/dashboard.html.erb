@@ -98,9 +98,9 @@
       <tr>
         <td>
           <% begin %>
-            <%= link_to image_tag("#{product.photo_url}"), product_path(product.id), method: :get%>
+            <%= link_to image_tag("#{product.photo_url}", class: "img-thumbnail"), product_path(product.id), method: :get%>
           <% rescue %>
-            <%= link_to image_tag("defaultimage.jpg"), product_path(product.id), method: :get%>
+            <%= link_to image_tag("https://lh3.googleusercontent.com/9mfAl9ExpjGohJLHTEeX4ArkHqt3RfEgEY59SbF7k2r7eavXbtjLiV8GvAcGK4unaX8QLghYJMGupuYm4_t7spq4k2IwEItlHT8hSobL_PByQL81W8Ni4dLy7Am42vmU3XT3LajEMg=w2400", class: "img-thumbnail"), product_path(product.id), method: :get %>
           <% end %>
           <%= product.name %>
         </td>
