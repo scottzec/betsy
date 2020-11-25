@@ -170,6 +170,10 @@ main {
   margin-right: 1rem;
 }
 
+footer {
+  margin-top: 2rem;
+}
+
 [tabindex="-1"]:focus:not(:focus-visible) {
   outline: 0 !important;
 }
