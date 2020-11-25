@@ -1,14 +1,17 @@
 <main>
 
-  <h1> welcome, <%=@current_merchant.username %></h1>
-  <h2>joined on <%=@current_merchant.created_at.strftime("%B %d, %Y").downcase %></h2>
-  <nav>
-    <%= link_to content_tag(:li, "edit your info"), edit_merchant_path(@current_merchant.id), method: :get %>
-    <%= link_to content_tag(:li, "look at your store"), merchant_path(@current_merchant.id), method: :get %>
-    <%= link_to content_tag(:li, "add a product"), new_merchant_product_path(merchant_id:@current_merchant.id), method: :get %>
-    <%= link_to content_tag(:li, "add a category"), new_category_path, method: :get %>
-  </nav>
-  <h2>my stats</h2>
+  <h2> welcome, <%=@current_merchant.username %>
+  <small class="text-muted"> joined <%=@current_merchant.created_at.strftime("%B %d, %Y").downcase %> </small>
+  </h2>
+
+  <section class="merch-dash-nav">
+    <%= button_to  "edit your info", edit_merchant_path(@current_merchant.id), method: :get, class: "btn btn-success", form: {style: 'display:inline-block;'} %>
+    <%= button_to "look at your store", merchant_path(@current_merchant.id), method: :get, class: "btn btn-success", form: {style: 'display:inline-block;'} %>
+    <%= button_to  "add a product", new_merchant_product_path(merchant_id:@current_merchant.id), method: :get, class: "btn btn-success", form: {style: 'display:inline-block;'} %>
+    <%= button_to "add a category", new_category_path, method: :get, class: "btn btn-success", form: {style: 'display:inline-block;'} %>
+  </section>
+
+  <h3>my stats</h3>
   <table class="table">
     <tr>
       <% ['total', 'pending', 'paid', 'complete', 'cancelled'].each do |status| %>
@@ -33,7 +36,7 @@
     </tr>
 
   </table>
-  <h2> my order fulfillments</h2>
+  <h3> my order fulfillments</h3>
   <!-- some table here using the all orders method, link to ind. order as well -->
   <!-- once shopping cart is working, used to test filter table prior to creating table-->
   <div class="dropdown">
@@ -52,9 +55,9 @@
     <% @orders.each do |order, items| %>
     <table class="table">
       <tr>
-        <th colspan="4"><h3>order <%= link_to "##{order.id}", merchant_show_path(order.id) %></h3>
-        <h4><%= order.created_at.strftime("%B %d, %Y").downcase %></h4>
-          <h4><em><%= order.status %></em></h4></th>
+        <th colspan="4"><h4>order <%= link_to "##{order.id}", merchant_show_path(order.id) %>: <em><%= order.status %></em></h4>
+        <h5><%= order.created_at.strftime("%B %d, %Y").downcase %></h5>
+         </th>
       </tr>
 
         <table class="table">
@@ -79,14 +82,16 @@
             </table>
       </table>
     <% end %>
-  <h2> my products</h2>
+
+  <section class="merch-dash-products">
+  <h3> my products</h3>
   <table class="table">
     <thead>
     <tr>
       <th width=80>product name</th>
       <th>price</th>
       <th>in stock</th>
-      <th width=100>description</th>
+      <th width=200>description</th>
       <th width=100>view</th>
       <th width=100>edit</th>
       <th width=100>delete</th>
@@ -98,9 +103,9 @@
       <tr>
         <td>
           <% begin %>
-            <%= link_to image_tag("#{product.photo_url}"), product_path(product.id), method: :get%>
+            <%= link_to image_tag("#{product.photo_url}", class: "img-thumbnail"), product_path(product.id), method: :get%>
           <% rescue %>
-            <%= link_to image_tag("defaultimage.jpg"), product_path(product.id), method: :get%>
+            <%= link_to image_tag("https://lh3.googleusercontent.com/9mfAl9ExpjGohJLHTEeX4ArkHqt3RfEgEY59SbF7k2r7eavXbtjLiV8GvAcGK4unaX8QLghYJMGupuYm4_t7spq4k2IwEItlHT8hSobL_PByQL81W8Ni4dLy7Am42vmU3XT3LajEMg=w2400", class: "img-thumbnail"), product_path(product.id), method: :get %>
           <% end %>
           <%= product.name %>
         </td>
@@ -121,5 +126,6 @@
     <% end %>
     </tbody>
   </table>
+  </section>
 </main>
 

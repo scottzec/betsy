@@ -170,6 +170,20 @@ main {
   margin-right: 1rem;
 }
 
+footer {
+  margin-top: 2rem;
+}
+
+section.merch-dash-nav {
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+}
+section.merch-dash-products {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+
 [tabindex="-1"]:focus:not(:focus-visible) {
   outline: 0 !important;
 }
