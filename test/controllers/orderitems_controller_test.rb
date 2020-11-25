@@ -1,6 +1,10 @@
 require "test_helper"
 
 describe OrderitemsController do
+  # NOTE: the "create" resources function has been overloaded to only add items to a current cart.
+  # this includes an ensure_cart filter that prevents the user from ever being able to add to an
+  # order that isn't currently the cart.
+  # SEE: orders_controller_test.rb for additional cart testing.
     describe "create" do
       it "can create a new orderitem and cart with valid information and redirect to cart" do
         oi_hash = {
@@ -68,8 +72,8 @@ describe OrderitemsController do
         must_respond_with :redirect
         must_redirect_to cart_path
       end
-
-      it "won't create an invalid trip if product .nil" do
+      # NOTE: the design decision to delete instead of retire a product has been reflected in this test.
+      it "won't create an invalid orderitem if product .nil" do
         oi_hash = {
             # product_id: products(:product1).id,
             orderitem: {
