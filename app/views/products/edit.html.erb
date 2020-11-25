@@ -1,37 +1,52 @@
 <!--Previous version that was missing the model-->
 <%#= form_with(model: @product, url: merchant_product_path(merchant_id: @product.merchant.id, product_id: @product.id), method: "patch") do |f| %>
 
+<h2>edit product</h2>
+<% if @product.errors.any? %>
+  <ul class="errors">
+    <% @product.errors.each do |column, message| %>
+      <li>
+        <p><%= column.capitalize %> <%= message %></p>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+
 <!--Simplified version-->
 <%= form_with(model: @product) do |f| %>
-    <% if @product.errors.any? %>
-    <ul class="errors">
-      <% @product.errors.each do |column, message| %>
-        <li>
-          <p><%= column.capitalize %> <%= message %></p>
-        </li>
-      <% end %>
-    </ul>
-  <% end %>
 
+  <div class="form-group">
   <%= f.label :name %>
   <%= f.text_field :name %>
+  </div>
 
+  <div class="form-group">
   <%= f.label :description %>
   <%= f.text_field :description %>
+  </div>
 
+  <div class="form-group">
   <%= f.label :price %>
   <%= f.text_field :price %>
+  </div>
 
+  <div class="form-group">
   <%= f.label :photo_url %>
   <%= f.text_field :photo_url %>
+  </div>
 
+  <div class="form-group">
   <%= f.label :stock %>
   <%= f.text_field :stock %>
+  </div>
 
+  <div class="form-check">
   <% Category.all.each do |cat| %>
-    <h4><%= cat.name %></h4>
-    <%= check_box_tag "product[category_ids][]", cat.id, @product.category_ids.include?(cat.id) %>
+      <label><%= cat.name %></label>
+      <%= check_box_tag "product[category_ids][]", cat.id, @product.category_ids.include?(cat.id) %>
+      <br>
   <% end %>
+  </div>
 
-  <%= f.submit 'Edit Product' %>
+  <%= f.submit 'Edit Product', class: "btn btn-primary" %>
 <% end %>
