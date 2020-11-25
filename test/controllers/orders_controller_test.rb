@@ -37,15 +37,31 @@ describe OrdersController do
     end
 
     it "redirects to the root path if the merchant is not logged in" do
+      # @current_merchant = nil
       get merchant_show_path(id: order.id)
+      # p flash
+      expect(flash[:warning]).must_equal "You must be logged in to view this section"
       must_respond_with :redirect
       must_redirect_to root_path
     end
 
     it "redirects to the root path if the order cannot be found" do
+      perform_login(@merchant)
       get merchant_show_path(id: -1)
+
+      expect(flash[:error]).must_equal "Sorry, that order cannot be found"
       must_respond_with :redirect
       must_redirect_to root_path
+    end
+
+    it "redirects to the dashboard path if the merchant does not have any order items in the order" do
+      @merchant_2 = Merchant.create(username: 'test merchant 2', email: 'test_merchant2@email.com', provider: "github", uid: 111111123)
+
+      perform_login(@merchant_2)
+
+      get merchant_show_path(id: order.id)
+      must_respond_with :redirect
+      must_redirect_to dashboard_path
     end
   end
 
@@ -66,7 +82,7 @@ describe OrdersController do
       orderitem = { orderitem: {quantity: 5, product_id: @product.id, shipped: false } }
 
       post orderitems_path(orderitem)
-      # add an order item
+
       order_params = {order: {status: "pending", name: "test", email: "test@email.com",
                               address: "123 test lane", credit_card_number: "123456789", cvv: "123", expiration_date: "09/22", zip_code: "12345"} }
       expect {
@@ -82,7 +98,7 @@ describe OrdersController do
       orderitem = { orderitem: {quantity: 5, product_id: @product.id, shipped: false } }
 
       post orderitems_path(orderitem)
-      # add an order item
+
       order_params = {order: {status: "pending", name: nil, email: "test@email.com",
                               address: "123 test lane", credit_card_number: "123456789", cvv: "123", expiration_date: "09/22", zip_code: "12345"} }
       expect {
@@ -124,6 +140,15 @@ describe OrdersController do
 
       must_respond_with :redirect
       must_redirect_to root_path
+    end
+
+    it "is unable to cancel an order if the order has already been cancelled" do
+      delete order_path(order.id) # first time cancel should go through
+      delete order_path(order.id) # but shouldn't be able to cancel again
+
+      expect(flash[:error]).must_equal "A problem occurred. Your order could not be cancelled."
+      must_respond_with :redirect
+      must_redirect_to order_path
     end
   end
 end

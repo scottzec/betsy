@@ -4,6 +4,11 @@ SimpleCov.start 'rails' do
   add_filter '/db/'
   add_filter '/spec/' # for rspec
   add_filter '/test/' # for minitest
+  add_filter 'test'
+  add_filter 'mailer'
+  add_filter 'job'
+  add_filter 'helper'
+  add_filter 'channel'
 end
 
 ENV['RAILS_ENV'] ||= 'test'
