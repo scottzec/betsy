@@ -39,7 +39,7 @@ class OrdersController < ApplicationController
     end
   end
 
-  def edit; end
+  # def edit; end
 
   def checkout
     if @cart.update(order_params) && @cart.checkout
