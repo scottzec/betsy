@@ -6,9 +6,10 @@
       <div class="row align-items-center border border-top-light border-bottom-light border-left-0 border-right-0">
         <div class="col-sm">
           <% begin %>
-            <%=link_to image_tag("#{@product.photo_url}", class: "product-show-image"), product_path(product.id), method: :get%>
+            <%= link_to image_tag("#{product.photo_url}", class: "product-show-image"), product_path(product.id), method: :get%>
           <% rescue %>
-            <%=link_to image_tag("https://lh3.googleusercontent.com/9mfAl9ExpjGohJLHTEeX4ArkHqt3RfEgEY59SbF7k2r7eavXbtjLiV8GvAcGK4unaX8QLghYJMGupuYm4_t7spq4k2IwEItlHT8hSobL_PByQL81W8Ni4dLy7Am42vmU3XT3LajEMg=w2400", class: "product-show-image"),  product_path(product.id), method: :get%>
+            <%= link_to image_tag("https://lh3.googleusercontent.com/9mfAl9ExpjGohJLHTEeX4ArkHqt3RfEgEY59SbF7k2r7eavXbtjLiV8GvAcGK4unaX8QLghYJMGupuYm4_t7spq4k2IwEItlHT8hSobL_PByQL81W8Ni4dLy7Am42vmU3XT3LajEMg=w2400", class: "product-show-image"), product_path(product.id), method: :get%>
+
           <% end %>
         </div>
         <div class="col-sm">
@@ -18,12 +19,12 @@
           <% end %>
           <span><%="$%.2f" % product.price%></span>
 
-          <p>in stock:
+          <section>
             <!-- check if out of stock -->
             <% if product.stock <= 0 %>
               SOLD OUT!
             <% else %>
-              <%= product.stock %>
+              in stock: <%= product.stock %>
               <%= form_for Orderitem.new do |f| %>
 
                 <%= hidden_field_tag "product_id", product.id %>
@@ -34,8 +35,11 @@
 
                 <%= f.submit "add to cart", class: "btn btn-primary" %>
               <% end %>
-            <% end %></p>
+            <% end %>
+          </section>
         </div>
+      </div>
+    </div>
 
 
   <%end %>
