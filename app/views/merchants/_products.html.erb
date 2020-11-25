@@ -2,34 +2,45 @@
   <section class="container">
   <% if product.stock >= 0  %>
     <!-- for product image -->
-    <% begin %>
-      <%= link_to image_tag("#{product.photo_url}"), product_path(product.id), method: :get%>
-    <% rescue %>
-      <%= link_to image_tag("defaultimage.jpg"), product_path(product.id), method: :get%>
-    <% end %>
-    <%= link_to content_tag(:h3, "#{product.name}"), product_path(product.id), method: :get %>
-    <span><%="$%.2f" % product.price%></span>
+    <div class="container">
+      <div class="row align-items-center border border-top-light border-bottom-light border-left-0 border-right-0">
+        <div class="col-sm">
+          <% begin %>
+            <%= link_to image_tag("#{product.photo_url}", class: "product-show-image"), product_path(product.id), method: :get%>
+          <% rescue %>
+            <%= link_to image_tag("https://lh3.googleusercontent.com/9mfAl9ExpjGohJLHTEeX4ArkHqt3RfEgEY59SbF7k2r7eavXbtjLiV8GvAcGK4unaX8QLghYJMGupuYm4_t7spq4k2IwEItlHT8hSobL_PByQL81W8Ni4dLy7Am42vmU3XT3LajEMg=w2400", class: "product-show-image"), product_path(product.id), method: :get%>
 
-    <p>in stock:
-      <!-- check if out of stock -->
-      <% if product.stock <= 0 %>
-        SOLD OUT!
-      <% else %>
-        <%= product.stock %>
-        <%= form_for Orderitem.new do |f| %>
+          <% end %>
+        </div>
+        <div class="col-sm">
+          <%= link_to content_tag(:h3, "#{product.name}"), product_path(product.id), method: :get %>
+          <% if !session[:user_id].nil? && session[:user_id] == product.merchant_id %>
+            <%= link_to content_tag(:p, "edit #{product.name}"), edit_merchant_path(product.id), method: :get %>
+          <% end %>
+          <span><%="$%.2f" % product.price%></span>
 
-          <%= hidden_field_tag "product_id", product.id %>
+          <section>
+            <!-- check if out of stock -->
+            <% if product.stock <= 0 %>
+              SOLD OUT!
+            <% else %>
+              in stock: <%= product.stock %>
+              <%= form_for Orderitem.new do |f| %>
 
-          <label>quantity</label>
-          <%= f.text_field :quantity %>
+                <%= hidden_field_tag "product_id", product.id %>
+
+                <label>quantity</label>
+                <%= f.text_field :quantity %>
 
 
-          <%= f.submit "add to cart", class: "btn btn-primary" %>
-        <% end %>
-      <% end %></p>
-    <% if !session[:user_id].nil? && session[:user_id] == product.merchant_id %>
-      <%= link_to content_tag(:p, "edit #{product.name}"), edit_merchant_path(product.id), method: :get %>
-    <% end %>
+                <%= f.submit "add to cart", class: "btn btn-primary" %>
+              <% end %>
+            <% end %>
+          </section>
+        </div>
+      </div>
+    </div>
+
 
   <%end %>
   </section>

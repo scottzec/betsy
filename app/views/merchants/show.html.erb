@@ -1,13 +1,13 @@
 <main>
-  <h1> <%=@merchant.username %></h1>
-  <h3><em>joined on <%= @merchant.created_at.strftime("%B %d, %Y").downcase %></em></h3>
+  <h2> <%=@merchant.username %>
+    <small class="text-muted">joined <%= @merchant.created_at.strftime("%B %d, %Y").downcase %></small>
+  </h2>
   <%if !session[:user_id].nil? && session[:user_id] == @merchant.id %>
-    <%= link_to content_tag(:li, "edit your info"), edit_merchant_path(@merchant.id), method: :get %>
+    <%= button_to "edit your info", edit_merchant_path(@merchant.id), method: :get, class: "btn btn-success" %>
   <% end %>
-  <h2> <%=@merchant.username %>'s products</h2>
+  <h3>products</h3>
     <% if @products.empty? %>
-
-    <p>this merchant doesn't have any products yet. come back again later.</p>
+    <p>this merchant doesn't have any products yet. please check again later.</p>
       <% if !session[:user_id].nil? && session[:user_id] == @merchant.id %>
         <%= link_to "that's me! i have something to sell now!", new_merchant_product_path(merchant_id: @merchant.id), method: :get %>
       <% end %>
