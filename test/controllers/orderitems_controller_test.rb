@@ -313,9 +313,6 @@ describe OrderitemsController do
 
         oi = orderitems(:waiting0)
 
-        puts merchants(:user).id
-        puts oi.product.merchant.id
-
         expect {
           patch mark_shipped_path(oi.id)
         }.wont_change "Orderitem.count"

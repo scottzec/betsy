@@ -83,7 +83,8 @@ describe ProductsController do
         end.must_change 'Product.count', 1
 
         must_respond_with :redirect
-        product = Product.find_by(name: "moss")
+        # product = Product.find_by(name: "moss")
+        product = Product.last
         must_redirect_to product_path(product.id)
       end
     end
@@ -148,7 +149,7 @@ describe ProductsController do
     end
 
     describe "destroy" do
-      it "can destroy an existing product" do
+      it "can destroy an existing product and redirects to the product index page" do
         product = products(:product1)
         product.save
 
@@ -158,26 +159,18 @@ describe ProductsController do
 
         must_redirect_to products_path
       end
-
-      it "destroying an existing product redirects to the product index page" do
-        # Arrange
-        product = products(:product1)
-        product.save
-
-        # Act
-          product_path(product).destroy
-
-        # Assert
-        must_redirect_to products_path
-      end
     end
   end
+
+  describe 'when signed in but as wrong merchant' do
+    before do
+      perform_login(merchants(:user))
+    end
+
+    describe 'new' do
 end
 
 # Works when not logged in
 #
 # Works when logged in as someone other than the product's merchant
-#
-# Doesn't work if logged in as this product's merchant
-#
-# Doesn't work if validations fail
+#]]
