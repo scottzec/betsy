@@ -48,7 +48,7 @@ describe OrderitemsController do
 
 
         oi_hash = {
-            product_id: products(:product5).id,
+            product_id: products(:product2).id,
             orderitem: {
                 quantity: 2
             }
@@ -62,7 +62,7 @@ describe OrderitemsController do
         new_oi = Orderitem.last
         expect(new_oi.quantity).must_equal 2
         expect(new_oi.order).must_be_kind_of Order
-        expect(new_oi.product).must_equal products(:product5)
+        expect(new_oi.product).must_equal products(:product2)
         expect(new_oi.shipped).must_equal false
 
         must_respond_with :redirect
@@ -321,8 +321,6 @@ describe OrderitemsController do
         }.wont_change "Orderitem.count"
 
         oi.reload
-        puts oi.product.merchant.id
-        puts oi.pr
         expect(oi.shipped).must_equal false
 
         expect(flash[:warning]).must_equal 'Order is not confirmed, do not ship product'
