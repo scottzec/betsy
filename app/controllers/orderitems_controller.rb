@@ -124,14 +124,20 @@ class OrderitemsController < ApplicationController
       return
     end
 
+    if @orderitem.shipped == true
+      flash[:warning] = 'Product already marked shipped'
+      redirect_back(fallback_location: root_path)
+      return
+    end
+
     if @orderitem.product.merchant.id != session[:user_id]
       flash[:warning] = 'You cannot ship a product that does not belong to you'
       redirect_back(fallback_location: root_path)
       return
     end
 
-    if @orderitem.shipped == true
-      flash.now[:warning] = 'Product already marked shipped'
+    if @orderitem.order.status != "paid"
+      flash[:warning] = 'Order is not confirmed, do not ship product'
       redirect_back(fallback_location: root_path)
       return
     end
@@ -145,7 +151,7 @@ class OrderitemsController < ApplicationController
 
     o1 = @orderitem.order
 
-    if o1.orderitems.find_by(shipped: true).nil?
+    if o1.orderitems.find_by(shipped: false).nil?
       o1.status = "complete"
       o1.save
     end

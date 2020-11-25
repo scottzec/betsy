@@ -283,8 +283,10 @@ describe OrderitemsController do
       end
 
       it "will not allow to mark_shipped if not logged in" do
+        oi = orderitems(:waiting0)
+
         expect {
-          patch mark_shipped_path(-1)
+          patch mark_shipped_path(oi.id)
         }.wont_change "Orderitem.count"
 
         expect(flash[:warning]).must_equal "You must be logged in to view this section"
@@ -292,14 +294,37 @@ describe OrderitemsController do
       end
 
       it "will let merchant mark_shipped oi assoc with their product" do
-        perform_login(merchants(:user))
+        perform_login(merchants(:test))
 
-        oi = orderitems(:waiting0)
+        oi = orderitems(:waiting3)
 
         expect {
           patch mark_shipped_path(oi.id)
         }.wont_change "Orderitem.count"
 
+        oi.reload
+        expect(oi.shipped).must_equal true
+
+        must_respond_with :redirect
+      end
+
+      it "order must be paid to ship item" do
+        perform_login(merchants(:user))
+
+        oi = orderitems(:waiting0)
+
+        puts merchants(:user).id
+        puts oi.product.merchant.id
+
+        expect {
+          patch mark_shipped_path(oi.id)
+        }.wont_change "Orderitem.count"
+
+        oi.reload
+        puts oi.product.merchant.id
+        expect(oi.shipped).must_equal false
+
+        expect(flash[:warning]).must_equal 'Order is not confirmed, do not ship product'
         must_respond_with :redirect
       end
 
@@ -312,11 +337,55 @@ describe OrderitemsController do
           patch mark_shipped_path(oi.id)
         }.wont_change "Orderitem.count"
 
+        oi.reload
+        expect(oi.shipped).must_equal false
+
         expect(flash[:warning]).must_equal 'You cannot ship a product that does not belong to you'
         must_respond_with :redirect
       end
 
+      it "can only mark shipped once" do
+        perform_login(merchants(:user))
 
+        oi = orderitems(:shipped1)
+
+        expect {
+          patch mark_shipped_path(oi.id)
+        }.wont_change "Orderitem.count"
+
+        oi.reload
+        expect(oi.shipped).must_equal true
+
+        expect(flash[:warning]).must_equal 'Product already marked shipped'
+        must_respond_with :redirect
+      end
+
+      it "will update order status to complete if final oi is marked shipped" do
+        perform_login(merchants(:test))
+
+        order = orders(:paid)
+        oi1 = orderitems(:waiting2)
+        oi2 = orderitems(:waiting3)
+
+        expect {
+          patch mark_shipped_path(oi1.id)
+        }.wont_change "Orderitem.count"
+
+        expect {
+          patch mark_shipped_path(oi2.id)
+        }.wont_change "Orderitem.count"
+
+        order.reload
+        oi1.reload
+        oi2.reload
+
+
+        expect(oi1.shipped).must_equal true
+        expect(oi2.shipped).must_equal true
+        expect(order.status).must_equal "complete"
+
+        must_respond_with :redirect
+      end
     end
 
 
