@@ -125,10 +125,10 @@ describe ProductsController do
             }
       end
       it "can update an existing task" do
-        product = products[:product1]
+        product = products(:product1)
         expect {
           patch product_path(product.id), params: @product
-        }.wont_change "Trip.count"
+        }.wont_change "Product.count"
 
         must_redirect_to dashboard_path
 

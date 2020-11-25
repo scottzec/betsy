@@ -46,7 +46,8 @@ class ProductsController < ApplicationController
     # @product.merchant already exists in the listing that is being updated, can just call that and don't need to define it
     @product = Product.find_by(id: params[:id])
     if @product.nil?
-      head :not_found
+      flash[:warning] = "Product not found"
+      redirect_to root_path
       return
     end
 
