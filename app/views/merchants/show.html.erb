@@ -2,7 +2,7 @@
   <h1> <%=@merchant.username %></h1>
   <h3><em>joined on <%= @merchant.created_at.strftime("%B %d, %Y").downcase %></em></h3>
   <%if !session[:user_id].nil? && session[:user_id] == @merchant.id %>
-    <%= link_to content_tag(:li, "edit your info"), edit_merchant_path(@merchant.id), method: :get %>
+    <%= link_to content_tag(:h3, "edit your info"), edit_merchant_path(@merchant.id), method: :get %>
   <% end %>
   <h2> <%=@merchant.username %>'s products</h2>
     <% if @products.empty? %>

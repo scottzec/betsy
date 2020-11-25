@@ -5,7 +5,7 @@
     <% if session[:user_id].nil? %>
       <%= link_to content_tag(:span,"sign in to add a product!"), github_login_path, class: "nav-link" %>
     <% else %>
-      <%= link_to content_tag(:li, "let's add one then!"), new_merchant_product_path(merchant_id: session[:user_id]), method: :get %>
+      <%= link_to content_tag(:span, "let's add one then!"), new_merchant_product_path(merchant_id: session[:user_id]), method: :get %>
     <%end %>
   <% else %>
     <%= render partial: "merchants/products", locals: { products: @products } %>

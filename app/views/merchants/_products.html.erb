@@ -28,7 +28,7 @@
         <% end %>
       <% end %></p>
     <% if !session[:user_id].nil? && session[:user_id] == product.merchant_id %>
-      <%= link_to content_tag(:p, "edit #{product.name}"), edit_merchant_path(product.id), method: :get %>
+      <%= link_to content_tag(:p, "edit #{product.name}"), edit_product_path(product.id), method: :get %>
     <% end %>
 
   <%end %>
