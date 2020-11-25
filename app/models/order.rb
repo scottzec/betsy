@@ -30,19 +30,21 @@ class Order < ApplicationRecord
       items = self.orderitems
       items.each do |item|
         if item.product.stock < item.quantity
-          return false
+          raise ActiveRecord::RecordInvalid
+          # return false
         end
         item.product.stock -= item.quantity
-        return false unless item.product.save!
+        item.product.save!
       end
-      return false unless self.save!
+      self.save!
     end
       self.status = "paid"
       return self.save(context: :checkout_context)
 
     rescue ActiveRecord::RecordInvalid
-      puts "Something went wrong. We couldn't checkout your order."
-    return true
+      errors.add(:base, :checkout_error, message: "Something went wrong. We couldn't checkout your order.")
+
+      return false
   end
 
   def can_cancel?
@@ -52,20 +54,22 @@ class Order < ApplicationRecord
   end
 
   def cancel
-    return false unless can_cancel?
     Order.transaction do
-      return false unless self.update!(status: "cancelled")
+      raise ActiveRecord::RecordInvalid unless can_cancel?
+      self.update!(status: "cancelled")
       items = self.orderitems
       items.each do |item|
         item.product.stock += item.quantity
-        return false unless item.product.save!
+        item.product.save!
       end
     end
 
-    rescue ActiveRecord::RecordInvalid
-      puts "Something went wrong. We couldn't cancel your order."
-
     return true
+
+    rescue ActiveRecord::RecordInvalid
+      errors.add(:base, :cancel_error, message: "Something went wrong. We couldn't cancel your order.")
+
+      return false
   end
 
   def total
