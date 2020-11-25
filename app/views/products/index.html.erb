@@ -47,3 +47,28 @@
 
   <%= link_to 'cactus & clover home', root_path, class: "?????" %>
 </main>
+
+
+<div class="card-deck ">
+  <% @products.each do |product| %>
+
+    <div class="card" style="max-width: 20rem;">
+<!--      <img src="..." class="card-img-top" alt="...">-->
+      <% begin %>
+        <%#= link_to image_tag("#{product.photo_url}", class: "card-img-top"), product_path(product.id), method: :get%>
+        <% link_to product_path(product.id), method: :get do %>
+          <img src="https://lh3.googleusercontent.com/9mfAl9ExpjGohJLHTEeX4ArkHqt3RfEgEY59SbF7k2r7eavXbtjLiV8GvAcGK4unaX8QLghYJMGupuYm4_t7spq4k2IwEItlHT8hSobL_PByQL81W8Ni4dLy7Am42vmU3XT3LajEMg=w2400" class="card-img-top" alt="...">
+
+      <% rescue %>
+<!--        <img src="https://www.flaticon.com/free-icon/plant_628283" class="card-img-top" alt="...">-->
+        <%= link_to image_tag("https://www.flaticon.com/free-icon/plant_628283", class: "card-img-top"), product_path(product.id), method: :get%>
+      <% end %>
+      <div class="card-body">
+        <h5 class="card-title"> <%= product.name.downcase %></h5>
+        <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+        <p class="card-text"><small class="text-muted"><% %></small></p>
+      </div>
+    </div>
+    <%end %>
+  </div>
+</div>
