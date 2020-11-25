@@ -1,11 +1,4 @@
 <!--Add way for Photo to be Displayed if time, i.e. in dashboard-->
-<% begin %>
-  <%= link_to image_tag("#{@product.photo_url}"), product_path(@product.id), method: :get%>
-<% rescue %>
-  <%= link_to image_tag("defaultimage.jpg"), product_path(@product.id), method: :get%>
-<% end %>
-
-
 <h2><%= @product.name.downcase %></h2>
 
 <div class="container">
