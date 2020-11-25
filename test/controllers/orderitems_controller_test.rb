@@ -322,6 +322,7 @@ describe OrderitemsController do
 
         oi.reload
         puts oi.product.merchant.id
+        puts oi.pr
         expect(oi.shipped).must_equal false
 
         expect(flash[:warning]).must_equal 'Order is not confirmed, do not ship product'

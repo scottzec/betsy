@@ -46,12 +46,12 @@ describe Orderitem do
 
   describe "quantity validations" do
     it "must be greater than or equal to 0" do
-      orderitem.rating = -1
+      orderitem.quantity = -1
       orderitem.save
 
       expect(orderitem.valid?).must_equal false
       expect(orderitem.errors.messages).must_include :quantity
-      expect(orderitem.errors.messages[:quantity]).must_equal ["must be greater than or equal to 1"]
+      expect(orderitem.errors.messages[:quantity]).must_equal ["must be greater than or equal to 0"]
     end
 
     it "must be an integer" do
