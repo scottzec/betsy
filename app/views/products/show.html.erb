@@ -1,4 +1,9 @@
 <!--Add way for Photo to be Displayed if time, i.e. in dashboard-->
+<% begin %>
+  <%= link_to image_tag("#{@product.photo_url}"), product_path(@product.id), method: :get%>
+<% rescue %>
+  <%= link_to image_tag("defaultimage.jpg"), product_path(@product.id), method: :get%>
+<% end %>
 
 <%= form_for Orderitem.new do |f| %>
 
@@ -19,7 +24,7 @@
     <th>Name</th>
     <th>Description</th>
     <th>Price ($)</th>
-    <th>Photo URL</th>
+<!--    <th>Photo URL</th>-->
     <th>Qty In Stock</th>
     <th>Merchant Name</th>
   </tr>
@@ -30,7 +35,7 @@
       <td> <%= @product.name %> </td>
       <td> <%= @product.description %> </td>
       <td> <%= @product.price %> </td>
-      <td> <%= @product.photo_url %> </td>
+<!--      <td> <%#= @product.photo_url %> </td>-->
       <td> <%= @product.stock %> </td>
       <td> <%= @product.merchant.username %> </td>
     </tr>
