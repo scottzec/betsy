@@ -28,13 +28,13 @@
   </table>
 
   <ul>
-    <li>order total: <%= number_to_currency(@order.total) %></li>
+    <li><strong>order total: <%= number_to_currency(@order.total) %></strong></li>
     <li>order status: <%= @order.status %></li>
     <li>order date: <%= @order.updated_at.strftime("%B %d, %Y").downcase %></li>
   </ul>
 
 <% if @order.can_cancel? %>
-  <button><%= link_to "cancel order", order_path(@order.id), method: :delete, data: {confirm: "are you sure?"} %></button>
+  <%= button_to "cancel order", order_path(@order.id), method: :delete, class: "btn btn-danger", data: {confirm: "are you sure?"} %>
 <% end %>
 
 </section>

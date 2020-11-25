@@ -3,7 +3,7 @@
 
   <ul>
     <% @cats.each do |cat| %>
-      <%= link_to content_tag(:li, "#{cat.name}"), category_path(id: cat.id), method: :get%>
+      <%= link_to content_tag(:h3, "#{cat.name}"), category_path(id: cat.id), method: :get%>
     <% end %>
   </ul>
 
