@@ -1,25 +1,40 @@
 <!--Add way for Photo to be Displayed if time, i.e. in dashboard-->
 
-<%= form_for Orderitem.new do |f| %>
 
-  <%= hidden_field_tag "product_id", @product.id %>
+<h2><%= @product.name.downcase %></h2>
 
-  <%= f.label :quantity %>
-  <%= f.text_field :quantity %>
+<div class="container">
+  <div class="row align-items-center">
+    <div class="col-sm">
+      <% begin %>
+        <%=image_tag("#{@product.photo_url}", class: "product-show-image")%>
+      <% rescue %>
+        <%= image_tag("https://lh3.googleusercontent.com/9mfAl9ExpjGohJLHTEeX4ArkHqt3RfEgEY59SbF7k2r7eavXbtjLiV8GvAcGK4unaX8QLghYJMGupuYm4_t7spq4k2IwEItlHT8hSobL_PByQL81W8Ni4dLy7Am42vmU3XT3LajEMg=w2400", class: "product-show-image")%>
+      <% end %>
+    </div>
+    <div class="col-sm">
+      <%= form_for Orderitem.new do |f| %>
+
+        <%= hidden_field_tag "product_id", @product.id %>
+
+        <div class="form-group">
+          <%= f.label :quantity, "quantity" %>
+          <%= f.text_field :quantity %>
+        </div>
 
 
-  <%= f.submit "Add to Cart", class: "btn btn-primary" %>
-<% end %>
+        <%= f.submit "Add to Cart", class: "btn btn-primary" %>
+      <% end %>
+    </div>
+  </div>
+</div>
 
-
-<h2><%= @product.name.capitalize %> Product Info</h2>
 <table class="table">
   <thead>
   <tr>
     <th>Name</th>
     <th>Description</th>
     <th>Price ($)</th>
-    <th>Photo URL</th>
     <th>Qty In Stock</th>
     <th>Merchant Name</th>
   </tr>
@@ -30,7 +45,6 @@
       <td> <%= @product.name %> </td>
       <td> <%= @product.description %> </td>
       <td> <%= @product.price %> </td>
-      <td> <%= @product.photo_url %> </td>
       <td> <%= @product.stock %> </td>
       <td> <%= @product.merchant.username %> </td>
     </tr>
@@ -38,15 +52,14 @@
 </table>
 
 
-
-
-
-<%= link_to content_tag(:h3, "leave a review"), new_product_review_path(@product.id), method: :get %>
-
-<h3>reviews</h3>
+<hr>
+<section class="product-show-reviews">
+  <h4>reviews</h4>
+  <%= button_to "leave a review", new_product_review_path(@product.id), method: :get, class: "btn btn-success" %>
 <% @product.reviews.each do |review| %>
   <div class="container">
     <h4><%= "♣"*review.rating + "♧"*(5-review.rating) %></h4>
     <p><%=review.review %></p>
   </div>
 <% end %>
+</section>

@@ -23,11 +23,13 @@
     <%= f.label "4 (great)"%>
     <br/>
     <%= f.radio_button :rating, 5 %>
-    <%= f.label "5 (amazing!!!)"%>
+    <%= f.label "5 (amazing)"%>
     <br/>
 
     <h3> review</h3>
-    <%= f.text_area(:review,{class: "form-control"} ) %>
+    <div class="form-group">
+      <%= f.text_area(:review,{class: "form-control"} ) %>
+    </div>
 
     <%= f.submit "submit review", class:"btn btn-primary"%>
   <% end %>

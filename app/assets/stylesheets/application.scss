@@ -183,6 +183,16 @@ section.merch-dash-products {
   margin-bottom: 1rem;
 }
 
+section.product-show-reviews {
+  margin-top: 2rem;
+}
+
+
+.product-show-image {
+  max-width: 100%;
+  height: 30vw;
+  margin: 2rem;
+}
 
 [tabindex="-1"]:focus:not(:focus-visible) {
   outline: 0 !important;
