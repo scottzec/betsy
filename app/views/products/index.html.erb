@@ -27,14 +27,15 @@
 <!--  </table>-->
 
 <!--  <div class="container" style="margin-top:30px;">-->
-    <div class="row row-cols-1 row-cols-md-3">
+    <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
       <% @products.each do |product| %>
         <div class="col-sm-4 mb-3" >
-          <div class="card p-2">
+          <div class="card p-2 border-primary">
             <% begin %>
               <%= link_to image_tag("#{product.photo_url}", class: "card-image"), product_path(product.id), method: :get%>
             <% rescue %>
-              <%= link_to image_tag("defaultimage.jpg", class: "card-image"), product_path(product.id), method: :get%>
+              <%= link_to image_tag("https://lh3.googleusercontent.com/9mfAl9ExpjGohJLHTEeX4ArkHqt3RfEgEY59SbF7k2r7eavXbtjLiV8GvAcGK4unaX8QLghYJMGupuYm4_t7spq4k2IwEItlHT8hSobL_PByQL81W8Ni4dLy7Am42vmU3XT3LajEMg=w2400", class: "card-image"), product_path(product.id), method: :get%>
+              <%#= link_to image_tag("defaultimage.jpg", class: "card-image"), product_path(product.id), method: :get%>
             <% end %>
             <div class="card-body">
               <%= link_to product.name, product_path(product.id), class: "card-title" %>
@@ -47,3 +48,22 @@
 
   <%= link_to 'cactus & clover home', root_path, class: "?????" %>
 </main>
+
+
+<!--<div class="card-deck ">-->
+  <%# @products.each do |product| %>
+
+<!--    <div class="card" style="max-width: 20rem;">-->
+<!--      <img class="card-img-top"-->
+<!--           src='#{product_path(product.photo_url)}'-->
+<!--           alt="Image not found"-->
+<!--           onerror="this.onerror=null;this.src='https://lh3.googleusercontent.com/9mfAl9ExpjGohJLHTEeX4ArkHqt3RfEgEY59SbF7k2r7eavXbtjLiV8GvAcGK4unaX8QLghYJMGupuYm4_t7spq4k2IwEItlHT8hSobL_PByQL81W8Ni4dLy7Am42vmU3XT3LajEMg=w2400';" />-->
+<!--      <div class="card-body">-->
+<!--        <h5 class="card-title"> <%#= product.name.downcase %></h5>-->
+<!--        <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>-->
+<!--        <p class="card-text"><small class="text-muted"><%# %></small></p>-->
+<!--      </div>-->
+<!--    </div>-->
+    <%#end %>
+<!--  </div>-->
+<!--</div>-->

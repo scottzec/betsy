@@ -17,9 +17,9 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
           <ul class="navbar-nav ml-auto">
-<!--            <li class="navbar-item">-->
-              <%#= link_to "all products", products_path, class: "nav-link" %>
-<!--            </li>-->
+            <li class="navbar-item">
+              <%= link_to "products", products_path, class: "nav-link" %>
+            </li>
             <li class="navbar-item">
               <%= link_to "categories", categories_path, class: "nav-link" %></li>
             <li class="navbar-item">
@@ -61,7 +61,9 @@
       <% end %>
     </section>
 
+  <main>
     <%= yield %>
+  </main>
 
   <footer>
 
