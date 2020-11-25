@@ -45,7 +45,7 @@
       <td> <%= @product.description %> </td>
       <td> <%= @product.price %> </td>
       <td> <%= @product.stock %> </td>
-      <td> <%= @product.merchant.username %> </td>
+      <td> <%= link_to "#{@product.merchant.username}", merchant_path(@product.merchant.id), method: :get %> </td>
     </tr>
   </tbody>
 </table>
