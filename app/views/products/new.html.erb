@@ -14,37 +14,37 @@
   </ul>
 <% end %>
 
-<form>
+
 <%= form_for @product, url: merchant_products_path do |f| %>
 
   <div class="form-group">
-    <label> name </label>
+    <%=f.label :name, "name" %>
     <%= f.text_field :name %>
   </div>
 
   <div class="form-group">
-    <label>description</label>
+    <%=f.label :description, "description" %>
     <%= f.text_field :description %>
   </div>
 
   <div class="form-group">
-    <label>price</label>
+    <%=f.label :price, "price" %>
     <%= f.text_field :price %>
   </div>
 
   <div class="form-group">
-    <label>photo url </label>
+    <%=f.label :photo_url, "photo url" %>
     <%= f.text_field :photo_url %>
   </div>
 
   <div class="form-group">
-    <label>stock</label>
+    <%=f.label :stock, "stock" %>
     <%= f.text_field :stock %>
   </div>
 
   <div class="form-group">
-      <label>categories</label>
-      <%= collection_check_boxes(:product, :category_ids, Category.all, :id, :name) do |b| %>
+    <%=f.label :categories, "categories" %>
+      <%= collection_check_boxes(:product, :category_ids, Category.all, :id, :name) do |b|  %>
         <%= b.label class:"label-checkbox" do%>
           <%=b.check_box%>   <%= b.text%>
         <%end%>
@@ -54,4 +54,3 @@
 
   <%= f.submit 'Create Product', class: "btn btn-primary" %>
 <% end %>
-</form>
