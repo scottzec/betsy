@@ -129,7 +129,6 @@ describe Merchant do
         products = Product.where(merchant: merchants(:test))
         orderitems = Orderitem.where(product: products)
         orders2 = Order.where(orderitems: orderitems)
-        p orders
         # num of key/value pairs from method must equal number of orders
         expect(orders2.count).must_equal orders.size()
 
