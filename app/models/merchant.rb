@@ -29,7 +29,8 @@ class Merchant < ApplicationRecord
   # total revenue based on completed orders
   # all unique orders and order items associated with merchant, can be sorted by status
   #
-  # @params status (string), default nil for all orderitems
+  # @params status (string), default nil for all orderitems EXCEPT cancelled
+  # this is because cancelled will return the items to stock.
   # @output float represent revenue from all order items (of certain category if selected)
   # @post ... should not change any objects or fields involved?
   # invalid status input or having no assoc. orderitems will return 0.
@@ -44,7 +45,7 @@ class Merchant < ApplicationRecord
       # if no status input, will total everything.
       # if status input, will match by status
       if (status.nil? || order.status.nil?) || order.status.downcase == status
-        total += orderitem.quantity * product.price
+        total += orderitem.quantity * product.price unless order.status.downcase == "cancelled" && status != "cancelled"
       end
     end
 

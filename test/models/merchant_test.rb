@@ -84,13 +84,14 @@ describe Merchant do
 
         expect(total_revenue).must_be_close_to 0
       end
-      it "returns total revenue of all items in orders (if no filter specified or invalid filter specified)" do
-        total_revenue = merchants(:test).total_revenue
+      it "returns total revenue of all NOT CANCELLED items in orders (if no filter specified or invalid filter specified)" do
+        total_revenue = merchants(:user).total_revenue
         total = 0
-        orderitems = Orderitem.where(product: [products(:product1), products(:product2)])
+        orderitems = Orderitem.where(product: [products(:product3), products(:product4), products(:product5)])
 
         orderitems.each do |orderitem|
-          total += orderitem.quantity * orderitem.product.price
+          p orderitem.order.status
+          total += orderitem.order.status == "cancelled" ? 0 : (orderitem.quantity * orderitem.product.price)
         end
 
         expect(total_revenue).must_be_close_to total
