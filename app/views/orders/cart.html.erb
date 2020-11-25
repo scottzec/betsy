@@ -38,6 +38,7 @@
 
       <strong>total: <%= number_to_currency(@cart.total) %></strong>
 
+    <hr>
       <h3>complete purchase:</h3>
       <%= form_with(url: cart_path, method: "patch", model: @cart) do |f| %>
         <div class="form-group">
