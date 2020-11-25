@@ -7,13 +7,13 @@
 <!--The current status of the order-->
 
 <section>
-  <h3>Order #<%= @order.id %></h3>
+  <h3>order #<%= @order.id %></h3>
   <table class="table">
     <thead>
     <tr>
-      <th>Product</th>
-      <th>Quantity</th>
-      <th>Subtotal</th>
+      <th>product</th>
+      <th>quantity</th>
+      <th>subtotal</th>
     </tr>
     </thead>
     <tbody>
@@ -28,13 +28,13 @@
   </table>
 
   <ul>
-    <li>Order Total: <%= number_to_currency(@order.total) %></li>
-    <li>Order Status: <%= @order.status %></li>
-    <li>Order Date: <%= @order.updated_at.strftime("%B %d, %Y") %></li>
+    <li>order total: <%= number_to_currency(@order.total) %></li>
+    <li>order status: <%= @order.status %></li>
+    <li>order date: <%= @order.updated_at.strftime("%B %d, %Y").downcase %></li>
   </ul>
 
 <% if @order.can_cancel? %>
-  <button><%= link_to "Cancel Order", order_path(@order.id), method: :delete, data: {confirm: "Are you sure?"} %></button>
+  <button><%= link_to "cancel order", order_path(@order.id), method: :delete, data: {confirm: "are you sure?"} %></button>
 <% end %>
 
 </section>
