@@ -4,13 +4,6 @@ class OrderitemsController < ApplicationController
   before_action :require_login, only: [:mark_shipped]
   before_action :find_oi, except: [:create]
 
-  # def show
-  #   if @orderitem.nil?
-  #     redirect_to root_path, status: :temporary_redirect
-  #     return
-  #   end
-  # end
-  #
   def create
     @cart = Order.find_by(id: session[:order_id])
     product = Product.find_by(id: params[:product_id])
@@ -27,7 +20,9 @@ class OrderitemsController < ApplicationController
       flash[:warning] = 'You must select a valid product'
       redirect_back(fallback_location: root_path)
       return
-    elsif product.merchant.id == session[:user_id]
+    end
+
+    if product.merchant.id == session[:user_id]
       flash[:warning] = 'You cannot add your own product to your cart'
       redirect_back(fallback_location: root_path)
       return
@@ -121,29 +116,28 @@ class OrderitemsController < ApplicationController
     return
   end
 
-  # def index
-  #   @order = Order.find_by(id: 1)
-  #   @orderitem = Orderitem.all
-  # end
-  #
-  # def show
-  #   @orderitem = Orderitem.find_by(id: params[:id])
-  #
-  #   if @orderitem.nil?
-  #     redirect_to root_path, status: :temporary_redirect
-  #     return
-  #   end
-  # end
-
 
   def mark_shipped
     if @orderitem.nil?
+      flash[:warning] = 'A problem occurred: could not locate order item'
       redirect_back(fallback_location: root_path)
       return
     end
 
     if @orderitem.shipped == true
-      flash.now[:warning] = 'Product already marked shipped'
+      flash[:warning] = 'Product already marked shipped'
+      redirect_back(fallback_location: root_path)
+      return
+    end
+
+    if @orderitem.product.merchant.id != session[:user_id]
+      flash[:warning] = 'You cannot ship a product that does not belong to you'
+      redirect_back(fallback_location: root_path)
+      return
+    end
+
+    if @orderitem.order.status != "paid"
+      flash[:warning] = 'Order is not confirmed, do not ship product'
       redirect_back(fallback_location: root_path)
       return
     end
@@ -157,12 +151,13 @@ class OrderitemsController < ApplicationController
 
     o1 = @orderitem.order
 
-    if o1.orderitems.find_by(shipped: true).nil?
+    if o1.orderitems.find_by(shipped: false).nil?
       o1.status = "complete"
       o1.save
     end
 
     redirect_back(fallback_location: root_path)
+    return
   end
 
 
