@@ -1,4 +1,3 @@
-# frozen_string_literal: true
 require 'test_helper'
 
 describe ProductsController do
@@ -63,8 +62,7 @@ describe ProductsController do
 
     describe 'create' do
         before do
-          # @product = products(:product2)
-          @product = 
+          @product =
             {
               product: {
               name: 'moss',
@@ -134,8 +132,8 @@ describe ProductsController do
         must_redirect_to dashboard_path
 
         # Test that update happened:
-        # updated_product = Product.find_by(name: "ivy")
-        # expect(update_product.price).must_equal 5
+        updated_product = Product.find_by(name: "ivy")
+        expect(updated_product.price).must_equal 5
       end
 
       it "will redirect to the root page if given an invalid id" do
@@ -161,16 +159,4 @@ describe ProductsController do
       end
     end
   end
-
-  describe 'when signed in but as wrong merchant' do
-    before do
-      perform_login(merchants(:user))
-    end
-
-    describe 'new' do
 end
-
-# Works when not logged in
-#
-# Works when logged in as someone other than the product's merchant
-#]]

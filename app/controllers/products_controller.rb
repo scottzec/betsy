@@ -1,7 +1,6 @@
 class ProductsController < ApplicationController
   skip_before_action :require_login, except: [:new, :create, :edit, :update, :destroy]
-  # Add controller filter once set up
-  # before_action :find_product, only: [:show, :edit, :update, :destroy?]
+  before_action :find_product, only: [:show, :edit, :update, :destroy]
 
   def index
     @products = Product.all
@@ -28,14 +27,12 @@ class ProductsController < ApplicationController
   end
 
   def show
-    @product = Product.find_by_id(params[:id])
     if @product.nil?
       redirect_to products_path
     end
   end
 
   def edit
-    @product = Product.find_by_id(params[:id])
     if @product.nil?
       head :not_found
       return
@@ -44,7 +41,6 @@ class ProductsController < ApplicationController
 
   def update
     # @product.merchant already exists in the listing that is being updated, can just call that and don't need to define it
-    @product = Product.find_by(id: params[:id])
     if @product.nil?
       flash[:warning] = "Product not found"
       redirect_to root_path
@@ -74,7 +70,6 @@ class ProductsController < ApplicationController
   end
 
   def destroy
-    @product = Product.find_by(id: params[:id])
     if @product.nil?
       head :not_found
       return
@@ -92,8 +87,8 @@ class ProductsController < ApplicationController
     return params.require(:product).permit(:name, :description, :price, :photo_url, :stock, :merchant_id, category_ids: [])
   end
 
-  # def find_product
-  #   Add controller filter
-  # end
+  def find_product
+    @product = Product.find_by(id: params[:id])
+  end
 
 end
