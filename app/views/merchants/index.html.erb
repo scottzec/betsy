@@ -1,16 +1,36 @@
 <main>
-<h1>our amazing merchants</h1>
-  <ul>
+<h2>merchants</h2>
+<!--  <ul>-->
+    <%# @merchants.each do |merchant| %>
+<!--      <li>-->
+          <%# begin %>
+            <%#= link_to image_tag("#{merchant.products.first.photo_url}"), product_path(merchant.products.first.id), method: :get%>
+          <%# rescue %>
+              <%#= link_to image_tag("defaultimage.jpg"), merchant_path(merchant.id), method: :get%>
+          <%# end %>
+<!--       <h3><%#= link_to "#{merchant.username}", merchant_path(merchant.id), method: :get %></h3>-->
+<!--       <h4><%#= merchant.products.count %> items</h4>-->
+<!--       </li>-->
+    <%# end %>
+<!--  </ul>-->
+
+  <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
     <% @merchants.each do |merchant| %>
-      <li>
+      <div class="col-sm-4 mb-3" >
+        <div class="card p-2 border-primary">
           <% begin %>
-            <%= link_to image_tag("#{merchant.products.first.photo_url}"), product_path(merchant.products.first.id), method: :get%>
+            <%= link_to image_tag("#{merchant.products.first.photo_url}", class: "card-image"), product_path(merchant.products.first.id), method: :get%>
           <% rescue %>
-              <%= link_to image_tag("defaultimage.jpg"), merchant_path(merchant.id), method: :get%>
+            <%= link_to image_tag("https://lh3.googleusercontent.com/9mfAl9ExpjGohJLHTEeX4ArkHqt3RfEgEY59SbF7k2r7eavXbtjLiV8GvAcGK4unaX8QLghYJMGupuYm4_t7spq4k2IwEItlHT8hSobL_PByQL81W8Ni4dLy7Am42vmU3XT3LajEMg=w2400", class: "card-image"),
+                        merchant_path(merchant.id), method: :get%>
+            <%#= link_to image_tag("defaultimage.jpg", class: "card-image"), product_path(product.id), method: :get%>
           <% end %>
-       <h3><%= link_to "#{merchant.username}", merchant_path(merchant.id), method: :get %></h3>
-       <h4><%= merchant.products.count %> items</h4>
-       </li>
+          <div class="card-body">
+            <%= link_to "#{merchant.username}", merchant_path(merchant.id), method: :get %>
+            <p class="card-text"> <%= merchant.products.count %> items </p>
+          </div>
+        </div>
+      </div>
     <% end %>
-  </ul>
+  </div>
 </main>
