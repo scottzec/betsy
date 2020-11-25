@@ -5,12 +5,14 @@
 <div class="container">
   <div class="row align-items-center">
     <div class="col-sm">
+      <div class="product-show-image-container">
       <% begin %>
         <%=image_tag("#{@product.photo_url}", class: "product-show-image")%>
       <% rescue %>
         <%= image_tag("https://lh3.googleusercontent.com/9mfAl9ExpjGohJLHTEeX4ArkHqt3RfEgEY59SbF7k2r7eavXbtjLiV8GvAcGK4unaX8QLghYJMGupuYm4_t7spq4k2IwEItlHT8hSobL_PByQL81W8Ni4dLy7Am42vmU3XT3LajEMg=w2400", class: "product-show-image")%>
       <% end %>
     </div>
+  </div>
     <div class="col-sm">
       <%= form_for Orderitem.new do |f| %>
 
