@@ -3,35 +3,55 @@
 <!--  NEW SHOULD LOOK LIKE THIS: <%#= form_with(model: @product, url: merchant_product_path(@product.merchant, @product.id), method: "patch") do |f| %>-->
 <!--HOW TO GET FORM_WItH TO WORK per discussion with Ansel-->
 
-
-<%= form_for @product, url: merchant_products_path do |f| %>
-  <% if @product.errors.any? %>
-    <ul class="errors">
-      <% @product.errors.each do |column, message| %>
-        <li>
-          <p><%= column.capitalize %> <%= message %></p>
-        </li>
-      <% end %>
-    </ul>
-  <% end %>
-
-  <%= f.label :name %>
-  <%= f.text_field :name %>
-  <br>
-  <%= f.label :description %>
-  <%= f.text_field :description %>
-  <br>
-  <%= f.label :price %>
-  <%= f.text_field :price %>
-  <br>
-  <%= f.label :photo_url %>
-  <%= f.text_field :photo_url %>
-  <br>
-  <%= f.label :stock %>
-  <%= f.text_field :stock %>
-  <br>
-  <%=f.label :categories %>
-  <%= collection_check_boxes(:product, :category_ids, Category.all, :id, :name) %>
-  <br>
-  <%= f.submit 'Create Product' %>
+<h2>add product</h2>
+<% if @product.errors.any? %>
+  <ul class="errors">
+    <% @product.errors.each do |column, message| %>
+      <li>
+        <p><%= column.capitalize %> <%= message %></p>
+      </li>
+    <% end %>
+  </ul>
 <% end %>
+
+<form>
+<%= form_for @product, url: merchant_products_path do |f| %>
+
+  <div class="form-group">
+    <label> name </label>
+    <%= f.text_field :name %>
+  </div>
+
+  <div class="form-group">
+    <label>description</label>
+    <%= f.text_field :description %>
+  </div>
+
+  <div class="form-group">
+    <label>price</label>
+    <%= f.text_field :price %>
+  </div>
+
+  <div class="form-group">
+    <label>photo url </label>
+    <%= f.text_field :photo_url %>
+  </div>
+
+  <div class="form-group">
+    <label>stock</label>
+    <%= f.text_field :stock %>
+  </div>
+
+  <div class="form-group">
+      <label>categories</label>
+      <%= collection_check_boxes(:product, :category_ids, Category.all, :id, :name) do |b| %>
+        <%= b.label class:"label-checkbox" do%>
+          <%=b.check_box%>   <%= b.text%>
+        <%end%>
+      <% end %>
+    </div>
+  </div>
+
+  <%= f.submit 'Create Product', class: "btn btn-primary" %>
+<% end %>
+</form>
