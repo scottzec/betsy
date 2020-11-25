@@ -50,5 +50,15 @@
     <% end %>
   </div>
 
+<!--  <div class="form-check">-->
+    <%#=f.label :categories, "categories" %>
+      <%#= collection_check_boxes(:product, :category_ids, Category.all, :id, :name) do |b|  %>
+        <%#= b.label class:"label-checkbox" do%>
+          <%#=b.check_box%>   <%#= b.text%>
+        <%#end%>
+      <%# end %>
+<!--    </div>-->
+<!--  </div>-->
+
   <%= f.submit 'Create Product', class: "btn btn-primary" %>
 <% end %>
