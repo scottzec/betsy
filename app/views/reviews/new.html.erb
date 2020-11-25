@@ -1,34 +1,46 @@
 <main>
-  <h2>review <%="#{@product.name} by #{@merchant.username}" %></h2>
-  <h2><%="$%.2f" % @product.price %></h2>
-  <p><%=@product.description %></p>
-  <% begin %>
-    <%= link_to image_tag("#{@product.photo_url}"), product_path(@product.id), method: :get%>
-  <% rescue %>
-    <%= link_to image_tag("defaultimage.jpg"), product_path(@product.id), method: :get%>
-  <% end %>
+  <h2>review <%=@product.name.downcase%> <small class="text-muted">by <%= @merchant.username.downcase%></small></h2>
 
-  <%= form_with model: @review, class: 'review__form', url: product_reviews_path do |f| %>
-    <h3> rating (1-5) </h3>
-    <%= f.radio_button :rating, 1 %>
-    <%= f.label "1 (awful)"%>
-    <br/>
-    <%= f.radio_button :rating, 2 %>
-    <%= f.label "2 (pretty bad)"%>
-    <br/>
-    <%= f.radio_button :rating, 3 %>
-    <%= f.label "3 (okay)"%>
-    <br/>
-    <%= f.radio_button :rating, 4%>
-    <%= f.label "4 (great)"%>
-    <br/>
-    <%= f.radio_button :rating, 5 %>
-    <%= f.label "5 (amazing!!!)"%>
-    <br/>
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-sm">
+        <% begin %>
+          <%=image_tag("#{@product.photo_url}", class: "product-show-image")%>
+        <% rescue %>
+          <%= image_tag("https://lh3.googleusercontent.com/9mfAl9ExpjGohJLHTEeX4ArkHqt3RfEgEY59SbF7k2r7eavXbtjLiV8GvAcGK4unaX8QLghYJMGupuYm4_t7spq4k2IwEItlHT8hSobL_PByQL81W8Ni4dLy7Am42vmU3XT3LajEMg=w2400", class: "product-show-image")%>
+        <% end %>
+      </div>
+      <div class="col-sm">
+        <%= form_with model: @review, class: 'review__form', url: product_reviews_path do |f| %>
+          <legend> rating (1-5) </legend>
+          <div class="form-group">
+            <%= f.radio_button :rating, 1 %>
+            <%= f.label "1 (awful)"%>
+            <br/>
+            <%= f.radio_button :rating, 2 %>
+            <%= f.label "2 (pretty bad)"%>
+            <br/>
+            <%= f.radio_button :rating, 3 %>
+            <%= f.label "3 (okay)"%>
+            <br/>
+            <%= f.radio_button :rating, 4%>
+            <%= f.label "4 (great)"%>
+            <br/>
+            <%= f.radio_button :rating, 5 %>
+            <%= f.label "5 (amazing)"%>
+            <br/>
+          </div>
 
-    <h3> review</h3>
-    <%= f.text_area(:review,{class: "form-control"} ) %>
+            <legend> review</legend>
+            <div class="form-group">
+              <%= f.text_area(:review,{class: "form-control"} ) %>
+            </div>
 
-    <%= f.submit "submit review", class:"btn btn-primary"%>
-  <% end %>
+            <%= f.submit "submit review", class:"btn btn-primary"%>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+
 </main>
