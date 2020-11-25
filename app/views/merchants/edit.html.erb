@@ -4,11 +4,15 @@
 
   <%= form_with model: @current_merchant, class: 'create-merchant', url: merchant_path(@current_merchant.id) do |f| %>
 
-    <label> username </label>
-    <%= f.text_field :username, class: "form-control" %>
+    <div class="form-group">
+      <label> username </label>
+      <%= f.text_field :username, class: "form-control" %>
+    </div>
 
-    <label> email </label>
-    <%= f.text_field :email, class: "form-control" %>
+    <div class="form-group">
+      <label> email </label>
+      <%= f.text_field :email, class: "form-control" %>
+    </div>
 
     <%= f.submit "save changes", class:"btn btn-primary", data: {confirm: "are you sure?"}%>
   <% end %>
