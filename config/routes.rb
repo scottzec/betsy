@@ -3,13 +3,13 @@ Rails.application.routes.draw do
   root to: 'products#index'
 
   resources :merchants do
-    resources :products #, only: [:new, :create], [:edit, :update, :destroy] can be top level
+    resources :products, only: [:new, :create]
   end
 
   resources :products do
     resources :reviews, only: [:new, :create]
   end
-  
+
 
   resources :orderitems, only: [:new, :create, :edit, :update, :destroy]
   patch "/orderitems/:id/mark_shipped", to: "orderitems#mark_shipped", as: "mark_shipped"
