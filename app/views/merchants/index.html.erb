@@ -6,7 +6,7 @@
           <% begin %>
             <%= link_to image_tag("#{merchant.products.first.photo_url}"), product_path(merchant.products.first.id), method: :get%>
           <% rescue %>
-            <%= link_to image_tag("defaultimage.jpg"), product_path(merchant.products.first.id), method: :get%>
+              <%= link_to image_tag("defaultimage.jpg"), merchant_path(merchant.id), method: :get%>
           <% end %>
        <h3><%= link_to "#{merchant.username}", merchant_path(merchant.id), method: :get %></h3>
        <h4><%= merchant.products.count %> items</h4>
