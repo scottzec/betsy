@@ -194,6 +194,10 @@ section.product-show-reviews {
   margin: 2rem;
 }
 
+section.product-show-review-list {
+  margin-top: 1rem;
+}
+
 [tabindex="-1"]:focus:not(:focus-visible) {
   outline: 0 !important;
 }

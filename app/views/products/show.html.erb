@@ -56,10 +56,18 @@
 <section class="product-show-reviews">
   <h4>reviews</h4>
   <%= button_to "leave a review", new_product_review_path(@product.id), method: :get, class: "btn btn-success" %>
+</section>
+<section class="product-show-review-list">
 <% @product.reviews.each do |review| %>
   <div class="container">
-    <h4><%= "♣"*review.rating + "♧"*(5-review.rating) %></h4>
-    <p><%=review.review %></p>
+    <div class="row align-items-end border border-light">
+      <div class="col-md-2">
+        <h4><%= "♣"*review.rating + "♧"*(5-review.rating) %></h4>
+      </div>
+      <div class="col-md-10">
+        <p><%=review.review %></p>
+      </div>
+    </div>
   </div>
 <% end %>
 </section>
