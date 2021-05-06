@@ -1,3 +1,16 @@
+# our bEtsy project - catcus&clover
+As lovers of all things green, nutrient-absorbing, and generally advocates of photosynthesis as an energy source, we wanted to create a clean, simple e-commerce site for plant enthusiasts like us. 
+
+Below are some images of what you can expect to find on [our deployed website](https://cactusandclover.herokuapp.com). ** For security and demo purposes, the site does not process real payments or payment information.** 
+
+![front page](app/assets/images/demo1.png)
+![leaving a review](app/assets/images/demo2.png)
+![seller dashboard 1](app/assets/images/demo3.png)
+![seller dashboard 2](app/assets/images/demo4.png)
+![shopping cart](app/assets/images/demo5.png)
+![confirmation page](app/assets/images/demo6.png)
+![view by category](app/assets/images/demo7.png)
+
 # bEtsy
 
 ## At a Glance
